@@ -23,5 +23,11 @@ namespace LOSMST.API.Controllers
             var data = _roleService.GetAllRoles(roleParam, paging);
             return Ok(data);
         }
+        [HttpGet("subsidiary-roles")]
+        public IActionResult GetSubsidiaryRoles([FromQuery] RoleParameter roleParam, [FromQuery] PagingParameter paging)
+        {
+            var data = _roleService.GetSubsidiaryRoles(roleParam, paging);
+            return Ok(data);
+        }
     }
 }

@@ -63,5 +63,41 @@ namespace LOSMST.Business.Service
                 paging.PageNumber,
                 paging.PageSize);
         }
+        public PagedList<Role> GetSubsidiaryRoles(RoleParameter roleParam, PagingParameter paging)
+        {
+            var values = _roleRepository.GetAll(includeProperties: roleParam.includeProperties).Where(u => u.Id != "U01");
+
+            if (!string.IsNullOrWhiteSpace(roleParam.Id))
+            {
+                values = values.Where(x => x.Id == roleParam.Id);
+            }
+            if (!string.IsNullOrWhiteSpace(roleParam.Name))
+            {
+                values = values.Where(x => x.Name.Contains(roleParam.Name, StringComparison.InvariantCultureIgnoreCase));
+            }
+
+            if (!string.IsNullOrWhiteSpace(roleParam.sort))
+            {
+                switch (roleParam.sort)
+                {
+                    case "Id":
+                        if (roleParam.dir == "asc")
+                            values = values.OrderBy(d => d.Id);
+                        else if (roleParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.Id);
+                        break;
+                    case "Name":
+                        if (roleParam.dir == "asc")
+                            values = values.OrderBy(d => d.Name);
+                        else if (roleParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.Name);
+                        break;
+                }
+            }
+
+            return PagedList<Role>.ToPagedList(values.AsQueryable(),
+                paging.PageNumber,
+                paging.PageSize);
+        }
     }
 }
