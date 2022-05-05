@@ -19,8 +19,4 @@
     <ProjectReference Include="..\LOSMST.Models\LOSMST.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
-
 </Project>

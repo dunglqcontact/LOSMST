@@ -11,6 +11,7 @@ namespace LOSMST.Models.Database
             CustomerOrders = new HashSet<CustomerOrder>();
             ExportInventories = new HashSet<ExportInventory>();
             ImportInventories = new HashSet<ImportInventory>();
+            Inventories = new HashSet<Inventory>();
             StoreRequestOrders = new HashSet<StoreRequestOrder>();
         }
 
@@ -32,6 +33,7 @@ namespace LOSMST.Models.Database
         public virtual ICollection<CustomerOrder> CustomerOrders { get; set; }
         public virtual ICollection<ExportInventory> ExportInventories { get; set; }
         public virtual ICollection<ImportInventory> ImportInventories { get; set; }
+        public virtual ICollection<Inventory> Inventories { get; set; }
         public virtual ICollection<StoreRequestOrder> StoreRequestOrders { get; set; }
     }
 }

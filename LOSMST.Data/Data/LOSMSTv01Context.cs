@@ -24,6 +24,7 @@ namespace LOSMST.DataAccess.Data
         public virtual DbSet<ExportInventoryDetail> ExportInventoryDetails { get; set; } = null!;
         public virtual DbSet<ImportInventory> ImportInventories { get; set; } = null!;
         public virtual DbSet<ImportInventoryDetail> ImportInventoryDetails { get; set; } = null!;
+        public virtual DbSet<Inventory> Inventories { get; set; } = null!;
         public virtual DbSet<Package> Packages { get; set; } = null!;
         public virtual DbSet<Price> Prices { get; set; } = null!;
         public virtual DbSet<PriceDetail> PriceDetails { get; set; } = null!;
@@ -353,6 +354,31 @@ namespace LOSMST.DataAccess.Data
                     .HasForeignKey(d => d.ProductDetailId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__ImportInv__produ__5812160E");
+            });
+
+            modelBuilder.Entity<Inventory>(entity =>
+            {
+                entity.ToTable("Inventory");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.CurrentQuantity).HasColumnName("currentQuantity");
+
+                entity.Property(e => e.CurrentVolume).HasColumnName("currentVolume");
+
+                entity.Property(e => e.ProductDetailId)
+                    .HasMaxLength(7)
+                    .IsUnicode(false)
+                    .HasColumnName("productDetailId")
+                    .IsFixedLength();
+
+                entity.Property(e => e.StoreId).HasColumnName("storeId");
+
+                entity.HasOne(d => d.Store)
+                    .WithMany(p => p.Inventories)
+                    .HasForeignKey(d => d.StoreId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Inventory__store__625A9A57");
             });
 
             modelBuilder.Entity<Package>(entity =>
