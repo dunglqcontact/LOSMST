@@ -24,7 +24,7 @@ namespace LOSMST.Business.Service
             var values = _statusRepository.GetAll(includeProperties: statusParam.includeProperties);
             if(!string.IsNullOrWhiteSpace(statusParam.Id))
             {
-                values = values.Where(x => x.Id == statusParam.Id);
+                values = values.Where(x => x.Id.Contains(statusParam.Id, StringComparison.InvariantCultureIgnoreCase));
             }
             if (!string.IsNullOrWhiteSpace(statusParam.Name)){
                 values = values.Where(x => x.Name.Contains(statusParam.Name, StringComparison.InvariantCultureIgnoreCase)); 

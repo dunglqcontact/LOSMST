@@ -68,6 +68,12 @@ namespace LOSMST.Business.Service
                         else if (storeParam.dir == "desc")
                             values = values.OrderByDescending(d => d.Name);
                         break;
+                    case "Code":
+                        if (storeParam.dir == "asc")
+                            values = values.OrderBy(d => d.Code);
+                        else if (storeParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.Code);
+                        break;
                     case "StoreCategoryId":
                         if (storeParam.dir == "asc")
                             values = values.OrderBy(d => d.StoreCategoryId);
