@@ -9,6 +9,7 @@ namespace LOSMST.Models.Helper.DBOHelper
     public class RoleParameter
     {
         public string? Id { get; set; } = null;
+        public string? notIncludeId { get; set; } = null;
         public string? Name { get; set; } = null;
 
         public string? dir { get; set; } = "asc";

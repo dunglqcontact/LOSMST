@@ -30,42 +30,17 @@ namespace LOSMST.Business.Service
         public PagedList<Role> GetAllRoles(RoleParameter roleParam, PagingParameter paging)
         {
             var values = _roleRepository.GetAll(includeProperties: roleParam.includeProperties);
-
-            if (!string.IsNullOrWhiteSpace(roleParam.Id))
+            if (roleParam.notIncludeId != null)
             {
-                values = values.Where(x => x.Id == roleParam.Id);
-            }
-            if (!string.IsNullOrWhiteSpace(roleParam.Name))
-            {
-                values = values.Where(x => x.Name.Contains(roleParam.Name, StringComparison.InvariantCultureIgnoreCase));
-            }
-
-            if (!string.IsNullOrWhiteSpace(roleParam.sort))
-            {
-                switch (roleParam.sort)
+                foreach (var notInclude in roleParam.notIncludeId.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    case "Id":
-                        if (roleParam.dir == "asc")
-                            values = values.OrderBy(d => d.Id);
-                        else if (roleParam.dir == "desc")
-                            values = values.OrderByDescending(d => d.Id);
-                        break;
-                    case "Name":
-                        if (roleParam.dir == "asc")
-                            values = values.OrderBy(d => d.Name);
-                        else if (roleParam.dir == "desc")
-                            values = values.OrderByDescending(d => d.Name);
-                        break;
+                    values = values.Where(x => x.Id != notInclude);
                 }
             }
-
-            return PagedList<Role>.ToPagedList(values.AsQueryable(),
-                paging.PageNumber,
-                paging.PageSize);
-        }
-        public PagedList<Role> GetSubsidiaryRoles(RoleParameter roleParam, PagingParameter paging)
-        {
-            var values = _roleRepository.GetAll(includeProperties: roleParam.includeProperties).Where(u => u.Id != "U01");
+            if (!string.IsNullOrWhiteSpace(roleParam.notIncludeId))
+            {
+                values = values.Where(x => x.Id != roleParam.notIncludeId);
+            }
 
             if (!string.IsNullOrWhiteSpace(roleParam.Id))
             {

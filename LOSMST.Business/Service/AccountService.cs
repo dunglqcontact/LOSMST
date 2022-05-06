@@ -23,6 +23,14 @@ namespace LOSMST.Business.Service
         {
             var values = _accountRepository.GetAll(includeProperties: accountParam.includeProperties);
 
+            if (accountParam.notIncludeRoleId != null)
+            {
+                foreach (var notInclude in accountParam.notIncludeRoleId.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    values = values.Where(x => x.RoleId != notInclude);
+                }
+            }
+
             if (accountParam.Id != null)
             {
                 values = values.Where(x => x.Id == accountParam.Id);

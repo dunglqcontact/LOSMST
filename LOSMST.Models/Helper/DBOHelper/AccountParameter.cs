@@ -10,6 +10,7 @@ namespace LOSMST.Models.Helper.DBOHelper
     public class AccountParameter
     {
         public int? Id { get; set; }
+        public string? notIncludeRoleId { get; set; } = null;
         public string? Email { get; set; } = null!;
         public string? Password { get; set; } = null!;
         public string? Fullname { get; set; } = null!;
