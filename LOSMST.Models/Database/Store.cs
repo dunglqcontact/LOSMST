@@ -11,7 +11,7 @@ namespace LOSMST.Models.Database
             CustomerOrders = new HashSet<CustomerOrder>();
             ExportInventories = new HashSet<ExportInventory>();
             ImportInventories = new HashSet<ImportInventory>();
-            Inventories = new HashSet<Inventory>();
+            StoreProductDetails = new HashSet<StoreProductDetail>();
             StoreRequestOrders = new HashSet<StoreRequestOrder>();
         }
 
@@ -25,15 +25,15 @@ namespace LOSMST.Models.Database
         public string Email { get; set; } = null!;
         public string Phone { get; set; } = null!;
         public string Avartar { get; set; } = null!;
-        public string? StatusId { get; set; } = null!;
+        public string? StatusId { get; set; } = null;
 
-        public virtual Status? Status { get; set; } = null!;
-        public virtual StoreCategory? StoreCategory { get; set; } = null!;
+        public virtual Status? Status { get; set; } = null;
+        public virtual StoreCategory? StoreCategory { get; set; } = null;
         public virtual ICollection<Account> Accounts { get; set; }
         public virtual ICollection<CustomerOrder> CustomerOrders { get; set; }
         public virtual ICollection<ExportInventory> ExportInventories { get; set; }
         public virtual ICollection<ImportInventory> ImportInventories { get; set; }
-        public virtual ICollection<Inventory> Inventories { get; set; }
+        public virtual ICollection<StoreProductDetail> StoreProductDetails { get; set; }
         public virtual ICollection<StoreRequestOrder> StoreRequestOrders { get; set; }
     }
 }

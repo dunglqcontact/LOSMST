@@ -66,9 +66,9 @@ namespace LOSMST.Business.Service
                         break;
                     case "QuantityWholeSalePrice":
                         if (productDetailParam.dir == "asc")
-                            values = values.OrderBy(d => d.QuantityWholeSalePrice);
+                            values = values.OrderBy(d => d.WholeSalePriceQuantity);
                         else if (productDetailParam.dir == "desc")
-                            values = values.OrderByDescending(d => d.QuantityWholeSalePrice);
+                            values = values.OrderByDescending(d => d.WholeSalePriceQuantity);
                         break;
                 }
             }

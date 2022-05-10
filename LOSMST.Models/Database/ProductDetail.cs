@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LOSMST.Models.Database
 {
@@ -13,6 +12,7 @@ namespace LOSMST.Models.Database
             ImportInventoryDetails = new HashSet<ImportInventoryDetail>();
             PriceDetails = new HashSet<PriceDetail>();
             ProductStoreRequestDetails = new HashSet<ProductStoreRequestDetail>();
+            StoreProductDetails = new HashSet<StoreProductDetail>();
         }
 
         public string Id { get; set; } = null!;
@@ -20,7 +20,8 @@ namespace LOSMST.Models.Database
         public double Volume { get; set; }
         public string? PackageId { get; set; } = null!;
         public string? StatusId { get; set; } = null!;
-        public double QuantityWholeSalePrice { get; set; }
+        public double WholeSalePriceQuantity { get; set; }
+
         public virtual Package? Package { get; set; } = null!;
         public virtual Product? Product { get; set; } = null!;
         public virtual Status? Status { get; set; } = null!;
@@ -29,5 +30,6 @@ namespace LOSMST.Models.Database
         public virtual ICollection<ImportInventoryDetail> ImportInventoryDetails { get; set; }
         public virtual ICollection<PriceDetail> PriceDetails { get; set; }
         public virtual ICollection<ProductStoreRequestDetail> ProductStoreRequestDetails { get; set; }
+        public virtual ICollection<StoreProductDetail> StoreProductDetails { get; set; }
     }
 }

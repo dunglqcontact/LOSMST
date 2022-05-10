@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace LOSMST.Models.Database
 {
@@ -13,6 +9,7 @@ namespace LOSMST.Models.Database
         {
             CustomerOrders = new HashSet<CustomerOrder>();
         }
+
         public int Id { get; set; }
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
@@ -31,6 +28,6 @@ namespace LOSMST.Models.Database
         public virtual Role? Role { get; set; } = null!;
         public virtual Status? Status { get; set; } = null!;
         public virtual Store? Store { get; set; }
-        public virtual ICollection<CustomerOrder>? CustomerOrders { get; set; }
+        public virtual ICollection<CustomerOrder> CustomerOrders { get; set; }
     }
 }

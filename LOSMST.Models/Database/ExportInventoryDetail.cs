@@ -9,6 +9,7 @@ namespace LOSMST.Models.Database
         public int Quantity { get; set; }
         public double Price { get; set; }
         public string ProductDetailId { get; set; } = null!;
+        public int ExportVolume { get; set; }
         public string ExportInventoryId { get; set; } = null!;
 
         public virtual ExportInventory ExportInventory { get; set; } = null!;

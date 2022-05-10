@@ -24,7 +24,6 @@ namespace LOSMST.DataAccess.Data
         public virtual DbSet<ExportInventoryDetail> ExportInventoryDetails { get; set; } = null!;
         public virtual DbSet<ImportInventory> ImportInventories { get; set; } = null!;
         public virtual DbSet<ImportInventoryDetail> ImportInventoryDetails { get; set; } = null!;
-        public virtual DbSet<Inventory> Inventories { get; set; } = null!;
         public virtual DbSet<Package> Packages { get; set; } = null!;
         public virtual DbSet<Price> Prices { get; set; } = null!;
         public virtual DbSet<PriceDetail> PriceDetails { get; set; } = null!;
@@ -36,6 +35,7 @@ namespace LOSMST.DataAccess.Data
         public virtual DbSet<Status> Statuses { get; set; } = null!;
         public virtual DbSet<Store> Stores { get; set; } = null!;
         public virtual DbSet<StoreCategory> StoreCategories { get; set; } = null!;
+        public virtual DbSet<StoreProductDetail> StoreProductDetails { get; set; } = null!;
         public virtual DbSet<StoreRequestOrder> StoreRequestOrders { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -61,7 +61,6 @@ namespace LOSMST.DataAccess.Data
                     .HasColumnName("address");
 
                 entity.Property(e => e.Avartar)
-                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("avartar");
 
@@ -269,6 +268,8 @@ namespace LOSMST.DataAccess.Data
                     .HasColumnName("exportInventoryId")
                     .IsFixedLength();
 
+                entity.Property(e => e.ExportVolume).HasColumnName("exportVolume");
+
                 entity.Property(e => e.Price).HasColumnName("price");
 
                 entity.Property(e => e.ProductDetailId)
@@ -356,31 +357,6 @@ namespace LOSMST.DataAccess.Data
                     .HasConstraintName("FK__ImportInv__produ__5812160E");
             });
 
-            modelBuilder.Entity<Inventory>(entity =>
-            {
-                entity.ToTable("Inventory");
-
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.CurrentQuantity).HasColumnName("currentQuantity");
-
-                entity.Property(e => e.CurrentVolume).HasColumnName("currentVolume");
-
-                entity.Property(e => e.ProductDetailId)
-                    .HasMaxLength(7)
-                    .IsUnicode(false)
-                    .HasColumnName("productDetailId")
-                    .IsFixedLength();
-
-                entity.Property(e => e.StoreId).HasColumnName("storeId");
-
-                entity.HasOne(d => d.Store)
-                    .WithMany(p => p.Inventories)
-                    .HasForeignKey(d => d.StoreId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Inventory__store__625A9A57");
-            });
-
             modelBuilder.Entity<Package>(entity =>
             {
                 entity.ToTable("Package");
@@ -457,9 +433,13 @@ namespace LOSMST.DataAccess.Data
                     .HasColumnName("productDetailId")
                     .IsFixedLength();
 
-                entity.Property(e => e.RetailPrice).HasColumnName("retailPrice");
+                entity.Property(e => e.RetailPriceAfterTax).HasColumnName("retailPriceAfterTax");
 
-                entity.Property(e => e.WholesalePrice).HasColumnName("wholesalePrice");
+                entity.Property(e => e.RetailPriceBeforeTax).HasColumnName("retailPriceBeforeTax");
+
+                entity.Property(e => e.WholesalePriceAfterTax).HasColumnName("wholesalePriceAfterTax");
+
+                entity.Property(e => e.WholesalePriceBeforeTax).HasColumnName("wholesalePriceBeforeTax");
 
                 entity.HasOne(d => d.Price)
                     .WithMany(p => p.PriceDetails)
@@ -480,22 +460,15 @@ namespace LOSMST.DataAccess.Data
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Apply)
-                    .HasMaxLength(200)
-                    .HasColumnName("apply");
+                entity.Property(e => e.Apply).HasColumnName("apply");
 
-                entity.Property(e => e.Brief)
-                    .HasMaxLength(200)
-                    .HasColumnName("brief");
+                entity.Property(e => e.Brief).HasColumnName("brief");
 
                 entity.Property(e => e.CategoryId).HasColumnName("categoryId");
 
-                entity.Property(e => e.GeneralBenefit)
-                    .HasMaxLength(200)
-                    .HasColumnName("generalBenefit");
+                entity.Property(e => e.GeneralBenefit).HasColumnName("generalBenefit");
 
                 entity.Property(e => e.Image)
-                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("image");
 
@@ -503,19 +476,15 @@ namespace LOSMST.DataAccess.Data
                     .HasMaxLength(50)
                     .HasColumnName("name");
 
-                entity.Property(e => e.Preserve)
-                    .HasMaxLength(200)
-                    .HasColumnName("preserve");
+                entity.Property(e => e.Preserve).HasColumnName("preserve");
 
-                entity.Property(e => e.QualityLevelFeature)
-                    .HasMaxLength(200)
-                    .HasColumnName("qualityLevelFeature");
+                entity.Property(e => e.QualityLevelFeature).HasColumnName("qualityLevelFeature");
 
                 entity.Property(e => e.StatusId)
                     .HasMaxLength(3)
                     .IsUnicode(false)
                     .HasColumnName("statusId")
-                    .HasDefaultValueSql("('1.1')")
+                    .HasDefaultValueSql("('3.1')")
                     .IsFixedLength();
 
                 entity.HasOne(d => d.Category)
@@ -560,16 +529,16 @@ namespace LOSMST.DataAccess.Data
 
                 entity.Property(e => e.ProductId).HasColumnName("productId");
 
-                entity.Property(e => e.QuantityWholeSalePrice).HasColumnName("quantityWholeSalePrice");
-
                 entity.Property(e => e.StatusId)
                     .HasMaxLength(3)
                     .IsUnicode(false)
                     .HasColumnName("statusId")
-                    .HasDefaultValueSql("('1.1')")
+                    .HasDefaultValueSql("('3.1')")
                     .IsFixedLength();
 
                 entity.Property(e => e.Volume).HasColumnName("volume");
+
+                entity.Property(e => e.WholeSalePriceQuantity).HasColumnName("wholeSalePriceQuantity");
 
                 entity.HasOne(d => d.Package)
                     .WithMany(p => p.ProductDetails)
@@ -664,11 +633,10 @@ namespace LOSMST.DataAccess.Data
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Address)
-                    .HasMaxLength(50)
+                    .HasMaxLength(200)
                     .HasColumnName("address");
 
                 entity.Property(e => e.Avartar)
-                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("avartar");
 
@@ -679,16 +647,16 @@ namespace LOSMST.DataAccess.Data
                     .IsFixedLength();
 
                 entity.Property(e => e.District)
-                    .HasMaxLength(50)
+                    .HasMaxLength(200)
                     .HasColumnName("district");
 
                 entity.Property(e => e.Email)
-                    .HasMaxLength(50)
+                    .HasMaxLength(200)
                     .IsUnicode(false)
                     .HasColumnName("email");
 
                 entity.Property(e => e.Name)
-                    .HasMaxLength(50)
+                    .HasMaxLength(200)
                     .HasColumnName("name");
 
                 entity.Property(e => e.Phone)
@@ -712,20 +680,8 @@ namespace LOSMST.DataAccess.Data
                     .IsFixedLength();
 
                 entity.Property(e => e.Ward)
-                    .HasMaxLength(50)
+                    .HasMaxLength(200)
                     .HasColumnName("ward");
-
-                entity.HasOne(d => d.Status)
-                    .WithMany(p => p.Stores)
-                    .HasForeignKey(d => d.StatusId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Store__statusId__30F848ED");
-
-                entity.HasOne(d => d.StoreCategory)
-                    .WithMany(p => p.Stores)
-                    .HasForeignKey(d => d.StoreCategoryId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Store__storeCate__2F10007B");
             });
 
             modelBuilder.Entity<StoreCategory>(entity =>
@@ -741,6 +697,37 @@ namespace LOSMST.DataAccess.Data
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
                     .HasColumnName("name");
+            });
+
+            modelBuilder.Entity<StoreProductDetail>(entity =>
+            {
+                entity.ToTable("StoreProductDetail");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.CurrentQuantity).HasColumnName("currentQuantity");
+
+                entity.Property(e => e.CurrentVolume).HasColumnName("currentVolume");
+
+                entity.Property(e => e.ProductDetailId)
+                    .HasMaxLength(7)
+                    .IsUnicode(false)
+                    .HasColumnName("productDetailId")
+                    .IsFixedLength();
+
+                entity.Property(e => e.StoreId).HasColumnName("storeId");
+
+                entity.HasOne(d => d.ProductDetail)
+                    .WithMany(p => p.StoreProductDetails)
+                    .HasForeignKey(d => d.ProductDetailId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_StoreProductDetail_ProductDetail");
+
+                entity.HasOne(d => d.Store)
+                    .WithMany(p => p.StoreProductDetails)
+                    .HasForeignKey(d => d.StoreId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_StoreProductDetail_Store");
             });
 
             modelBuilder.Entity<StoreRequestOrder>(entity =>
