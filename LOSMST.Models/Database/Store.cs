@@ -24,7 +24,7 @@ namespace LOSMST.Models.Database
         public string District { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string Phone { get; set; } = null!;
-        public string Avartar { get; set; } = null!;
+        public string Avatar { get; set; } = null!;
         public string? StatusId { get; set; } = null;
 
         public virtual Status? Status { get; set; } = null;
