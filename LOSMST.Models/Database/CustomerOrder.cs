@@ -19,7 +19,7 @@ namespace LOSMST.Models.Database
         public string StatusId { get; set; } = null!;
         public string? Reason { get; set; }
         public DateTime OrderDate { get; set; }
-        public DateTime? EstimatedDeliveryDate { get; set; }
+        public DateTime? EstimateTakeProduct { get; set; }
         public DateTime ReceiveDate { get; set; }
         public string? CustomerInvoiceCode { get; set; }
 

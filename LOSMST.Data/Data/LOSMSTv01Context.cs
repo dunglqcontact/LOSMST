@@ -149,9 +149,9 @@ namespace LOSMST.DataAccess.Data
                     .HasColumnName("customerInvoiceCode")
                     .IsFixedLength();
 
-                entity.Property(e => e.EstimatedDeliveryDate)
+                entity.Property(e => e.EstimateTakeProduct)
                     .HasColumnType("datetime")
-                    .HasColumnName("estimatedDeliveryDate");
+                    .HasColumnName("estimateTakeProduct");
 
                 entity.Property(e => e.ManagerAccountId).HasColumnName("managerAccountId");
 
