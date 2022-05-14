@@ -24,5 +24,11 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                                                         && a.StoreId == store.Id && a.StatusId == "1.1");
             return account != null;
         }
+
+        public Store GetCurrentStoreByStoreCode(string storeCode)
+        {
+            var store = _dbContext.Stores.FirstOrDefault(s => s.Code == storeCode && s.StatusId == "1.1");
+            return store;
+        }
     }
 }

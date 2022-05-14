@@ -32,6 +32,13 @@ namespace LOSMST.API.Controllers
             return Ok(data);
         }
 
+        [HttpGet("current-store-code")]
+        public IActionResult GetCurrentStoreByStoreCode(string storeCode)
+        {
+            var data = _storeService.GetCurrentStoreByStoreCode(storeCode);
+            return Ok(data);
+        }
+
         [HttpPost]
         public IActionResult AddStore(Store store)
         {

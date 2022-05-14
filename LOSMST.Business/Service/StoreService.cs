@@ -110,6 +110,11 @@ namespace LOSMST.Business.Service
             catch { return false; }
         }
 
+        public Store GetCurrentStoreByStoreCode(string storeCode)
+        {
+            var values = _storeRepository.GetCurrentStoreByStoreCode(storeCode);
+            return values;
+        }
         public bool Update(Store store)
         {
             try
