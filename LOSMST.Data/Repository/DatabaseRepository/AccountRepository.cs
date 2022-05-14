@@ -16,5 +16,19 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
         {
             _dbContext = dbContext;
         }
+
+        public bool CheckEmailExsited(string emailValue)
+        {
+            return _dbContext.Accounts.FirstOrDefault(a => a.Email == emailValue) != null;
+        }
+
+        public Account GetStoreManager(string storeCode)
+        {
+            var store = _dbContext.Stores.FirstOrDefault(s => s.Code == storeCode);
+            var storeId = store.Id;
+            Account account = _dbContext.Accounts.FirstOrDefault(a => a.StoreId== storeId && (a.RoleId == "U03" || a.RoleId == "U04"));
+            account.Store = null;
+            return account;
+        }
     }
 }

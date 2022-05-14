@@ -9,5 +9,7 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
 {
     public interface IAccountRepository : GeneralIRepository<Account>
     {
+        public bool CheckEmailExsited(string emailValue);
+        public Account GetStoreManager(string storeCode);
     }
 }

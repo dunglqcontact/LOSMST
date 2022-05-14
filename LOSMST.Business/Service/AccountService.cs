@@ -39,6 +39,10 @@ namespace LOSMST.Business.Service
             {
                 values = values.Where(x => x.Fullname.Contains(accountParam.Fullname, StringComparison.InvariantCultureIgnoreCase));
             }
+            if (accountParam.StoreId != null)
+            {
+                values = values.Where(x => x.StoreId == accountParam.StoreId);
+            }
             if (!string.IsNullOrWhiteSpace(accountParam.RoleId))
             {
                 values = values.Where(x => x.RoleId == accountParam.RoleId);
@@ -66,6 +70,19 @@ namespace LOSMST.Business.Service
             return PagedList<Account>.ToPagedList(values.AsQueryable(),
             paging.PageNumber,
             paging.PageSize);
+        }
+
+        public bool CheckEmaiExisted(string emailStr)
+        {
+            var values = _accountRepository.CheckEmailExsited(emailStr);
+
+            return values;
+        }
+
+        public Account GetStoreManager(string storeCode)
+        {
+            var values = _accountRepository.GetStoreManager(storeCode);
+            return values;
         }
 
         public bool Add(Account account)

@@ -25,6 +25,13 @@ namespace LOSMST.API.Controllers
             return Ok(data);
         }
 
+        [HttpGet("manager-existence")]
+        public IActionResult CheckStoreManager(string storeCode)
+        {
+            var data = _storeService.CheckStoreManager(storeCode);
+            return Ok(data);
+        }
+
         [HttpPost]
         public IActionResult AddStore(Store store)
         {

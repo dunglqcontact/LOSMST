@@ -28,6 +28,10 @@ namespace LOSMST.Business.Service
             {
                 values = values.Where(x => x.Id == storeParam.Id);
             }
+            if (!string.IsNullOrWhiteSpace(storeParam.Code))
+            {
+                values = values.Where(x => x.Code == storeParam.Code);
+            }
             if (!string.IsNullOrWhiteSpace(storeParam.Name))
             {
                 values = values.Where(x => x.Name.Contains(storeParam.Name, StringComparison.InvariantCultureIgnoreCase));
@@ -86,6 +90,12 @@ namespace LOSMST.Business.Service
             return PagedList<Store>.ToPagedList(values.AsQueryable(),
             paging.PageNumber,
             paging.PageSize);
+        }
+
+        public bool CheckStoreManager(string storeCode)
+        {
+            var values = _storeRepository.CheckStoreManager(storeCode);
+            return values;
         }
         public bool Add(Store store)
         {

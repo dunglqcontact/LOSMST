@@ -25,6 +25,20 @@ namespace LOSMST.API.Controllers
             return Ok(data);
         }
 
+        [HttpGet("existed-email")]
+        public IActionResult CheckEmailExsitence(string emailStr)
+        {
+            var data = _accountService.CheckEmaiExisted(emailStr);
+            return Ok(data);
+        }
+
+        [HttpGet("store-manager")]
+        public IActionResult GetStoreManager(string storeCode)
+        {
+            var data = _accountService.GetStoreManager(storeCode);
+            return Ok(data);
+        }
+
         [HttpPost]
         public IActionResult AddAccount(Account account)
         {
