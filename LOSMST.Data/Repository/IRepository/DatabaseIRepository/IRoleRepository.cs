@@ -1,5 +1,6 @@
 ﻿using LOSMST.Models.Database;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
 {
     public interface IRoleRepository : GeneralIRepository<Role>
     {
-
+        public IEnumerable<Role> GetStoreRole(string storeCode);
     }
 }

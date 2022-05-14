@@ -20,9 +20,9 @@ namespace LOSMST.Business.Service
             _roleRepository = roleRepository;
         }
 
-        public IEnumerable GetRSMSRole()
+        public IEnumerable<Role> GetStoreRole(string storeCode)
         {
-            var roles = _roleRepository.GetAll().Where(x => x.Id == "U03" || x.Id == "U05");
+            var roles = _roleRepository.GetStoreRole(storeCode);
 
             return roles;
         }
