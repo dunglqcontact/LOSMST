@@ -19,8 +19,9 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
         }
         public bool CheckStoreManager(string storeCode)
         {
-            var store = _dbContext.Stores.FirstOrDefault(s => s.Code == storeCode);
-            var account = _dbContext.Accounts.FirstOrDefault(a => (a.RoleId == "U03" || a.RoleId == "U04") && a.StoreId == store.Id);
+            var store = _dbContext.Stores.FirstOrDefault(s => s.Code == storeCode && s.StatusId == "1.1");
+            var account = _dbContext.Accounts.FirstOrDefault(a => (a.RoleId == "U03" || a.RoleId == "U04") 
+                                                        && a.StoreId == store.Id && a.StatusId == "1.1");
             return account != null;
         }
     }

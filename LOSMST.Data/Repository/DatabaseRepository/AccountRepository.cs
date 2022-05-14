@@ -24,9 +24,9 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
         public Account GetStoreManager(string storeCode)
         {
-            var store = _dbContext.Stores.FirstOrDefault(s => s.Code == storeCode);
+            var store = _dbContext.Stores.FirstOrDefault(s => s.Code == storeCode && s.StatusId == "1.1");
             var storeId = store.Id;
-            Account account = _dbContext.Accounts.FirstOrDefault(a => a.StoreId== storeId && (a.RoleId == "U03" || a.RoleId == "U04"));
+            Account account = _dbContext.Accounts.FirstOrDefault(a => a.StoreId== storeId && a.StatusId == "1.1" && (a.RoleId == "U03" || a.RoleId == "U04"));
             account.Store = null;
             return account;
         }
