@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LOSMST.Models.Database;
+using System;
 using System.Collections.Generic;
 
 namespace LOSMST.Models.Database
@@ -20,7 +21,7 @@ namespace LOSMST.Models.Database
         public double Volume { get; set; }
         public string? PackageId { get; set; } = null!;
         public string? StatusId { get; set; } = null!;
-        public double WholeSalePriceQuantity { get; set; }
+        public int WholeSalePriceQuantity { get; set; }
 
         public virtual Package? Package { get; set; } = null!;
         public virtual Product? Product { get; set; } = null!;

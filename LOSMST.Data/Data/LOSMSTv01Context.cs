@@ -56,13 +56,12 @@ namespace LOSMST.DataAccess.Data
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Address)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
+                    .HasMaxLength(100)
                     .HasColumnName("address");
 
-                entity.Property(e => e.Avartar)
+                entity.Property(e => e.Avatar)
                     .IsUnicode(false)
-                    .HasColumnName("avartar");
+                    .HasColumnName("avatar");
 
                 entity.Property(e => e.District)
                     .HasMaxLength(50)
@@ -73,7 +72,7 @@ namespace LOSMST.DataAccess.Data
                     .HasColumnName("dob");
 
                 entity.Property(e => e.Email)
-                    .HasMaxLength(50)
+                    .HasMaxLength(200)
                     .IsUnicode(false)
                     .HasColumnName("email");
 
@@ -149,9 +148,9 @@ namespace LOSMST.DataAccess.Data
                     .HasColumnName("customerInvoiceCode")
                     .IsFixedLength();
 
-                entity.Property(e => e.EstimateTakeProduct)
+                entity.Property(e => e.EstimatedReceiveDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("estimateTakeProduct");
+                    .HasColumnName("estimatedReceiveDate");
 
                 entity.Property(e => e.ManagerAccountId).HasColumnName("managerAccountId");
 
@@ -161,7 +160,7 @@ namespace LOSMST.DataAccess.Data
                     .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Reason)
-                    .HasMaxLength(50)
+                    .HasMaxLength(500)
                     .HasColumnName("reason");
 
                 entity.Property(e => e.ReceiveDate)
@@ -460,25 +459,35 @@ namespace LOSMST.DataAccess.Data
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Apply).HasColumnName("apply");
+                entity.Property(e => e.Apply)
+                    .HasMaxLength(1000)
+                    .HasColumnName("apply");
 
-                entity.Property(e => e.Brief).HasColumnName("brief");
+                entity.Property(e => e.Brief)
+                    .HasMaxLength(1000)
+                    .HasColumnName("brief");
 
                 entity.Property(e => e.CategoryId).HasColumnName("categoryId");
 
-                entity.Property(e => e.GeneralBenefit).HasColumnName("generalBenefit");
+                entity.Property(e => e.GeneralBenefit)
+                    .HasMaxLength(1000)
+                    .HasColumnName("generalBenefit");
 
                 entity.Property(e => e.Image)
                     .IsUnicode(false)
                     .HasColumnName("image");
 
                 entity.Property(e => e.Name)
-                    .HasMaxLength(50)
+                    .HasMaxLength(100)
                     .HasColumnName("name");
 
-                entity.Property(e => e.Preserve).HasColumnName("preserve");
+                entity.Property(e => e.Preserve)
+                    .HasMaxLength(1000)
+                    .HasColumnName("preserve");
 
-                entity.Property(e => e.QualityLevelFeature).HasColumnName("qualityLevelFeature");
+                entity.Property(e => e.QualityLevelFeature)
+                    .HasMaxLength(1000)
+                    .HasColumnName("qualityLevelFeature");
 
                 entity.Property(e => e.StatusId)
                     .HasMaxLength(3)
@@ -633,12 +642,12 @@ namespace LOSMST.DataAccess.Data
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Address)
-                    .HasMaxLength(200)
+                    .HasMaxLength(100)
                     .HasColumnName("address");
 
-                entity.Property(e => e.Avartar)
+                entity.Property(e => e.Avatar)
                     .IsUnicode(false)
-                    .HasColumnName("avartar");
+                    .HasColumnName("avatar");
 
                 entity.Property(e => e.Code)
                     .HasMaxLength(4)
@@ -647,7 +656,7 @@ namespace LOSMST.DataAccess.Data
                     .IsFixedLength();
 
                 entity.Property(e => e.District)
-                    .HasMaxLength(200)
+                    .HasMaxLength(50)
                     .HasColumnName("district");
 
                 entity.Property(e => e.Email)
@@ -656,7 +665,7 @@ namespace LOSMST.DataAccess.Data
                     .HasColumnName("email");
 
                 entity.Property(e => e.Name)
-                    .HasMaxLength(200)
+                    .HasMaxLength(100)
                     .HasColumnName("name");
 
                 entity.Property(e => e.Phone)
@@ -680,8 +689,20 @@ namespace LOSMST.DataAccess.Data
                     .IsFixedLength();
 
                 entity.Property(e => e.Ward)
-                    .HasMaxLength(200)
+                    .HasMaxLength(50)
                     .HasColumnName("ward");
+
+                entity.HasOne(d => d.Status)
+                    .WithMany(p => p.Stores)
+                    .HasForeignKey(d => d.StatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Store_Status");
+
+                entity.HasOne(d => d.StoreCategory)
+                    .WithMany(p => p.Stores)
+                    .HasForeignKey(d => d.StoreCategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Store_StoreCategory");
             });
 
             modelBuilder.Entity<StoreCategory>(entity =>
@@ -741,7 +762,7 @@ namespace LOSMST.DataAccess.Data
                     .IsFixedLength();
 
                 entity.Property(e => e.Reason)
-                    .HasMaxLength(50)
+                    .HasMaxLength(500)
                     .HasColumnName("reason");
 
                 entity.Property(e => e.ReceiveDate)
@@ -767,10 +788,10 @@ namespace LOSMST.DataAccess.Data
                     .HasColumnName("storeRequestInvoiceCode")
                     .IsFixedLength();
 
-                entity.Property(e => e.StoreSupplyId)
+                entity.Property(e => e.StoreSupplyCode)
                     .HasMaxLength(4)
                     .IsUnicode(false)
-                    .HasColumnName("storeSupplyId")
+                    .HasColumnName("storeSupplyCode")
                     .IsFixedLength();
 
                 entity.HasOne(d => d.Status)
