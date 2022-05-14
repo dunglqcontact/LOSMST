@@ -10,5 +10,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
     public interface IStoreRepository : GeneralIRepository<Store>
     {
         public bool CheckStoreManager(string storeCode);
+        public Store GetCurrentStoreByStoreCode(string storeCode);
     }
 }
