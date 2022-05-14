@@ -10,6 +10,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
 {
     public interface IRoleRepository : GeneralIRepository<Role>
     {
-        public IEnumerable<Role> GetStoreRole(int storeId);
+        public IEnumerable<Role> GetStoreRole(string storeCode);
     }
 }

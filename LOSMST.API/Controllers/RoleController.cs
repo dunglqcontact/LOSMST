@@ -24,9 +24,9 @@ namespace LOSMST.API.Controllers
             return Ok(data);
         }
         [HttpGet("store-roles")]
-        public IActionResult GetStoreRole(int storeId)
+        public IActionResult GetStoreRole(string storeCode)
         {
-            var data = _roleService.GetStoreRole(storeId);
+            var data = _roleService.GetStoreRole(storeCode);
             return Ok(data);
         }
     }

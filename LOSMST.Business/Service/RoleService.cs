@@ -20,9 +20,9 @@ namespace LOSMST.Business.Service
             _roleRepository = roleRepository;
         }
 
-        public IEnumerable<Role> GetStoreRole(int storeId)
+        public IEnumerable<Role> GetStoreRole(string storeCode)
         {
-            var roles = _roleRepository.GetStoreRole(storeId);
+            var roles = _roleRepository.GetStoreRole(storeCode);
 
             return roles;
         }

@@ -18,9 +18,9 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             _dbContext = dbContext;
         }
 
-        public IEnumerable<Role> GetStoreRole(int storeId)
+        public IEnumerable<Role> GetStoreRole(string storeCode)
         {
-            var store = _dbContext.Stores.FirstOrDefault(s => s.Id == storeId);
+            var store = _dbContext.Stores.FirstOrDefault(s => s.Code == storeCode && s.StatusId == "1.1");
             if (store != null) { 
                 IQueryable<Role> roleList = _dbContext.Set<Role>();
                 if (store.StoreCategoryId == "CHBL")
