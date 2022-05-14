@@ -23,13 +23,17 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             var store = _dbContext.Stores.FirstOrDefault(s => s.Code == storeCode && s.StatusId == "1.1");
             if (store != null) { 
                 IQueryable<Role> roleList = _dbContext.Set<Role>();
-                if (store.StoreCategoryId == "CHBL")
+                if(store.StoreCategoryId == "CHBL")
                 {
                     roleList = roleList.Where(r => r.Id == "U03" || r.Id == "U05");
                 }
-                else if (store.StoreCategoryId == "CHCD")
+                else if(store.StoreCategoryId == "CHCD")
                 {
-                    roleList = _dbContext.Roles.Where(r => r.Id == "U04" || r.Id == "U05");
+                    roleList = roleList.Where(r => r.Id == "U04" || r.Id == "U05");
+                }
+                else if(store.StoreCategoryId == "XNBL")
+                {
+                    roleList = roleList.Where(r => r.Id == "U02");
                 }
                 return roleList.ToList();
             }
