@@ -90,7 +90,7 @@ namespace LOSMST.Business.Service
             try
             {
                 var abc = account;
-                _accountRepository.Add(account);
+                _accountRepository.CreateLocalAccount(account);
                 
                 _accountRepository.SaveDbChange();
                 return true;
