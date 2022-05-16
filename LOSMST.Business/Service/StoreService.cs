@@ -115,6 +115,12 @@ namespace LOSMST.Business.Service
             var values = _storeRepository.GetCurrentStoreByStoreCode(storeCode);
             return values;
         }
+
+        public bool CheckCurrentStoreByStoreEmail(string storeEmail)
+        {
+            var values = _storeRepository.CheckCurrentStoreByStoreEmail(storeEmail);
+            return values;
+        }
         public bool Update(Store store)
         {
             try

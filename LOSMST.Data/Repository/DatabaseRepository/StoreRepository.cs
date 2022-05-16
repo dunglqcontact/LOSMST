@@ -30,5 +30,11 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             var store = _dbContext.Stores.FirstOrDefault(s => s.Code == storeCode && s.StatusId == "1.1");
             return store;
         }
+
+        public bool CheckCurrentStoreByStoreEmail(string storeEmail)
+        {
+            var store = _dbContext.Stores.FirstOrDefault(s => s.Email == storeEmail && s.StatusId == "1.1");
+            return store != null;
+        }
     }
 }
