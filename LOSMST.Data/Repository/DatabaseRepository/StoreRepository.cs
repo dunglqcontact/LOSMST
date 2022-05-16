@@ -17,12 +17,16 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
         {
             _dbContext = dbContext;
         }
-        public bool CheckStoreManager(string storeCode)
+        public bool CheckStoreManager(string storeCode, string roleId)
         {
             var store = _dbContext.Stores.FirstOrDefault(s => s.Code == storeCode && s.StatusId == "1.1");
-            var account = _dbContext.Accounts.FirstOrDefault(a => (a.RoleId == "U03" || a.RoleId == "U04") 
-                                                        && a.StoreId == store.Id && a.StatusId == "1.1");
-            return account != null;
+            if (roleId == "U03" || roleId == "U04")
+            {
+                var account = _dbContext.Accounts.FirstOrDefault(a => (a.RoleId == "U03" || a.RoleId == "U04")
+                                                            && a.StoreId == store.Id && a.StatusId == "1.1");
+                return true;
+            }
+            return false;
         }
 
         public Store GetCurrentStoreByStoreCode(string storeCode)

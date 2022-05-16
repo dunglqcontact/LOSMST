@@ -9,7 +9,7 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
 {
     public interface IStoreRepository : GeneralIRepository<Store>
     {
-        public bool CheckStoreManager(string storeCode);
+        public bool CheckStoreManager(string storeCode, string roleId);
         public Store GetCurrentStoreByStoreCode(string storeCode);
         public bool CheckCurrentStoreByStoreEmail(string storeEmail);
     }

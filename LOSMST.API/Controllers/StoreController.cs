@@ -26,9 +26,9 @@ namespace LOSMST.API.Controllers
         }
 
         [HttpGet("manager-existence")]
-        public IActionResult CheckStoreManager(string storeCode)
+        public IActionResult CheckStoreManager(string storeCode, string roleId)
         {
-            var data = _storeService.CheckStoreManager(storeCode);
+            var data = _storeService.CheckStoreManager(storeCode, roleId);
             return Ok(data);
         }
 
