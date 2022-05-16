@@ -39,6 +39,13 @@ namespace LOSMST.API.Controllers
             return Ok(data);
         }
 
+        [HttpGet("existed-store-email")]
+        public IActionResult CheckCurrentStoreByStoreEmail(string storeEmail)
+        {
+            var data = _storeService.CheckCurrentStoreByStoreEmail(storeEmail);
+            return Ok(data);
+        }
+
         [HttpPost]
         public IActionResult AddStore(Store store)
         {

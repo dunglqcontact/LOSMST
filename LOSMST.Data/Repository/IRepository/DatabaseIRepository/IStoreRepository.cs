@@ -11,5 +11,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
     {
         public bool CheckStoreManager(string storeCode);
         public Store GetCurrentStoreByStoreCode(string storeCode);
+        public bool CheckCurrentStoreByStoreEmail(string storeEmail);
     }
 }
