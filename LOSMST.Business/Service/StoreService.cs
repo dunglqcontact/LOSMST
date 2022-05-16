@@ -92,9 +92,9 @@ namespace LOSMST.Business.Service
             paging.PageSize);
         }
 
-        public bool CheckStoreManager(string storeCode)
+        public bool CheckStoreManager(string storeCode, string roleId)
         {
-            var values = _storeRepository.CheckStoreManager(storeCode);
+            var values = _storeRepository.CheckStoreManager(storeCode, roleId);
             return values;
         }
         public bool Add(Store store)
