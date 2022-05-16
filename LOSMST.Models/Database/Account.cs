@@ -11,13 +11,13 @@ namespace LOSMST.Models.Database
         }
 
         public int Id { get; set; }
-        public string Email { get; set; } = null!;
-        public string Password { get; set; } = null!;
-        public string Fullname { get; set; } = null!;
+        public string? Email { get; set; } = null!;
+        public string? Password { get; set; } = null;
+        public string? Fullname { get; set; } = null!;
         public string? Avatar { get; set; }
         public string RoleId { get; set; } = null!;
         public int? StoreId { get; set; }
-        public bool Gender { get; set; }
+        public bool? Gender { get; set; }
         public DateTime? Dob { get; set; }
         public string? Phone { get; set; }
         public string? Address { get; set; }
