@@ -9,5 +9,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
 {
     public interface IProductDetailRepository : GeneralIRepository<ProductDetail>
     {
+        public void AddProductDetail(ProductDetail productDetail);
     }
 }

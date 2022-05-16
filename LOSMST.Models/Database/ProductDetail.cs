@@ -16,7 +16,7 @@ namespace LOSMST.Models.Database
             StoreProductDetails = new HashSet<StoreProductDetail>();
         }
 
-        public string Id { get; set; } = null!;
+        public string? Id { get; set; } = null!;
         public int ProductId { get; set; }
         public double Volume { get; set; }
         public string? PackageId { get; set; } = null!;

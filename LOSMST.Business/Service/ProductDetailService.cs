@@ -77,13 +77,11 @@ namespace LOSMST.Business.Service
             paging.PageNumber,
             paging.PageSize);
         }
-        public bool Add(ProductDetail productDetailParam)
+        public bool Add(ProductDetail productDetail)
         {
             try
             {
-                var productDetail = productDetailParam;
-                productDetail.Id = productDetail.ProductId + "" + productDetail.PackageId + "" + productDetail.Volume * 100;
-                _productDetailRepository.Add(productDetail);
+                _productDetailRepository.AddProductDetail(productDetail);
 
                 _productDetailRepository.SaveDbChange();
                 return true;
