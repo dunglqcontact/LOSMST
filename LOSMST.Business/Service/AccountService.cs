@@ -56,13 +56,13 @@ namespace LOSMST.Business.Service
             {
                 switch (accountParam.sort)
                 {
-                    case "Id":
+                    case "id":
                         if (accountParam.dir == "asc")
                             values = values.OrderBy(d => d.Id);
                         else if (accountParam.dir == "desc")
                             values = values.OrderByDescending(d => d.Id);
                         break;
-                    case "Name":
+                    case "fullname":
                         if (accountParam.dir == "asc")
                             values = values.OrderBy(d => d.Fullname);
                         else if (accountParam.dir == "desc")
