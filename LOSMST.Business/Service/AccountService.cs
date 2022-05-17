@@ -47,6 +47,10 @@ namespace LOSMST.Business.Service
             {
                 values = values.Where(x => x.RoleId == accountParam.RoleId);
             }
+            if (!string.IsNullOrWhiteSpace(accountParam.Phone))
+            {
+                values = values.Where(x => x.Phone.Contains(accountParam.Phone, StringComparison.InvariantCultureIgnoreCase));
+            }
 
             if (!string.IsNullOrWhiteSpace(accountParam.sort))
             {
