@@ -89,6 +89,20 @@ namespace LOSMST.Business.Service
             catch { return false; }
         }
 
+        public bool Delete(string productDetailId)
+        {
+            try
+            {
+                _productDetailRepository.Remove(productDetailId);
+                _productDetailRepository.SaveDbChange();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public bool Update(ProductDetail productDetail)
         {
             try

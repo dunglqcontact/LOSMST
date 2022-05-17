@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LOSMST.API.Controllers
 {
-    [Route("api/storeCategories")]
+    [Route("api/store-categories")]
     [ApiController]
     public class StoreCategoryController : ControllerBase
     {

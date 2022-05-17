@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LOSMST.API.Controllers
 {
-    [Route("api/productDetails")]
+    [Route("api/product-details")]
     [ApiController]
     public class ProductDetailController : ControllerBase
     {
@@ -40,6 +40,17 @@ namespace LOSMST.API.Controllers
         {
 
             if (_productDetailService.Update(productDetail))
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteProductDetail(string productDetailId)
+        {
+
+            if (_productDetailService.Delete(productDetailId))
             {
                 return Ok();
             }
