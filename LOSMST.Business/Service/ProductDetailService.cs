@@ -120,5 +120,16 @@ namespace LOSMST.Business.Service
                 return false;
             }
         }
+        public bool CheckProductDetaiilExistence(int productId, string packageId, double volume)
+        {
+            try
+            {
+                return _productDetailRepository.CheckProductDetaiilExistence(productId, packageId, volume);
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
