@@ -36,6 +36,10 @@ namespace LOSMST.Business.Service
             {
                 values = values.Where(x => x.StatusId == productDetailParam.StatusId);
             }
+            if (!string.IsNullOrWhiteSpace(productDetailParam.PackageId))
+            {
+                values = values.Where(x => x.PackageId == productDetailParam.PackageId);
+            }
             if (!string.IsNullOrWhiteSpace(productDetailParam.sort))
             {
                 switch (productDetailParam.sort)
