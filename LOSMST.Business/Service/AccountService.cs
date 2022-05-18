@@ -51,18 +51,26 @@ namespace LOSMST.Business.Service
             {
                 values = values.Where(x => x.Phone.Contains(accountParam.Phone, StringComparison.InvariantCultureIgnoreCase));
             }
+            if (!string.IsNullOrWhiteSpace(accountParam.StatusId))
+            {
+                values = values.Where(x => x.StatusId == accountParam.StatusId);
+            }
+            if (!string.IsNullOrWhiteSpace(accountParam.Email))
+            {
+                values = values.Where(x => x.Email.Contains(accountParam.Email,StringComparison.InvariantCultureIgnoreCase));
+            }
 
             if (!string.IsNullOrWhiteSpace(accountParam.sort))
             {
                 switch (accountParam.sort)
                 {
-                    case "Id":
+                    case "id":
                         if (accountParam.dir == "asc")
                             values = values.OrderBy(d => d.Id);
                         else if (accountParam.dir == "desc")
                             values = values.OrderByDescending(d => d.Id);
                         break;
-                    case "Name":
+                    case "fullname":
                         if (accountParam.dir == "asc")
                             values = values.OrderBy(d => d.Fullname);
                         else if (accountParam.dir == "desc")

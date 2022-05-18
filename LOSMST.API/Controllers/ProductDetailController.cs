@@ -47,14 +47,27 @@ namespace LOSMST.API.Controllers
         }
 
         [HttpDelete]
-        public IActionResult DeleteProductDetail(string productDetailId)
+        public IActionResult DeleteProductDetail(string id)
         {
 
-            if (_productDetailService.Delete(productDetailId))
+            if (_productDetailService.Delete(id))
             {
                 return Ok();
             }
             return BadRequest();
+        }
+
+        [HttpGet("existed-product-detail")]
+        public IActionResult CheckExsitedProductDetail(int productId, string packageId, double volume)
+        {
+            try
+            {
+                var data = _productDetailService.CheckProductDetaiilExistence(productId, packageId, volume);
+                return Ok(data);
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

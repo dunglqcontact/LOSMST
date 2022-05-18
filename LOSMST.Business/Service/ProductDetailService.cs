@@ -36,6 +36,10 @@ namespace LOSMST.Business.Service
             {
                 values = values.Where(x => x.StatusId == productDetailParam.StatusId);
             }
+            if (!string.IsNullOrWhiteSpace(productDetailParam.PackageId))
+            {
+                values = values.Where(x => x.PackageId == productDetailParam.PackageId);
+            }
             if (!string.IsNullOrWhiteSpace(productDetailParam.sort))
             {
                 switch (productDetailParam.sort)
@@ -110,6 +114,17 @@ namespace LOSMST.Business.Service
                 _productDetailRepository.Update(productDetail);
                 _productDetailRepository.SaveDbChange();
                 return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool CheckProductDetaiilExistence(int productId, string packageId, double volume)
+        {
+            try
+            {
+                return _productDetailRepository.CheckProductDetaiilExistence(productId, packageId, volume);
             }
             catch
             {
