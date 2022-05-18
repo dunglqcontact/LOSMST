@@ -47,10 +47,10 @@ namespace LOSMST.API.Controllers
         }
 
         [HttpDelete]
-        public IActionResult DeleteProductDetail(string productDetailId)
+        public IActionResult DeleteProductDetail(string id)
         {
 
-            if (_productDetailService.Delete(productDetailId))
+            if (_productDetailService.Delete(id))
             {
                 return Ok();
             }
