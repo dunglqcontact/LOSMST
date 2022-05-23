@@ -81,7 +81,7 @@ namespace LOSMST.Business.Service
             paging.PageNumber,
             paging.PageSize);
         }
-        public bool Add(ProductDetail productDetail)
+        /*public bool Add(ProductDetail productDetail)
         {
             try
             {
@@ -91,6 +91,36 @@ namespace LOSMST.Business.Service
                 return true;
             }
             catch { return false; }
+        }*/
+
+        public bool Add(ProductDetail productDetail)
+        {
+            try
+            {
+                var values = _productDetailRepository.CheckProductDetaiilExistence(productDetail.ProductId,productDetail.PackageId, productDetail.Volume);
+                if (values != null)
+                {
+                    if (values.StatusId == "3.2")
+                    {
+                        values.StatusId = "3.1";
+                        _productDetailRepository.Update(values);
+                        _productDetailRepository.SaveDbChange();
+                        return true;
+                    }
+                }
+                else
+                {
+                    _productDetailRepository.AddProductDetail(productDetail);
+                    _productDetailRepository.SaveDbChange();
+                    return true;
+
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool Delete(string productDetailId)
@@ -124,7 +154,24 @@ namespace LOSMST.Business.Service
         {
             try
             {
-                return _productDetailRepository.CheckProductDetaiilExistence(productId, packageId, volume);
+                var values = _productDetailRepository.CheckProductDetaiilExistence(productId, packageId, volume);
+                if (values != null)
+                {
+                    if (values.StatusId == "3.2")
+                    {
+                        values.StatusId = "3.1";
+                        _productDetailRepository.Update(values);
+                        _productDetailRepository.SaveDbChange();
+                        return true;
+                    }
+                }
+                else
+                {
+                    _productDetailRepository.AddProductDetail(values);
+                    _productDetailRepository.SaveDbChange();
+
+                }
+                return false;
             }
             catch
             {
