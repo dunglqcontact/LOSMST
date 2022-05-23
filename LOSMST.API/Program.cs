@@ -3,6 +3,7 @@ using LOSMST.Business.Service;
 using LOSMST.DataAccess.Data;
 using LOSMST.DataAccess.Repository.DatabaseRepository;
 using LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository;
+using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,9 @@ builder.Services.AddDbContext<LOSMSTv01Context>(options => options.UseSqlServer(
 builder.Services.AddCors();
 builder.Services.AddControllers().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
 
+builder.Services.AddAuthentication(
+        CertificateAuthenticationDefaults.AuthenticationScheme)
+        .AddCertificate();
 
 
 builder.Services.AddTransient<IAccountRepository, AccountRepository>();
@@ -60,6 +64,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseAuthentication();
+
 // Configure the CORS service
 app.UseCors(x => x
                .AllowAnyMethod()
