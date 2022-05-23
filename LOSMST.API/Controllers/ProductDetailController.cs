@@ -22,7 +22,17 @@ namespace LOSMST.API.Controllers
         public IActionResult GetProductDetail([FromQuery] ProductDetailParameter productDetailParam, [FromQuery] PagingParameter paging)
         {
             var data = _productDetailService.GetAllProductDetails(productDetailParam, paging);
-            return Ok(data);
+            var metadata = new
+            {
+                data,
+                data.TotalCount,
+                data.PageSize,
+                data.CurrentPage,
+                data.TotalPages,
+                data.HasNext,
+                data.HasPrevious
+            };
+            return Ok(metadata);
         }
 
         [HttpPost]
@@ -55,19 +65,6 @@ namespace LOSMST.API.Controllers
                 return Ok();
             }
             return BadRequest();
-        }
-
-        [HttpGet("existed-product-detail")]
-        public IActionResult CheckExsitedProductDetail(int productId, string packageId, double volume)
-        {
-            try
-            {
-                var data = _productDetailService.CheckProductDetaiilExistence(productId, packageId, volume);
-                return Ok(data);
-            }catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
     }
 }

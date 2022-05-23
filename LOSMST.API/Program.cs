@@ -11,10 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<LOSMSTv01Context>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("LOSMSTConnection")
  ));
+// Add CORS service
 builder.Services.AddCors();
 builder.Services.AddControllers().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
-
-
 
 builder.Services.AddTransient<IAccountRepository, AccountRepository>();
 builder.Services.AddTransient<AccountService, AccountService>();
@@ -59,6 +58,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Configure the CORS service
 app.UseCors(x => x
                .AllowAnyMethod()
                .AllowAnyHeader()

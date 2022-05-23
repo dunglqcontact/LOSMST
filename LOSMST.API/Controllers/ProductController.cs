@@ -22,6 +22,17 @@ namespace LOSMST.API.Controllers
         public IActionResult GetProducts([FromQuery] ProductParameter productParam, [FromQuery] PagingParameter paging)
         {
             var data = _productService.GetAllProducts(productParam, paging);
+            var metadata = new
+            {
+                data,
+                data.TotalCount,
+                data.PageSize,
+                data.CurrentPage,
+                data.TotalPages,
+                data.HasNext,
+                data.HasPrevious
+            };
+            return Ok(metadata);
             return Ok(data);
         }
 
@@ -40,6 +51,16 @@ namespace LOSMST.API.Controllers
         {
 
             if (_productService.Update(product))
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+        [HttpPut("product-disable")]
+        public IActionResult DisableProduct(int productId)
+        {
+
+            if (_productService.DisableProduct(productId))
             {
                 return Ok();
             }

@@ -107,5 +107,11 @@ namespace LOSMST.DataAccess.Repository
             T entity = dbSet.Find(id);
             Remove(entity);
         }
+
+        public int Count()
+        {
+            var count = dbSet.Count();
+            return count;
+        }
     }
 }

@@ -22,7 +22,17 @@ namespace LOSMST.API.Controllers
         public IActionResult GetStore([FromQuery] StoreParameter storeParam, [FromQuery] PagingParameter paging)
         {
             var data = _storeService.GetAllStores(storeParam, paging);
-            return Ok(data);
+            var metadata = new
+            {
+                data,
+                data.TotalCount,
+                data.PageSize,
+                data.CurrentPage,
+                data.TotalPages,
+                data.HasNext,
+                data.HasPrevious
+            };
+            return Ok(metadata);
         }
 
         [HttpGet("manager-existence")]

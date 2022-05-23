@@ -35,6 +35,8 @@ namespace LOSMST.DataAccess.Repository.IRepository
         void Remove(T entity);
         //Remove một chuỗi entity
         void RemoveRange(IEnumerable<T> entity);
+
+        int Count();
         bool SaveDbChange();
     }
 }

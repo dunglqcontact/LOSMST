@@ -35,11 +35,15 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             _dbSet.Add(productDetail);
         }
 
-        public bool CheckProductDetaiilExistence(int productId, string packageId, double volume)
+        public ProductDetail CheckProductDetaiilExistence(int productId, string packageId, double volume)
         {
             var productDetail = _dbContext.ProductDetails.FirstOrDefault(x => x.ProductId == productId && x.PackageId 
                                                                                     == packageId && x.Volume == volume);
-            return productDetail != null;
+            if (productDetail != null)
+            {
+                return productDetail;
+            }
+            return null;
         }
     }
 }
