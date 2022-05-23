@@ -22,7 +22,17 @@ namespace LOSMST.API.Controllers
         public IActionResult GetAccounts([FromQuery] AccountParameter accountParam, [FromQuery] PagingParameter paging)
         {
             var data = _accountService.GetAllAccounts(accountParam, paging);
-            return Ok(data);
+            var metadata = new
+            {
+                data,
+                data.TotalCount,
+                data.PageSize,
+                data.CurrentPage,
+                data.TotalPages,
+                data.HasNext,
+                data.HasPrevious
+            };
+            return Ok(metadata);
         }
 
         [HttpGet("existed-email")]
