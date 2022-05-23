@@ -101,5 +101,24 @@ namespace LOSMST.Business.Service
                 return false;
             }
         }
+        public bool DisableProduct(int productId)
+        {
+            try
+            {
+                var data = _productRepository.GetFirstOrDefault(x => x.Id == productId, includeProperties: "ProductDetails");
+                data.StatusId = "3.2";
+                foreach (var productDetail in data.ProductDetails)
+                {
+                    productDetail.StatusId = "3.2";
+                }
+                _productRepository.Update(data);
+                _productRepository.SaveDbChange();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

@@ -56,5 +56,15 @@ namespace LOSMST.API.Controllers
             }
             return BadRequest();
         }
+        [HttpPut("product-disable")]
+        public IActionResult DisableProduct(int productId)
+        {
+
+            if (_productService.DisableProduct(productId))
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
     }
 }

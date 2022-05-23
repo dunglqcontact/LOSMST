@@ -81,17 +81,6 @@ namespace LOSMST.Business.Service
             paging.PageNumber,
             paging.PageSize);
         }
-        /*public bool Add(ProductDetail productDetail)
-        {
-            try
-            {
-                _productDetailRepository.AddProductDetail(productDetail);
-
-                _productDetailRepository.SaveDbChange();
-                return true;
-            }
-            catch { return false; }
-        }*/
 
         public bool Add(ProductDetail productDetail)
         {
@@ -144,34 +133,6 @@ namespace LOSMST.Business.Service
                 _productDetailRepository.Update(productDetail);
                 _productDetailRepository.SaveDbChange();
                 return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        public bool CheckProductDetaiilExistence(int productId, string packageId, double volume)
-        {
-            try
-            {
-                var values = _productDetailRepository.CheckProductDetaiilExistence(productId, packageId, volume);
-                if (values != null)
-                {
-                    if (values.StatusId == "3.2")
-                    {
-                        values.StatusId = "3.1";
-                        _productDetailRepository.Update(values);
-                        _productDetailRepository.SaveDbChange();
-                        return true;
-                    }
-                }
-                else
-                {
-                    _productDetailRepository.AddProductDetail(values);
-                    _productDetailRepository.SaveDbChange();
-
-                }
-                return false;
             }
             catch
             {

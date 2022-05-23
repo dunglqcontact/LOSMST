@@ -66,18 +66,5 @@ namespace LOSMST.API.Controllers
             }
             return BadRequest();
         }
-
-        [HttpGet("existed-product-detail")]
-        public IActionResult CheckExsitedProductDetail(int productId, string packageId, double volume)
-        {
-            try
-            {
-                var data = _productDetailService.CheckProductDetaiilExistence(productId, packageId, volume);
-                return Ok(data);
-            }catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
     }
 }
