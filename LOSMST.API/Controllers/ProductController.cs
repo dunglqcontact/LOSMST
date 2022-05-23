@@ -22,6 +22,17 @@ namespace LOSMST.API.Controllers
         public IActionResult GetProducts([FromQuery] ProductParameter productParam, [FromQuery] PagingParameter paging)
         {
             var data = _productService.GetAllProducts(productParam, paging);
+            var metadata = new
+            {
+                data,
+                data.TotalCount,
+                data.PageSize,
+                data.CurrentPage,
+                data.TotalPages,
+                data.HasNext,
+                data.HasPrevious
+            };
+            return Ok(metadata);
             return Ok(data);
         }
 
