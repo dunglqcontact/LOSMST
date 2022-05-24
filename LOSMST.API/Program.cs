@@ -42,6 +42,9 @@ builder.Services.AddTransient<ProductDetailService, ProductDetailService>();
 builder.Services.AddTransient<IPackageRepository, PackageRepository>();
 builder.Services.AddTransient<PackageService, PackageService>();
 
+builder.Services.AddTransient<IStoreProductDetailRepository, StoreProductDetailRepository>();
+builder.Services.AddTransient<StoreProductDetailService, StoreProductDetailService>();
+
 builder.Services.AddControllersWithViews()
                     .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

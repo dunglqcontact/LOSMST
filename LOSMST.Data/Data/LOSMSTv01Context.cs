@@ -83,7 +83,6 @@ namespace LOSMST.DataAccess.Data
                 entity.Property(e => e.Gender).HasColumnName("gender");
 
                 entity.Property(e => e.Password)
-                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("password");
 
@@ -212,7 +211,7 @@ namespace LOSMST.DataAccess.Data
                     .IsFixedLength();
 
                 entity.Property(e => e.ProductDetailId)
-                    .HasMaxLength(7)
+                    .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("productDetailId")
                     .IsFixedLength();
@@ -272,7 +271,7 @@ namespace LOSMST.DataAccess.Data
                 entity.Property(e => e.Price).HasColumnName("price");
 
                 entity.Property(e => e.ProductDetailId)
-                    .HasMaxLength(7)
+                    .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("productDetailId")
                     .IsFixedLength();
@@ -321,22 +320,14 @@ namespace LOSMST.DataAccess.Data
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Exp)
-                    .HasColumnType("date")
-                    .HasColumnName("exp");
-
                 entity.Property(e => e.ImportInventoryId)
                     .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("importInventoryId")
                     .IsFixedLength();
 
-                entity.Property(e => e.Mfg)
-                    .HasColumnType("date")
-                    .HasColumnName("mfg");
-
                 entity.Property(e => e.ProductDetailId)
-                    .HasMaxLength(7)
+                    .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("productDetailId")
                     .IsFixedLength();
@@ -427,7 +418,7 @@ namespace LOSMST.DataAccess.Data
                     .IsFixedLength();
 
                 entity.Property(e => e.ProductDetailId)
-                    .HasMaxLength(7)
+                    .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("productDetailId")
                     .IsFixedLength();
@@ -525,7 +516,7 @@ namespace LOSMST.DataAccess.Data
                 entity.ToTable("ProductDetail");
 
                 entity.Property(e => e.Id)
-                    .HasMaxLength(7)
+                    .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("id")
                     .IsFixedLength();
@@ -579,7 +570,7 @@ namespace LOSMST.DataAccess.Data
                     .IsFixedLength();
 
                 entity.Property(e => e.ProductDetailId)
-                    .HasMaxLength(7)
+                    .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("productDetailId")
                     .IsFixedLength();
@@ -731,7 +722,7 @@ namespace LOSMST.DataAccess.Data
                 entity.Property(e => e.CurrentVolume).HasColumnName("currentVolume");
 
                 entity.Property(e => e.ProductDetailId)
-                    .HasMaxLength(7)
+                    .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("productDetailId")
                     .IsFixedLength();

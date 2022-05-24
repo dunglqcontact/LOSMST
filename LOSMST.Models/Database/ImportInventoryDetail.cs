@@ -7,8 +7,6 @@ namespace LOSMST.Models.Database
     {
         public int Id { get; set; }
         public int Quantity { get; set; }
-        public DateTime Mfg { get; set; }
-        public DateTime Exp { get; set; }
         public string ProductDetailId { get; set; } = null!;
         public string ImportInventoryId { get; set; } = null!;
 

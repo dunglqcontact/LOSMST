@@ -19,7 +19,7 @@ namespace LOSMST.Business.Service
             _statusRepository = statusRepository;
         }
 
-        public IEnumerable<Status> GetAllStatus(StatusParameter statusParam, PagingParameter paging)
+        public PagedList<Status> GetAllStatus(StatusParameter statusParam, PagingParameter paging)
         {
             var values = _statusRepository.GetAll(includeProperties: statusParam.includeProperties);
             if(!string.IsNullOrWhiteSpace(statusParam.Id))
