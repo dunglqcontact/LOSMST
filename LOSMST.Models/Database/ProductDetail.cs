@@ -1,5 +1,4 @@
-﻿using LOSMST.Models.Database;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace LOSMST.Models.Database
