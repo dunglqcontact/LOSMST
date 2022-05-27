@@ -24,11 +24,21 @@ namespace LOSMST.Business.Service
             var values = _storeProductDetailRepository.GetAll(includeProperties: storeProductDetailParam.includeProperties);
             if(storeProductDetailParam.includeProperties != null)
             {
-                foreach (var storeProductDetail in values)
+                if (storeProductDetailParam.includeProperties.Contains("ProductDetail"))
                 {
-                    storeProductDetail.Store.StoreProductDetails = null;
-                    storeProductDetail.ProductDetail.StoreProductDetails = null;
+                    foreach (var storeProductDetail in values)
+                    {
+                        storeProductDetail.ProductDetail.StoreProductDetails = null;
+                    }
                 }
+                if (storeProductDetailParam.includeProperties.Contains("Store"))
+                {
+                    foreach(var storeProductDetail in values)
+                    {
+                        storeProductDetail.Store.StoreProductDetails = null;
+                    }
+                }
+                
             }
             if (storeProductDetailParam.Id != null)
             {
