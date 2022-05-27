@@ -22,6 +22,14 @@ namespace LOSMST.Business.Service
         public PagedList<StoreProductDetail> GetAllStoreProductDetail(StoreProductDetailParameter storeProductDetailParam, PagingParameter paging)
         {
             var values = _storeProductDetailRepository.GetAll(includeProperties: storeProductDetailParam.includeProperties);
+            if(storeProductDetailParam.includeProperties != null)
+            {
+                foreach (var storeProductDetail in values)
+                {
+                    storeProductDetail.Store.StoreProductDetails = null;
+                    storeProductDetail.ProductDetail.StoreProductDetails = null;
+                }
+            }
             if (storeProductDetailParam.Id != null)
             {
                 values = values.Where(x => x.Id == storeProductDetailParam.Id);
