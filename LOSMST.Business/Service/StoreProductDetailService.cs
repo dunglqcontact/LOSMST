@@ -80,5 +80,20 @@ namespace LOSMST.Business.Service
                 paging.PageNumber,
                 paging.PageSize);
         }
+        public PagedList<StoreProductDetail> GetStoreInventory(int storeId, PagingParameter paging)
+        {
+            var values = _storeProductDetailRepository.GetStoreInventory(storeId);
+            foreach (var storeProductDetail in values)
+            {
+                if(storeProductDetail.ProductDetail != null)
+                {
+                    storeProductDetail.ProductDetail.StoreProductDetails = null;
+                    storeProductDetail.ProductDetail.Product.ProductDetails = null;
+                }
+            }
+            return PagedList<StoreProductDetail>.ToPagedList(values.AsQueryable(),
+                paging.PageNumber,
+                paging.PageSize);
+        }
     }
 }

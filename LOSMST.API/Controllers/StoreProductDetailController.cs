@@ -32,5 +32,21 @@ namespace LOSMST.API.Controllers
             };
             return Ok(metadata);
         }
+        [HttpGet("specific-store-inventory")]
+        public IActionResult GetStoreInventory(int storeId, [FromQuery] PagingParameter paging)
+        {
+            var data = _storeProductDetailService.GetStoreInventory(storeId, paging);
+            var metadata = new
+            {
+                data,
+                data.TotalCount,
+                data.PageSize,
+                data.CurrentPage,
+                data.TotalPages,
+                data.HasNext,
+                data.HasPrevious
+            };
+            return Ok(metadata);
+        }
     }
 }

@@ -10,5 +10,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
 {
     public interface IStoreProductDetailRepository : GeneralIRepository<StoreProductDetail>
     {
+        public IEnumerable<StoreProductDetail> GetStoreInventory(int storeId);
     }
 }
