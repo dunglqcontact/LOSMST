@@ -24,6 +24,17 @@ namespace LOSMST.Business.Service
         {
             var values = _productDetailRepository.GetAll(includeProperties: productDetailParam.includeProperties);
 
+            if (!string.IsNullOrWhiteSpace(productDetailParam.includeProperties))
+            {
+                if (productDetailParam.includeProperties.Contains("Product"))
+                {
+                    foreach (var productDetail in values)
+                    {
+                        productDetail.Product.ProductDetails = null;
+                    }
+                }
+            }
+
             if (!string.IsNullOrWhiteSpace(productDetailParam.Id))
             {
                 values = values.Where(x => x.Id == productDetailParam.Id);

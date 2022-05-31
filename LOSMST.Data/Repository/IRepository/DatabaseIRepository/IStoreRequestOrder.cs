@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
 {
-    public interface IStoreProductDetailRepository : GeneralIRepository<StoreProductDetail>
+    public interface IStoreRequestOrderRepository : GeneralIRepository<StoreRequestOrder>
     {
-        public IEnumerable<StoreProductDetail> GetStoreProductDetail();
     }
 }
