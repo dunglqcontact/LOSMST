@@ -19,9 +19,9 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             _dbContext = dbContext;
         }
 
-        public IEnumerable<StoreProductDetail> GetStoreInventory(int storeId)
+        public IEnumerable<StoreProductDetail> GetStoreProductDetail()
         {
-            var values = _dbContext.StoreProductDetails.Include(a => a.ProductDetail.Product).Where(x => x.StoreId == storeId);
+            var values = _dbContext.StoreProductDetails.Include(a => a.ProductDetail.Product);
             return values.ToList();
         }
     }

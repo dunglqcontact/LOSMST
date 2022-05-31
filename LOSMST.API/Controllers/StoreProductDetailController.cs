@@ -19,7 +19,7 @@ namespace LOSMST.API.Controllers
         [HttpGet]
         public IActionResult GetAllStoreProductDetail([FromQuery] StoreProductDetailParameter storeProductDetailParam, [FromQuery] PagingParameter paging)
         {
-            var data = _storeProductDetailService.GetAllStoreProductDetail(storeProductDetailParam, paging);
+            var data = _storeProductDetailService.GetStoreInventory(storeProductDetailParam, paging);
             var metadata = new
             {
                 data,
@@ -32,7 +32,7 @@ namespace LOSMST.API.Controllers
             };
             return Ok(metadata);
         }
-        [HttpGet("specific-store-inventory")]
+/*        [HttpGet("specific-store-inventory")]
         public IActionResult GetStoreInventory(int storeId, [FromQuery] PagingParameter paging)
         {
             var data = _storeProductDetailService.GetStoreInventory(storeId, paging);
@@ -47,6 +47,6 @@ namespace LOSMST.API.Controllers
                 data.HasPrevious
             };
             return Ok(metadata);
-        }
+        }*/
     }
 }

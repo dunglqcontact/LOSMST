@@ -17,6 +17,7 @@ namespace LOSMST.Models.Helper.DBOHelper
 
         public string? ProductDetail { get; set; } = null!;
         public string? Store { get; set; } = null!;
+        public int? CategoryId { get; set; } = null!;
         public string? dir { get; set; } = "asc";
         public string? sort { get; set; } = null;
         public string? fields { get; set; } = null;
