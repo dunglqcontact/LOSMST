@@ -2,6 +2,7 @@
 using LOSMST.Models.Database;
 using LOSMST.Models.Helper;
 using LOSMST.Models.Helper.DBOHelper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,7 @@ namespace LOSMST.API.Controllers
             _accountService = accountService;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "U01")]
         public IActionResult GetAccounts([FromQuery] AccountParameter accountParam, [FromQuery] PagingParameter paging)
         {
             var data = _accountService.GetAllAccounts(accountParam, paging);
