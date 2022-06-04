@@ -116,7 +116,8 @@ namespace LOSMST.Business.Service
 
         public async Task<ViewModelLogin> Login(LoginEmailPassword loginRequest)
         {
-
+            var valueBytes = Encoding.UTF8.GetBytes(loginRequest.Password);
+            loginRequest.Password = Convert.ToBase64String(valueBytes);
             var userViewModel = await VerifyAccount(loginRequest);
 
             var accessToken = CreateToken(userViewModel);
