@@ -24,10 +24,10 @@ namespace LOSMST.API.Controllers
             var value = await _authService.Login(loginRequest);
             if (value != null)
             {
-                if (value.StatusId != "1.1") return BadRequest("account disable");
+                if (value.StatusId != "1.1") return BadRequest("account is disable");
                 return Ok(value);
             }
-            return BadRequest("email or password are wrong");
+            return BadRequest("Email or password is not correct. Please try again!");
         }
     }
 }

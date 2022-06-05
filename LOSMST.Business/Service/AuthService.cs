@@ -82,6 +82,7 @@ namespace LOSMST.Business.Service
                         Email = checkAccount.Email,
                         RoleId = checkAccount.RoleId,
                         StatusId = checkAccount.StatusId,
+                        Fullname = checkAccount.Fullname,
                         JwtToken = null
                     };
                 return viewLoginModel;
@@ -94,7 +95,9 @@ namespace LOSMST.Business.Service
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Role, user.RoleId)
+                new Claim(ClaimTypes.Role, user.RoleId),
+                new Claim(ClaimTypes.Name, user.Fullname),
+                new Claim(ClaimTypes.Email, user.Email)
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
