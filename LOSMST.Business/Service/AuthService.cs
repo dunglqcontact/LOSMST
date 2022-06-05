@@ -65,28 +65,28 @@ namespace LOSMST.Business.Service
             {
                 Id = checkAccount.Id,
                 Email = checkAccount.Email,
-                Fullname = checkAccount.Fullname,
                 JwtToken = null
             };
             return viewLoginModel;
         }
 
-        public async Task<ViewModelLogin> VerifyAccount(LoginEmailPassword loginRequest)
+        public async Task<ViewModelLogin?> VerifyAccount(LoginEmailPassword loginRequest)
         {
             // Query account table in DB
             var checkAccount = _accountRepository.GetFirstOrDefault(x => x.Email == loginRequest.Email && x.Password == loginRequest.Password);
-
-            if (checkAccount == null) throw new UnauthorizedAccessException();
-
-            var viewLoginModel = new ViewModelLogin
+            if (checkAccount != null)
             {
-                Id = checkAccount.Id,
-                Email = checkAccount.Email,
-                Fullname = checkAccount.Fullname,
-                RoleId = checkAccount.RoleId,
-                JwtToken = null
-            };
-            return viewLoginModel;
+                var viewLoginModel = new ViewModelLogin
+                    {
+                        Id = checkAccount.Id,
+                        Email = checkAccount.Email,
+                        RoleId = checkAccount.RoleId,
+                        StatusId = checkAccount.StatusId,
+                        JwtToken = null
+                    };
+                return viewLoginModel;
+            }
+            return null;
         }
 
         //create token
@@ -94,7 +94,6 @@ namespace LOSMST.Business.Service
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.Fullname),
                 new Claim(ClaimTypes.Role, user.RoleId)
             };
 
@@ -119,12 +118,15 @@ namespace LOSMST.Business.Service
             var valueBytes = Encoding.UTF8.GetBytes(loginRequest.Password);
             loginRequest.Password = Convert.ToBase64String(valueBytes);
             var userViewModel = await VerifyAccount(loginRequest);
+            if (userViewModel != null)
+            {
+                var accessToken = CreateToken(userViewModel);
+                // var refreshToken = GenerateRefreshToken();
 
-            var accessToken = CreateToken(userViewModel);
-            // var refreshToken = GenerateRefreshToken();
-
-            userViewModel.JwtToken = accessToken;
-            return userViewModel;
+                userViewModel.JwtToken = accessToken;
+                return userViewModel;
+            }
+            return null;
         }
     }
 }

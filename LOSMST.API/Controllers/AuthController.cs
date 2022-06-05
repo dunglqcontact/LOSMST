@@ -21,7 +21,13 @@ namespace LOSMST.API.Controllers
         [HttpPost("sign-in")]
         public async Task<ActionResult<ViewModelLogin>> Login(LoginEmailPassword loginRequest)
         {
-            return Ok(await _authService.Login(loginRequest));
+            var value = await _authService.Login(loginRequest);
+            if (value != null)
+            {
+                if (value.StatusId != "1.1") return BadRequest("account disable");
+                return Ok(value);
+            }
+            return BadRequest("email or password are wrong");
         }
     }
 }

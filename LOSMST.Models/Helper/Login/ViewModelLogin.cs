@@ -11,7 +11,7 @@ namespace LOSMST.Models.Helper.Login
         public string JwtToken { get; set; }
         public int Id { get; set; }
         public string Email { get; set; }
-        public string Fullname { get; set; }
         public string RoleId { get; set; }
+        public string StatusId { get; set; }
     }
 }
