@@ -2,6 +2,7 @@
 using LOSMST.Models.Database;
 using LOSMST.Models.Helper;
 using LOSMST.Models.Helper.DBOHelper;
+using LOSMST.Models.Helper.UpdatePassword;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ namespace LOSMST.API.Controllers
             _accountService = accountService;
         }
 
-        [HttpGet, Authorize(Roles = "U01")]
+        [HttpGet, Authorize(Roles = "U01,U06")]
         public IActionResult GetAccounts([FromQuery] AccountParameter accountParam, [FromQuery] PagingParameter paging)
         {
             var data = _accountService.GetAllAccounts(accountParam, paging);
@@ -65,6 +66,16 @@ namespace LOSMST.API.Controllers
         {
 
             if (_accountService.Update(account))
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+        [HttpPut("password-change")]
+        public IActionResult UpdatePassword(UpdatePassword request)
+        {
+
+            if (_accountService.UpdatePassword(request.accountId, request.password))
             {
                 return Ok();
             }

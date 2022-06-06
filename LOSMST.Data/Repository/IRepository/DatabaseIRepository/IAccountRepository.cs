@@ -11,6 +11,7 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
     {
         public bool CheckEmailExsited(string emailValue);
         public Account GetStoreManager(string storeCode);
+        public void UpdatePassword(int accountId, string password);
         public void CreateLocalAccount(Account account);
     }
 }

@@ -11,6 +11,8 @@ using LOSMST.Models.Database;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 
 namespace LOSMST.Business.Service
 {
@@ -25,9 +27,13 @@ namespace LOSMST.Business.Service
             _accountRepository = accountRepository;
         }
 
-        //verify for register
-        public async Task<ViewModelLogin> VerifyFirebaseTokenIdRegister(string idToken, string roleId, string fullname)
+        public async Task<ViewModelLogin> VerifyFirebaseTokenIdRegister(string idToken)
         {
+            FirebaseApp.Create(new AppOptions()
+            {
+                Credential = GoogleCredential.FromFile("capstone-project-edc2a-firebase-adminsdk-w5qk4-37e986decb.json"),
+            });
+
             FirebaseToken decodedToken;
             try
             {
@@ -40,34 +46,35 @@ namespace LOSMST.Business.Service
             }
             string uid = decodedToken.Uid;
             var user = await FirebaseAuth.DefaultInstance.GetUserAsync(uid);
-
-            Account account = new Account();
-            account.Email = user.Email;
-            account.Fullname = fullname;
-            account.RoleId = roleId;
-
-            try
+            var account = _accountRepository.GetFirstOrDefault(x => x.Email == user.Email);
+            if (account == null)
             {
-                _accountRepository.Add(account);
-                _accountRepository.SaveDbChange();
+                Account userInfo = new Account();
+                userInfo.Email = user.Email;
+              //  userInfo.Fullname = user.DisplayName;
+                userInfo.RoleId = "U06";
+
+                try
+                {
+                    _accountRepository.Add(userInfo);
+                    _accountRepository.SaveDbChange();
+                }
+                catch (Exception)
+                {
+                    throw new Exception();
+                }
             }
-            catch (Exception)
+            var loginViewModel = new ViewModelLogin
             {
-                throw new Exception();
-            }
-
-            // Query account table in DB
-            var checkAccount = _accountRepository.GetFirstOrDefault(x => x.Email == user.Email);
-
-            if (checkAccount == null) throw new UnauthorizedAccessException();
-
-            var viewLoginModel = new ViewModelLogin
-            {
-                Id = checkAccount.Id,
-                Email = checkAccount.Email,
+                Id = account.Id,
+                Email = account.Email,
+                RoleId = account.RoleId,
+                StatusId = account.StatusId,
+          //      Fullname = account.Fullname,
                 JwtToken = null
             };
-            return viewLoginModel;
+            var values = loginViewModel;
+            return loginViewModel;
         }
 
         public async Task<ViewModelLogin?> VerifyAccount(LoginEmailPassword loginRequest)
@@ -77,14 +84,14 @@ namespace LOSMST.Business.Service
             if (checkAccount != null)
             {
                 var viewLoginModel = new ViewModelLogin
-                    {
-                        Id = checkAccount.Id,
-                        Email = checkAccount.Email,
-                        RoleId = checkAccount.RoleId,
-                        StatusId = checkAccount.StatusId,
-                        Fullname = checkAccount.Fullname,
-                        JwtToken = null
-                    };
+                {
+                    Id = checkAccount.Id,
+                    Email = checkAccount.Email,
+                    RoleId = checkAccount.RoleId,
+                    StatusId = checkAccount.StatusId,
+                    Fullname = checkAccount.Fullname,
+                    JwtToken = null
+                };
                 return viewLoginModel;
             }
             return null;
@@ -114,7 +121,20 @@ namespace LOSMST.Business.Service
 
             return jwt;
         }
+        public string GenerateAccessToken(IEnumerable<Claim> claims)
+        {
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = new JwtSecurityToken(
+                 claims: claims,
+                 expires: DateTime.Now.AddDays(1),
+                 signingCredentials: creds);
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
+            return jwt;
+
+        }
 
         public async Task<ViewModelLogin> Login(LoginEmailPassword loginRequest)
         {
@@ -129,6 +149,26 @@ namespace LOSMST.Business.Service
                 userViewModel.JwtToken = accessToken;
                 return userViewModel;
             }
+            return null;
+        }
+
+       
+
+        public async Task<ViewModelLogin> LoginGoogle(LoginRequestModel loginRequest)
+        {
+            var userViewModel = await VerifyFirebaseTokenIdRegister(loginRequest.IdToken);
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Role, userViewModel.RoleId),
+             //   new Claim(ClaimTypes.Name, userViewModel.Fullname),
+                new Claim(ClaimTypes.Email, userViewModel.Email)
+            };
+
+            var accessToken = GenerateAccessToken(claims);
+            // var refreshToken = GenerateRefreshToken();
+
+            userViewModel.JwtToken = accessToken;
+            return userViewModel;
             return null;
         }
     }

@@ -27,11 +27,27 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
         public void CreateLocalAccount(Account account)
         {
-            string password = "12345678";
+            string password = "petrolimex";
             var valueBytes = Encoding.UTF8.GetBytes(password);
             string passwordHass = Convert.ToBase64String(valueBytes);
             account.Password = passwordHass;
             _dbSet.Add(account);
+        }
+
+        public void UpdatePassword(int accountId, string password)
+        {
+            string newPassword = password;
+            if (newPassword != null)
+            {
+                var account = _dbContext.Accounts.FirstOrDefault(x => x.Id == accountId);
+                if (account != null)
+                {
+                    var valueBytes = Encoding.UTF8.GetBytes(newPassword);
+                    string passwordHass = Convert.ToBase64String(valueBytes);
+                    account.Password = passwordHass;
+                    _dbSet.Update(account);
+                }
+            }
         }
 
         public Account GetStoreManager(string storeCode)
