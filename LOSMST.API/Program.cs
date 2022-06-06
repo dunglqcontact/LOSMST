@@ -3,7 +3,12 @@ using LOSMST.Business.Service;
 using LOSMST.DataAccess.Data;
 using LOSMST.DataAccess.Repository.DatabaseRepository;
 using LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +16,32 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<LOSMSTv01Context>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("LOSMSTConnection")
  ));
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+// add jwt beaeer
+builder.Services.AddSwaggerGen(options => {
+    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+
+    options.OperationFilter<SecurityRequirementsOperationFilter>();
+});
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+                .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
 // Add CORS service
 builder.Services.AddCors();
 builder.Services.AddControllers().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
@@ -45,13 +76,13 @@ builder.Services.AddTransient<PackageService, PackageService>();
 builder.Services.AddTransient<IStoreProductDetailRepository, StoreProductDetailRepository>();
 builder.Services.AddTransient<StoreProductDetailService, StoreProductDetailService>();
 
+builder.Services.AddTransient<AuthService, AuthService>();
+
 builder.Services.AddControllersWithViews()
                     .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                     );
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
@@ -72,6 +103,8 @@ app.UseCors(x => x
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
