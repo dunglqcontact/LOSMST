@@ -13,12 +13,10 @@ namespace LOSMST.API.Controllers
     public class ProductController : ControllerBase
     {
         private readonly ProductService _productService;
-        private readonly PriceDetailService _priceDetailService;
 
-        public ProductController(ProductService productService, PriceDetailService priceDetailService)
+        public ProductController(ProductService productService)
         {
             _productService = productService;
-            _priceDetailService = priceDetailService;
         }
 
         [HttpGet]
@@ -37,7 +35,7 @@ namespace LOSMST.API.Controllers
             };
             return Ok(metadata);
         }
-        [HttpGet("product-price")]
+        /*[HttpGet("product-price")]
         public IActionResult GetProductsWithMinMaxPrice([FromQuery] ProductParameter productParam, [FromQuery] PagingParameter paging)
         {
             List<ProductMinMaxPriceSearchHelper> metaValue = new List<ProductMinMaxPriceSearchHelper>();
@@ -62,7 +60,7 @@ namespace LOSMST.API.Controllers
                 data.HasPrevious
             };
             return Ok(metadata);
-        }
+        }*/
 
         [HttpPost]
         public IActionResult AddProduct(Product product)

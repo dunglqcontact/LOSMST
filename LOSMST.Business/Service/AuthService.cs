@@ -20,7 +20,6 @@ namespace LOSMST.Business.Service
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IConfiguration _configuration;
-        private bool check = false;
 
         public AuthService(IConfiguration configuration, IAccountRepository accountRepository)
         {
@@ -36,7 +35,6 @@ namespace LOSMST.Business.Service
                 {
                     Credential = GoogleCredential.FromFile("capstone-project-edc2a-firebase-adminsdk-w5qk4-37e986decb.json"),
                 });
-                check = true;
             }
 
             FirebaseToken decodedToken;
