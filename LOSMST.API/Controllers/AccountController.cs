@@ -77,17 +77,17 @@ namespace LOSMST.API.Controllers
             var value = _accountService.UpdatePassword(request.accountId, request.currentPassword, request.newPassword);
             if (value == 1)
             {
-                return Ok("Update password success");
-            }
-            else if (value == -1)
-            {
-                return BadRequest("Current Password is wrong");
+                return Ok("MSG59");
             }
             else if (value == 0)
             {
-                return BadRequest("Current Password or New Password are not filled");
+                return BadRequest("MSG32");
             }
-            return BadRequest("Update password is not success because of internal server error");
+            else if (value == -1)
+            {
+                return BadRequest("MSG68");
+            }
+            return BadRequest("MSG92");
         }
     }
 }
