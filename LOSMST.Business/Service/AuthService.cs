@@ -90,6 +90,7 @@ namespace LOSMST.Business.Service
                     RoleId = checkAccount.RoleId,
                     StatusId = checkAccount.StatusId,
                     Fullname = checkAccount.Fullname,
+                    StoreId = checkAccount.StoreId,
                     JwtToken = null
                 };
                 return viewLoginModel;
