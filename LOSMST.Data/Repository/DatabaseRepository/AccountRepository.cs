@@ -34,27 +34,37 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             _dbSet.Add(account);
         }
 
-        public void UpdatePassword(int accountId, string password)
+        public int UpdatePassword(int accountId, string currentPassword, string newPassword)
         {
-            string newPassword = password;
-            if (newPassword != null)
+            if (newPassword != null && currentPassword != null)
             {
                 var account = _dbContext.Accounts.FirstOrDefault(x => x.Id == accountId);
                 if (account != null)
                 {
-                    var valueBytes = Encoding.UTF8.GetBytes(newPassword);
-                    string passwordHass = Convert.ToBase64String(valueBytes);
-                    account.Password = passwordHass;
-                    _dbSet.Update(account);
+                    var encodeCurrentPassword = Encoding.UTF8.GetBytes(currentPassword);
+                    string currentPasswordHass = Convert.ToBase64String(encodeCurrentPassword);
+                    if (currentPasswordHass == account.Password)
+                    {
+                        var valueBytesEncode = Encoding.UTF8.GetBytes(newPassword);
+                        string passwordHass = Convert.ToBase64String(valueBytesEncode);
+                        account.Password = passwordHass;
+                        _dbSet.Update(account);
+                        return 1;
+                    }
+                    else
+                    {
+                        return -1;
+                    }
                 }
             }
+            return 0;
         }
 
         public Account GetStoreManager(string storeCode)
         {
             var store = _dbContext.Stores.FirstOrDefault(s => s.Code == storeCode && s.StatusId == "1.1");
             var storeId = store.Id;
-            Account account = _dbContext.Accounts.FirstOrDefault(a => a.StoreId== storeId && a.StatusId == "1.1" && (a.RoleId == "U03" || a.RoleId == "U04"));
+            Account account = _dbContext.Accounts.FirstOrDefault(a => a.StoreId == storeId && a.StatusId == "1.1" && (a.RoleId == "U03" || a.RoleId == "U04"));
             account.Store = null;
             return account;
         }

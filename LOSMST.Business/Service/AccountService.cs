@@ -124,17 +124,17 @@ namespace LOSMST.Business.Service
             }
         }
 
-        public bool UpdatePassword(int accountId, string password)
+        public int UpdatePassword(int accountId, string currentPassword, string newPassword)
         {
             try
             {
-                _accountRepository.UpdatePassword(accountId, password);
+                var values = _accountRepository.UpdatePassword(accountId, currentPassword, newPassword);
                 _accountRepository.SaveDbChange();
-                return true;
+                return values;
             }
             catch
             {
-                return false;
+                return -2;
             }
         }
     }

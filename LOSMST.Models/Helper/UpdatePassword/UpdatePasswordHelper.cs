@@ -7,6 +7,7 @@ namespace LOSMST.Models.Helper.UpdatePassword
     public class UpdatePassword
     {
         public int accountId { get; set; }
-        public string password { get; set; }
+        public string currentPassword { get; set; }
+        public string newPassword { get; set; }
     }
 }

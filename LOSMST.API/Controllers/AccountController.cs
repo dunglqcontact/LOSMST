@@ -74,12 +74,20 @@ namespace LOSMST.API.Controllers
         [HttpPut("password-change")]
         public IActionResult UpdatePassword(UpdatePassword request)
         {
-
-            if (_accountService.UpdatePassword(request.accountId, request.password))
+            var value = _accountService.UpdatePassword(request.accountId, request.currentPassword, request.newPassword);
+            if (value == 1)
             {
-                return Ok();
+                return Ok("Update password success");
             }
-            return BadRequest();
+            else if (value == -1)
+            {
+                return BadRequest("Current Password is wrong");
+            }
+            else if (value == 0)
+            {
+                return BadRequest("Current Password or New Password are not filled");
+            }
+            return BadRequest("Update password is not success because of internal server error");
         }
     }
 }
