@@ -9,5 +9,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
 {
     public interface IProductRepository : GeneralIRepository<Product>
     {
+        public IEnumerable<PriceDetail> GetCurrentPriceForProduct(int productId);
     }
 }

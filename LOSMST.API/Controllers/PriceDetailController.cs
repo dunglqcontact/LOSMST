@@ -17,51 +17,6 @@ namespace LOSMST.API.Controllers
         public PriceDetailController(PriceDetailService priceDetailService)
         {
             _priceDetailService = priceDetailService;
-        }
-
-        [HttpGet]
-        public IActionResult GetPriceDetails([FromQuery] ProductParameter productParam, [FromQuery] PagingParameter paging)
-        {
-            var data = _priceDetailService.GetAllProducts(productParam, paging);
-            var metadata = new
-            {
-                data,
-                data.TotalCount,
-                data.PageSize,
-                data.CurrentPage,
-                data.TotalPages,
-                data.HasNext,
-                data.HasPrevious
-            };
-            return Ok(metadata);
-        }
-        /*[HttpGet("priceDetail-priceDetail")]
-        public IActionResult GetPriceDetailsWithMinMaxPriceDetail([FromQuery] PriceDetailParameter priceDetailParam, [FromQuery] PagingParameter paging)
-        {
-            List<PriceDetailMinMaxPriceDetailSearchHelper> metaValue = new List<PriceDetailMinMaxPriceDetailSearchHelper>();
-            var data = _priceDetailService.GetAllPriceDetails(priceDetailParam, paging);
-            foreach (var item in data)
-            {
-                var priceDetail = _priceDetailDetailService.GetMinMaxPriceDetail(item.Id);
-                metaValue.Add(new PriceDetailMinMaxPriceDetailSearchHelper
-                {
-                    priceDetail = item,
-                    MinMaxPriceDetail = priceDetail,
-                });
-            }
-            var metadata = new
-            {
-                metaValue,
-                data.TotalCount,
-                data.PageSize,
-                data.CurrentPage,
-                data.TotalPages,
-                data.HasNext,
-                data.HasPrevious
-            };
-            return Ok(metadata);
-        }*/
-
-      
+        }      
     }
 }
