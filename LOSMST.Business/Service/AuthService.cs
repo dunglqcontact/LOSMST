@@ -67,10 +67,8 @@ namespace LOSMST.Business.Service
                     throw new Exception();
                 }
             }
-            account = _accountRepository.GetFirstOrDefault(x => x.Email == user.Email);
             var loginViewModel = new ViewModelLogin
             {
-                Id = account.Id,
                 Email = account.Email,
                 RoleId = account.RoleId,
                 StatusId = account.StatusId,
