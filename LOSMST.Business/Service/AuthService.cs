@@ -54,7 +54,7 @@ namespace LOSMST.Business.Service
             {
                 Account userInfo = new Account();
                 userInfo.Email = user.Email;
-              //  userInfo.Fullname = user.DisplayName;
+                //  userInfo.Fullname = user.DisplayName;
                 userInfo.RoleId = "U06";
 
                 try
@@ -67,16 +67,22 @@ namespace LOSMST.Business.Service
                     throw new Exception();
                 }
             }
-            var loginViewModel = new ViewModelLogin
+            account = _accountRepository.GetFirstOrDefault(x => x.Email == user.Email);
+            if (account != null)
             {
-                Email = account.Email,
-                RoleId = account.RoleId,
-                StatusId = account.StatusId,
-          //      Fullname = account.Fullname,
-                JwtToken = null
-            };
-            var values = loginViewModel;
-            return loginViewModel;
+                var loginViewModel = new ViewModelLogin
+                {
+                    Id = account.Id,
+                    Email = account.Email,
+                    RoleId = account.RoleId,
+                    StatusId = account.StatusId,
+                    //      Fullname = account.Fullname,
+                    JwtToken = null,
+                };
+                var values = loginViewModel;
+                return loginViewModel;
+            }
+            return null;
         }
 
         public async Task<ViewModelLogin?> VerifyAccount(LoginEmailPassword loginRequest)
@@ -155,22 +161,25 @@ namespace LOSMST.Business.Service
             return null;
         }
 
-       
+
 
         public async Task<ViewModelLogin> LoginGoogle(LoginRequestModel loginRequest)
         {
             var userViewModel = await VerifyFirebaseTokenIdRegister(loginRequest.IdToken);
-            var claims = new List<Claim>
+            if (userViewModel != null)
+            {
+                var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Role, userViewModel.RoleId),
              //   new Claim(ClaimTypes.Name, userViewModel.Fullname),
                 new Claim(ClaimTypes.Email, userViewModel.Email)
             };
 
-            var accessToken = GenerateAccessToken(claims);
-            // var refreshToken = GenerateRefreshToken();
+                var accessToken = GenerateAccessToken(claims);
+                // var refreshToken = GenerateRefreshToken();
 
-            userViewModel.JwtToken = accessToken;
+                userViewModel.JwtToken = accessToken;
+            }
             return userViewModel;
         }
     }
