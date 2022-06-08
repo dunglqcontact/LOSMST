@@ -67,6 +67,7 @@ namespace LOSMST.Business.Service
                     throw new Exception();
                 }
             }
+            account = _accountRepository.GetFirstOrDefault(x => x.Email == user.Email);
             var loginViewModel = new ViewModelLogin
             {
                 Id = account.Id,
@@ -173,7 +174,6 @@ namespace LOSMST.Business.Service
 
             userViewModel.JwtToken = accessToken;
             return userViewModel;
-            return null;
         }
     }
 }
