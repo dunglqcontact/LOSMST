@@ -45,5 +45,12 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             }
             return null;
         }
+
+        public IEnumerable<ProductDetail> GetProductDetailWithPrice()
+        {
+            var price = _dbContext.Prices.FirstOrDefault(x => x.StatusId == "1.1");
+            var productDetails = _dbContext.ProductDetails.Include(x => x.PriceDetails.Where(x => x.PriceId == price.Id));
+            return productDetails;
+        }
     }
 }
