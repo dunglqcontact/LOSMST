@@ -84,8 +84,15 @@ namespace LOSMST.Business.Service
                 double max = values.Max(i => i.RetailPriceAfterTax);
                 double min = values.Min(i => i.RetailPriceAfterTax);
                 var data = new List<double>();
-                data.Add(min);
-                data.Add(max);
+                if (max != min)
+                {
+                    data.Add(min);
+                    data.Add(max);
+                }
+                else
+                {
+                    data.Add(min);
+                }
                 return data;
             }
             return null;
