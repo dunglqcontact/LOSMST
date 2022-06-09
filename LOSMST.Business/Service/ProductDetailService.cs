@@ -96,7 +96,7 @@ namespace LOSMST.Business.Service
         public PagedList<ProductDetail> GetProductDetailWithPrice(ProductDetailParameter productDetailParam, PagingParameter paging)
         {
             var values = _productDetailRepository.GetProductDetailWithPrice();
-
+            values = values.Where(x => x.StatusId == "3.1");
             foreach (var productDetail in values)
             {
                 if(productDetail.PriceDetails != null)
@@ -126,10 +126,6 @@ namespace LOSMST.Business.Service
             if (productDetailParam.ProductId != null)
             {
                 values = values.Where(x => x.ProductId == productDetailParam.ProductId);
-            }
-            if (!string.IsNullOrWhiteSpace(productDetailParam.StatusId))
-            {
-                values = values.Where(x => x.StatusId == productDetailParam.StatusId);
             }
             if (!string.IsNullOrWhiteSpace(productDetailParam.PackageId))
             {
