@@ -38,7 +38,7 @@ namespace LOSMST.API.Controllers
                 if (value.StatusId != "1.1") return BadRequest("account is disable");
                 return Ok(value);
             }
-            return BadRequest("Email or password is not correct. Please try again!");
+            return BadRequest("MSG93");
         }
     }
 }

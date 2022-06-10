@@ -36,28 +36,35 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
         public int UpdatePassword(int accountId, string currentPassword, string newPassword)
         {
-            if (newPassword != null && currentPassword != null)
+            if (!newPassword.Equals("") && !currentPassword.Equals(""))
             {
-                var account = _dbContext.Accounts.FirstOrDefault(x => x.Id == accountId);
-                if (account != null)
+                if (newPassword != currentPassword)
                 {
-                    var encodeCurrentPassword = Encoding.UTF8.GetBytes(currentPassword);
-                    string currentPasswordHass = Convert.ToBase64String(encodeCurrentPassword);
-                    if (currentPasswordHass == account.Password)
+                    var account = _dbContext.Accounts.FirstOrDefault(x => x.Id == accountId);
+                    if (account != null)
                     {
-                        var valueBytesEncode = Encoding.UTF8.GetBytes(newPassword);
-                        string passwordHass = Convert.ToBase64String(valueBytesEncode);
-                        account.Password = passwordHass;
-                        _dbSet.Update(account);
-                        return 1;
-                    }
-                    else
-                    {
-                        return -1;
+                        var encodeCurrentPassword = Encoding.UTF8.GetBytes(currentPassword);
+                        string currentPasswordHass = Convert.ToBase64String(encodeCurrentPassword);
+                        if (currentPasswordHass == account.Password)
+                        {
+                            var valueBytesEncode = Encoding.UTF8.GetBytes(newPassword);
+                            string passwordHass = Convert.ToBase64String(valueBytesEncode);
+                            account.Password = passwordHass;
+                            _dbSet.Update(account);
+                            return 1;
+                        }
+                        else
+                        {
+                            return 0;
+                        }
                     }
                 }
+                else
+                {
+                    return -1;
+                }
             }
-            return 0;
+            return -2;
         }
 
         public Account GetStoreManager(string storeCode)

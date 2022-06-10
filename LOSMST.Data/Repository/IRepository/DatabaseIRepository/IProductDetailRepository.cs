@@ -11,5 +11,7 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
     {
         public void AddProductDetail(ProductDetail productDetail);
         public ProductDetail CheckProductDetaiilExistence(int productId, string packageId, double volume);
+        public IEnumerable<ProductDetail> GetProductDetailWithPrice();
+        public IEnumerable<ProductDetail> GetProductDetailByListId(List<string> listIdString);
     }
 }

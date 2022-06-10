@@ -2,6 +2,7 @@
 using LOSMST.Models.Database;
 using LOSMST.Models.Helper;
 using LOSMST.Models.Helper.DBOHelper;
+using LOSMST.Models.Helper.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,6 +74,28 @@ namespace LOSMST.Business.Service
             return PagedList<Product>.ToPagedList(values.AsQueryable(),
             paging.PageNumber,
             paging.PageSize);
+        }
+        public IEnumerable<double> GetMinMaxPrice(int productId)
+        {
+    
+            var values = _productRepository.GetCurrentPriceForProduct(productId);
+            if (IEnumerableCheckNull.IsAny(values))
+            {
+                double max = values.Max(i => i.RetailPriceAfterTax);
+                double min = values.Min(i => i.RetailPriceAfterTax);
+                var data = new List<double>();
+                if (max != min)
+                {
+                    data.Add(min);
+                    data.Add(max);
+                }
+                else
+                {
+                    data.Add(min);
+                }
+                return data;
+            }
+            return null;
         }
 
         public bool Add(Product product)

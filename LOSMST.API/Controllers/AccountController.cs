@@ -20,7 +20,7 @@ namespace LOSMST.API.Controllers
             _accountService = accountService;
         }
 
-        [HttpGet, Authorize(Roles = "U01,U06")]
+        [HttpGet, Authorize(Roles = "U01,U03,U04,U06")]
         public IActionResult GetAccounts([FromQuery] AccountParameter accountParam, [FromQuery] PagingParameter paging)
         {
             var data = _accountService.GetAllAccounts(accountParam, paging);
@@ -77,17 +77,17 @@ namespace LOSMST.API.Controllers
             var value = _accountService.UpdatePassword(request.accountId, request.currentPassword, request.newPassword);
             if (value == 1)
             {
-                return Ok("Update password success");
-            }
-            else if (value == -1)
-            {
-                return BadRequest("Current Password is wrong");
+                return Ok("MSG59");
             }
             else if (value == 0)
             {
-                return BadRequest("Current Password or New Password are not filled");
+                return BadRequest("MSG32");
             }
-            return BadRequest("Update password is not success because of internal server error");
+            else if (value == -1)
+            {
+                return BadRequest("MSG68");
+            }
+            return BadRequest("MSG92");
         }
     }
 }
