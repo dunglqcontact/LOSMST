@@ -62,8 +62,8 @@ namespace LOSMST.API.Controllers
             return Ok(metadata);
         }
 
-        [HttpPost("favorite")]
-        public IActionResult GetFavoriteProduct(ListIdInt listIdInt ,[FromQuery] ProductParameter productParam, [FromQuery] PagingParameter paging)
+        [HttpGet("favorite")]
+        public IActionResult GetFavoriteProduct([FromBody] ListIdInt listIdInt ,[FromQuery] ProductParameter productParam, [FromQuery] PagingParameter paging)
         {
             List<ProductMinMaxPriceSearchHelper> metaValue = new List<ProductMinMaxPriceSearchHelper>();
             var data = _productService.GetFavorite(listIdInt, productParam, paging);
