@@ -62,6 +62,33 @@ namespace LOSMST.API.Controllers
             return Ok(metadata);
         }
 
+        [HttpGet("favorite")]
+        public IActionResult GetFavoriteProduct([FromQuery] ListIdInt listIdInt ,[FromQuery] ProductParameter productParam, [FromQuery] PagingParameter paging)
+        {
+            List<ProductMinMaxPriceSearchHelper> metaValue = new List<ProductMinMaxPriceSearchHelper>();
+            var data = _productService.GetFavorite(listIdInt, productParam, paging);
+            foreach (var item in data)
+            {
+                var price = _productService.GetMinMaxPrice(item.Id);
+                metaValue.Add(new ProductMinMaxPriceSearchHelper
+                {
+                    product = item,
+                    MinMaxPrice = price,
+                });
+            }
+            var metadata = new
+            {
+                metaValue,
+                data.TotalCount,
+                data.PageSize,
+                data.CurrentPage,
+                data.TotalPages,
+                data.HasNext,
+                data.HasPrevious
+            };
+            return Ok(metadata);
+        }
+
         [HttpPost]
         public IActionResult AddProduct(Product product)
         {

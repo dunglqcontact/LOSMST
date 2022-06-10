@@ -2,6 +2,7 @@
 using LOSMST.Models.Database;
 using LOSMST.Models.Helper;
 using LOSMST.Models.Helper.DBOHelper;
+using LOSMST.Models.Helper.SearchingModel;
 using LOSMST.Models.Helper.Utils;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,62 @@ namespace LOSMST.Business.Service
         public PagedList<Product> GetAllProducts(ProductParameter productParam, PagingParameter paging)
         {
             var values = _productRepository.GetAll(includeProperties: productParam.includeProperties);
+
+            if (productParam.Id != null)
+            {
+                values = values.Where(x => x.Id == productParam.Id);
+            }
+            if (!string.IsNullOrWhiteSpace(productParam.Name))
+            {
+                values = values.Where(x => x.Name.Contains(productParam.Name, StringComparison.InvariantCultureIgnoreCase));
+            }
+            if (productParam.CategoryId != null)
+            {
+                values = values.Where(x => x.CategoryId == productParam.CategoryId);
+            }
+            if (!string.IsNullOrWhiteSpace(productParam.StatusId))
+            {
+                values = values.Where(x => x.StatusId == productParam.StatusId);
+            }
+            if (!string.IsNullOrWhiteSpace(productParam.sort))
+            {
+                switch (productParam.sort)
+                {
+                    case "Id":
+                        if (productParam.dir == "asc")
+                            values = values.OrderBy(d => d.Id);
+                        else if (productParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.Id);
+                        break;
+                    case "Name":
+                        if (productParam.dir == "asc")
+                            values = values.OrderBy(d => d.Name);
+                        else if (productParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.Name);
+                        break;
+                    case "CategoryId":
+                        if (productParam.dir == "asc")
+                            values = values.OrderBy(d => d.CategoryId);
+                        else if (productParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.CategoryId);
+                        break;
+                    case "StatusId":
+                        if (productParam.dir == "asc")
+                            values = values.OrderBy(d => d.StatusId);
+                        else if (productParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.StatusId);
+                        break;
+                }
+            }
+
+            return PagedList<Product>.ToPagedList(values.AsQueryable(),
+            paging.PageNumber,
+            paging.PageSize);
+        }
+
+        public PagedList<Product> GetFavorite(ListIdInt idList, ProductParameter productParam, PagingParameter paging)
+        {
+            var values = _productRepository.GetFavorite(idList.ListId, includeProperties: productParam.includeProperties);
 
             if (productParam.Id != null)
             {
