@@ -29,5 +29,18 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             }
             return values;
         }
+
+        public IEnumerable<Product> GetFavorite(List<int> listId, string includeProperties = null)
+        {
+            var data = _dbContext.Products.Where(x => listId.Contains(x.Id) && x.StatusId == "3.1");
+            if (includeProperties != null)
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    data = data.Include(includeProp);
+                }
+            }
+            return data;
+        }
     }
 }
