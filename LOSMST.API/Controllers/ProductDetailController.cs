@@ -2,6 +2,7 @@
 using LOSMST.Models.Database;
 using LOSMST.Models.Helper;
 using LOSMST.Models.Helper.DBOHelper;
+using LOSMST.Models.Helper.SearchingModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,6 +40,23 @@ namespace LOSMST.API.Controllers
         public IActionResult GetProductDetailWithPrice([FromQuery] ProductDetailParameter productDetailParam, [FromQuery] PagingParameter paging)
         {
             var data = _productDetailService.GetProductDetailWithPrice(productDetailParam, paging);
+            var metadata = new
+            {
+                data,
+                data.TotalCount,
+                data.PageSize,
+                data.CurrentPage,
+                data.TotalPages,
+                data.HasNext,
+                data.HasPrevious
+            };
+            return Ok(metadata);
+        }
+
+        [HttpGet("cart")]
+        public IActionResult GetProductInCart([FromQuery] ListIdString listIdString,[FromQuery] ProductDetailParameter productDetailParam, [FromQuery] PagingParameter paging)
+        {
+            var data = _productDetailService.GetProductDetailByListId(listIdString, productDetailParam, paging);
             var metadata = new
             {
                 data,
