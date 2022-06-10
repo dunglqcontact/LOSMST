@@ -53,8 +53,8 @@ namespace LOSMST.API.Controllers
             return Ok(metadata);
         }
 
-        [HttpGet("cart")]
-        public IActionResult GetProductInCart([FromQuery] ListIdString listIdString,[FromQuery] ProductDetailParameter productDetailParam, [FromQuery] PagingParameter paging)
+        [HttpPost("cart")]
+        public IActionResult GetProductInCart(ListIdString listIdString,[FromQuery] ProductDetailParameter productDetailParam, [FromQuery] PagingParameter paging)
         {
             var data = _productDetailService.GetProductDetailByListId(listIdString, productDetailParam, paging);
             var metadata = new
