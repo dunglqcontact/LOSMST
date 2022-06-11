@@ -24,6 +24,14 @@ namespace LOSMST.Business.Service
         {
             var values = _storeRepository.GetAll(includeProperties: storeParam.includeProperties);
 
+            if (storeParam.notIncludeStoreCategoryId != null)
+            {
+                foreach (var notInclude in storeParam.notIncludeStoreCategoryId.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    values = values.Where(x => x.StoreCategoryId != notInclude);
+                }
+            }
+
             if (storeParam.Id != null)
             {
                 values = values.Where(x => x.Id == storeParam.Id);

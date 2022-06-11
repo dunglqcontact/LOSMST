@@ -20,7 +20,7 @@ namespace LOSMST.API.Controllers
             _accountService = accountService;
         }
 
-        [HttpGet, Authorize(Roles = "U01,U03,U04,U06")]
+        [HttpGet]
         public IActionResult GetAccounts([FromQuery] AccountParameter accountParam, [FromQuery] PagingParameter paging)
         {
             var data = _accountService.GetAllAccounts(accountParam, paging);
