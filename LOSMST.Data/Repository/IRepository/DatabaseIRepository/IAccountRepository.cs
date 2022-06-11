@@ -13,5 +13,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
         public Account GetStoreManager(string storeCode);
         public int UpdatePassword(int accountId, string currentPassword, string newPassword);
         public void CreateLocalAccount(Account account);
+        public Account CheckAccountBasicInfor(int accountId);
     }
 }

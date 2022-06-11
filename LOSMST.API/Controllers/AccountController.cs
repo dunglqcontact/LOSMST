@@ -51,6 +51,18 @@ namespace LOSMST.API.Controllers
             return Ok(data);
         }
 
+        [HttpGet("user-basic-infor-checking")]
+        public IActionResult CheckUserBasicInfor(int id)
+        {
+            var data = _accountService.GetUserBasicInfor(id);
+            if (data != null)
+            {
+                return Ok(data);
+            }
+            bool check = false;
+            return Ok(check);
+        }
+
         [HttpPost]
         public IActionResult AddAccount(Account account)
         {
