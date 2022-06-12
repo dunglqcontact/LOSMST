@@ -21,7 +21,6 @@ namespace LOSMST.Models.Database
         public DateTime OrderDate { get; set; }
         public DateTime? EstimatedReceiveDate { get; set; }
         public DateTime ReceiveDate { get; set; }
-        public string? CustomerInvoiceCode { get; set; }
 
         public virtual Account CustomerAccount { get; set; } = null!;
         public virtual Status Status { get; set; } = null!;

@@ -7,7 +7,6 @@ namespace LOSMST.Models.Database
     {
         public int Id { get; set; }
         public string ProductDetailId { get; set; } = null!;
-        public double ImportPrice { get; set; }
         public double RetailPriceBeforeTax { get; set; }
         public double WholesalePriceBeforeTax { get; set; }
         public double RetailPriceAfterTax { get; set; }

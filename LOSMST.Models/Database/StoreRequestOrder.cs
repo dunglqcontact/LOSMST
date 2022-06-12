@@ -11,7 +11,6 @@ namespace LOSMST.Models.Database
         }
 
         public string Id { get; set; } = null!;
-        public string? StoreRequestInvoiceCode { get; set; }
         public int StoreRequestId { get; set; }
         public string? StoreSupplyCode { get; set; }
         public DateTime RequestDate { get; set; }

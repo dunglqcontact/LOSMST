@@ -141,12 +141,6 @@ namespace LOSMST.DataAccess.Data
 
                 entity.Property(e => e.CustomerAccountId).HasColumnName("customerAccountId");
 
-                entity.Property(e => e.CustomerInvoiceCode)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("customerInvoiceCode")
-                    .IsFixedLength();
-
                 entity.Property(e => e.EstimatedReceiveDate)
                     .HasColumnType("datetime")
                     .HasColumnName("estimatedReceiveDate");
@@ -210,6 +204,8 @@ namespace LOSMST.DataAccess.Data
                     .HasColumnName("customerOrderId")
                     .IsFixedLength();
 
+                entity.Property(e => e.Price).HasColumnName("price");
+
                 entity.Property(e => e.ProductDetailId)
                     .HasMaxLength(10)
                     .IsUnicode(false)
@@ -265,8 +261,6 @@ namespace LOSMST.DataAccess.Data
                     .IsUnicode(false)
                     .HasColumnName("exportInventoryId")
                     .IsFixedLength();
-
-                entity.Property(e => e.ExportVolume).HasColumnName("exportVolume");
 
                 entity.Property(e => e.Price).HasColumnName("price");
 
@@ -372,14 +366,14 @@ namespace LOSMST.DataAccess.Data
                     .HasColumnName("id")
                     .IsFixedLength();
 
-                entity.Property(e => e.CreateDate)
+                entity.Property(e => e.EndDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("createDate")
-                    .HasDefaultValueSql("(getdate())");
+                    .HasColumnName("endDate");
 
-                entity.Property(e => e.FromDate)
+                entity.Property(e => e.StartDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("fromDate");
+                    .HasColumnName("startDate")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.StatusId)
                     .HasMaxLength(3)
@@ -387,14 +381,6 @@ namespace LOSMST.DataAccess.Data
                     .HasColumnName("statusId")
                     .HasDefaultValueSql("('1.1')")
                     .IsFixedLength();
-
-                entity.Property(e => e.ToDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("toDate");
-
-                entity.Property(e => e.UpdateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("updateDate");
 
                 entity.HasOne(d => d.Status)
                     .WithMany(p => p.Prices)
@@ -408,8 +394,6 @@ namespace LOSMST.DataAccess.Data
                 entity.ToTable("PriceDetail");
 
                 entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.ImportPrice).HasColumnName("importPrice");
 
                 entity.Property(e => e.PriceId)
                     .HasMaxLength(8)
@@ -719,8 +703,6 @@ namespace LOSMST.DataAccess.Data
 
                 entity.Property(e => e.CurrentQuantity).HasColumnName("currentQuantity");
 
-                entity.Property(e => e.CurrentVolume).HasColumnName("currentVolume");
-
                 entity.Property(e => e.ProductDetailId)
                     .HasMaxLength(10)
                     .IsUnicode(false)
@@ -772,12 +754,6 @@ namespace LOSMST.DataAccess.Data
                     .IsFixedLength();
 
                 entity.Property(e => e.StoreRequestId).HasColumnName("storeRequestId");
-
-                entity.Property(e => e.StoreRequestInvoiceCode)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("storeRequestInvoiceCode")
-                    .IsFixedLength();
 
                 entity.Property(e => e.StoreSupplyCode)
                     .HasMaxLength(4)
