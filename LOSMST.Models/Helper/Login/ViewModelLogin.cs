@@ -12,6 +12,8 @@ namespace LOSMST.Models.Helper.Login
         public int Id { get; set; }
         public string Fullname  { get; set; }
         public int? StoreId { get; set; }
+        public string? Phone { get; set; }
+        public string? Avatar { get; set; }
         public string Email { get; set; }
         public string RoleId { get; set; }
         public string StatusId { get; set; }
