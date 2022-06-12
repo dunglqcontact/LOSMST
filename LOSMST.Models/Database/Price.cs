@@ -11,10 +11,8 @@ namespace LOSMST.Models.Database
         }
 
         public string Id { get; set; } = null!;
-        public DateTime CreateDate { get; set; }
-        public DateTime? UpdateDate { get; set; }
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public string StatusId { get; set; } = null!;
 
         public virtual Status Status { get; set; } = null!;

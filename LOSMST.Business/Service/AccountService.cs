@@ -97,6 +97,12 @@ namespace LOSMST.Business.Service
             return values;
         }
 
+        public Account GetUserBasicInfor(int id)
+        {
+            var values = _accountRepository.CheckAccountBasicInfor(id);
+            return values;
+        }
+
         public bool Add(Account account)
         {
             try

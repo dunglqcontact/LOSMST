@@ -183,6 +183,10 @@ namespace LOSMST.Business.Service
             var values = _productDetailRepository.GetProductDetailByListId(listId.ListId);
             foreach (var productDetail in values)
             {
+                if(productDetail.Product != null)
+                {
+                    productDetail.Product.ProductDetails = null;
+                }
                 if (productDetail.PriceDetails != null)
                 {
                     for (int i = 0; i < productDetail.PriceDetails.Count; i++)

@@ -22,5 +22,6 @@ namespace LOSMST.Models.Helper.DBOHelper
         public string? sort { get; set; } = null;
         public string? fields { get; set; } = null;
         public string? includeProperties { get; set; } = null;
+        public string? notIncludeStoreCategoryId { get; set; } = null;
     }
 }

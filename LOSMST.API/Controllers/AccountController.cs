@@ -20,7 +20,7 @@ namespace LOSMST.API.Controllers
             _accountService = accountService;
         }
 
-        [HttpGet, Authorize(Roles = "U01,U03,U04,U06")]
+        [HttpGet]
         public IActionResult GetAccounts([FromQuery] AccountParameter accountParam, [FromQuery] PagingParameter paging)
         {
             var data = _accountService.GetAllAccounts(accountParam, paging);
@@ -49,6 +49,18 @@ namespace LOSMST.API.Controllers
         {
             var data = _accountService.GetStoreManager(storeCode);
             return Ok(data);
+        }
+
+        [HttpGet("user-basic-infor-checking")]
+        public IActionResult CheckUserBasicInfor(int id)
+        {
+            var data = _accountService.GetUserBasicInfor(id);
+            if (data != null)
+            {
+                return Ok(data);
+            }
+            bool check = false;
+            return Ok(check);
         }
 
         [HttpPost]
