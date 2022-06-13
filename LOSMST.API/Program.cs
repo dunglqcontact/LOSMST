@@ -43,8 +43,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 // Add CORS service
-/*builder.Services.AddCors();
-builder.Services.AddControllers().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);*/
+builder.Services.AddCors();
+builder.Services.AddControllers().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
 
 builder.Services.AddTransient<IAccountRepository, AccountRepository>();
 builder.Services.AddTransient<AccountService, AccountService>();
@@ -99,11 +99,11 @@ if (app.Environment.IsDevelopment())
 app.UseSwagger();
 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "LOSMST.API v1"); c.RoutePrefix = string.Empty; });
 // Configure the CORS service
-/*app.UseCors(x => x
+app.UseCors(x => x
                .AllowAnyMethod()
                .AllowAnyHeader()
                .SetIsOriginAllowed(origin => true) // allow any origin
-               .AllowCredentials());*/
+               .AllowCredentials());
 
 app.UseHttpsRedirection();
 
