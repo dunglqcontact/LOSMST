@@ -76,6 +76,8 @@ namespace LOSMST.Business.Service
                     Email = account.Email,
                     RoleId = account.RoleId,
                     StatusId = account.StatusId,
+                    Phone = account.Phone,
+                    Avatar  = account.Avatar,
                     //      Fullname = account.Fullname,
                     JwtToken = null,
                 };
