@@ -79,6 +79,9 @@ builder.Services.AddTransient<StoreProductDetailService, StoreProductDetailServi
 builder.Services.AddTransient<IPriceDetailRepository, PriceDetailRepository>();
 builder.Services.AddTransient<PriceDetailService, PriceDetailService>();
 
+builder.Services.AddTransient<ICustomerOrderRepository, CustomerOrderRepository>();
+builder.Services.AddTransient<CustomerOrderService, CustomerOrderService>();
+
 builder.Services.AddTransient<AuthService, AuthService>();
 
 builder.Services.AddControllersWithViews()
