@@ -98,6 +98,10 @@ namespace LOSMST.Business.Service
         public PagedList<ProductDetail> GetProductDetailWithPrice(ProductDetailParameter productDetailParam, PagingParameter paging)
         {
             var values = _productDetailRepository.GetProductDetailWithPrice();
+            foreach (var item in values)
+            {
+                item.Package.ProductDetails = null;
+            }
             values = values.Where(x => x.StatusId == "3.1");
             foreach (var productDetail in values)
             {
