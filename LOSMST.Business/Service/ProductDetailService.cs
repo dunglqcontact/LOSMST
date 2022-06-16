@@ -185,6 +185,10 @@ namespace LOSMST.Business.Service
                                                                     PagingParameter paging)
         {
             var values = _productDetailRepository.GetProductDetailByListId(listId.ListId);
+            foreach (var item in values)
+            {
+                item.Package.ProductDetails = null;
+            }
             foreach (var productDetail in values)
             {
                 if(productDetail.Product != null)

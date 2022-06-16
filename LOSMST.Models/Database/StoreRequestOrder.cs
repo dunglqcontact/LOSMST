@@ -10,6 +10,13 @@ namespace LOSMST.Models.Database
             ProductStoreRequestDetails = new HashSet<ProductStoreRequestDetail>();
         }
 
+        public StoreRequestOrder(string id, int storeRequestId, string? storeSupplyCode)
+        {
+            Id = id;
+            StoreRequestId = storeRequestId;
+            StoreSupplyCode = storeSupplyCode;
+        }
+
         public string Id { get; set; } = null!;
         public int StoreRequestId { get; set; }
         public string? StoreSupplyCode { get; set; }
