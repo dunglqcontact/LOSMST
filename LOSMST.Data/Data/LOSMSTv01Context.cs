@@ -407,13 +407,9 @@ namespace LOSMST.DataAccess.Data
                     .HasColumnName("productDetailId")
                     .IsFixedLength();
 
-                entity.Property(e => e.RetailPriceAfterTax).HasColumnName("retailPriceAfterTax");
+                entity.Property(e => e.RetailPrice).HasColumnName("retailPrice");
 
-                entity.Property(e => e.RetailPriceBeforeTax).HasColumnName("retailPriceBeforeTax");
-
-                entity.Property(e => e.WholesalePriceAfterTax).HasColumnName("wholesalePriceAfterTax");
-
-                entity.Property(e => e.WholesalePriceBeforeTax).HasColumnName("wholesalePriceBeforeTax");
+                entity.Property(e => e.WholesalePrice).HasColumnName("wholesalePrice");
 
                 entity.HasOne(d => d.Price)
                     .WithMany(p => p.PriceDetails)
@@ -729,6 +725,10 @@ namespace LOSMST.DataAccess.Data
                     .IsUnicode(false)
                     .HasColumnName("id")
                     .IsFixedLength();
+
+                entity.Property(e => e.EstimatedReceiveDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("estimatedReceiveDate");
 
                 entity.Property(e => e.Reason)
                     .HasMaxLength(500)

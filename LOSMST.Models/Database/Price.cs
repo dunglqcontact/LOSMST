@@ -12,7 +12,7 @@ namespace LOSMST.Models.Database
 
         public string Id { get; set; } = null!;
         public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public string StatusId { get; set; } = null!;
 
         public virtual Status Status { get; set; } = null!;
