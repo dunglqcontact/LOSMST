@@ -78,11 +78,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
         public Account CheckAccountBasicInfor(int accountId)
         {
             var account = _dbContext.Accounts.FirstOrDefault(a => a.Id == accountId && a.StatusId == "1.1");
-            if (account.Address != null
-                && account.Ward != null
-                && account.District != null
-                && account.Fullname != null
-                && account.Phone != null)
+            if (account.Fullname != null && account.Phone != null)
             { 
                 return account; 
             }

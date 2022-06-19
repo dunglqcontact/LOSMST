@@ -19,6 +19,23 @@ namespace LOSMST.API.Controllers
             _customerOrderService = customerOrderService;
         }
 
+        [HttpGet]
+        public IActionResult GetCustomerOrders([FromQuery] CustomerOrderParameter customerParam, [FromQuery] PagingParameter paging)
+        {
+            var data = _customerOrderService.GetAllCustomerOrder(customerParam, paging);
+            var metadata = new
+            {
+                data,
+                data.TotalCount,
+                data.PageSize,
+                data.CurrentPage,
+                data.TotalPages,
+                data.HasNext,
+                data.HasPrevious
+            };
+            return Ok(metadata);
+        }
+
         [HttpPost]
         public IActionResult InsertCusomterOrder(CustomerOrderInsertModel customerOrder)
         {

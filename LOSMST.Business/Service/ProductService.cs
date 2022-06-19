@@ -138,8 +138,8 @@ namespace LOSMST.Business.Service
             var values = _productRepository.GetCurrentPriceForProduct(productId);
             if (IEnumerableCheckNull.IsAny(values))
             {
-                double max = values.Max(i => i.RetailPriceAfterTax);
-                double min = values.Min(i => i.RetailPriceAfterTax);
+                double max = values.Max(i => i.RetailPrice);
+                double min = values.Min(i => i.RetailPrice);
                 var data = new List<double>();
                 if (max != min)
                 {
