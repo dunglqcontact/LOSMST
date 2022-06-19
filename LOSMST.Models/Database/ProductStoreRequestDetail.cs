@@ -5,7 +5,7 @@ namespace LOSMST.Models.Database
 {
     public partial class ProductStoreRequestDetail
     {
-        public string Id { get; set; } = null!;
+        public int Id { get; set; }
         public string ProductDetailId { get; set; } = null!;
         public string StoreRequestOrderId { get; set; } = null!;
         public int Quantity { get; set; }

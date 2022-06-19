@@ -10,18 +10,19 @@ namespace LOSMST.Models.Database
             ProductStoreRequestDetails = new HashSet<ProductStoreRequestDetail>();
         }
 
-        public StoreRequestOrder(string id, int storeRequestId, string? storeSupplyCode)
+        public StoreRequestOrder(string id, int storeRequestId, string? storeSupplyCode, ICollection<ProductStoreRequestDetail> productStoreRequestDetails)
         {
             Id = id;
             StoreRequestId = storeRequestId;
             StoreSupplyCode = storeSupplyCode;
+            ProductStoreRequestDetails = productStoreRequestDetails;
         }
 
         public string Id { get; set; } = null!;
         public int StoreRequestId { get; set; }
         public string? StoreSupplyCode { get; set; }
         public DateTime RequestDate { get; set; }
-        public DateTime ReceiveDate { get; set; }
+        public DateTime? ReceiveDate { get; set; }
         public string? Reason { get; set; }
         public string StatusId { get; set; } = null!;
 

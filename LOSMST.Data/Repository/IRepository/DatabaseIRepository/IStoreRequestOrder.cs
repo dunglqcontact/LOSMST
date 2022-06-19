@@ -1,4 +1,5 @@
 ﻿using LOSMST.Models.Database;
+using LOSMST.Models.Helper.InsertHelper;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,5 +11,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
 {
     public interface IStoreRequestOrderRepository : GeneralIRepository<StoreRequestOrder>
     {
+        public void InsertStoreRequestOrder(StoreRequestOrderInsertModel storeRequestOrderInsert);
     }
 }

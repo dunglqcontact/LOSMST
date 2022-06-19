@@ -547,11 +547,7 @@ namespace LOSMST.DataAccess.Data
             {
                 entity.ToTable("ProductStoreRequestDetail");
 
-                entity.Property(e => e.Id)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("id")
-                    .IsFixedLength();
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.ProductDetailId)
                     .HasMaxLength(10)
@@ -562,7 +558,7 @@ namespace LOSMST.DataAccess.Data
                 entity.Property(e => e.Quantity).HasColumnName("quantity");
 
                 entity.Property(e => e.StoreRequestOrderId)
-                    .HasMaxLength(10)
+                    .HasMaxLength(15)
                     .IsUnicode(false)
                     .HasColumnName("storeRequestOrderId")
                     .IsFixedLength();
@@ -729,7 +725,7 @@ namespace LOSMST.DataAccess.Data
                 entity.ToTable("StoreRequestOrder");
 
                 entity.Property(e => e.Id)
-                    .HasMaxLength(10)
+                    .HasMaxLength(15)
                     .IsUnicode(false)
                     .HasColumnName("id")
                     .IsFixedLength();
@@ -744,7 +740,8 @@ namespace LOSMST.DataAccess.Data
 
                 entity.Property(e => e.RequestDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("requestDate");
+                    .HasColumnName("requestDate")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.StatusId)
                     .HasMaxLength(3)
