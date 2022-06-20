@@ -70,6 +70,23 @@ namespace LOSMST.API.Controllers
             return Ok(metadata);
         }
 
+        [HttpPost("store-cart")]
+        public IActionResult GetProductInStoreCart([FromBody] ListIdString listIdString, [FromQuery] ProductDetailParameter productDetailParam, [FromQuery] PagingParameter paging)
+        {
+            var data = _productDetailService.GetStoreCart(listIdString, productDetailParam, paging);
+            var metadata = new
+            {
+                data,
+                data.TotalCount,
+                data.PageSize,
+                data.CurrentPage,
+                data.TotalPages,
+                data.HasNext,
+                data.HasPrevious
+            };
+            return Ok(metadata);
+        }
+
         [HttpPost]
         public IActionResult AddProductDetail(ProductDetail productDetail)
         {

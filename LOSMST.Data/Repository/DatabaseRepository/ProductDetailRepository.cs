@@ -67,5 +67,12 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             }
             return data;
         }
+
+        public IEnumerable<ProductDetail> GetProductDetailByListIdStoreManager(List<string> listIdString)
+        {
+            var data = _dbContext.ProductDetails.Where(x => x.StatusId == "3.1" && listIdString.Contains(x.Id) && x.PriceDetails.Count != 0)
+                                                    .Include(x => x.Product).Include(x => x.Package);
+            return data;
+        }
     }
 }
