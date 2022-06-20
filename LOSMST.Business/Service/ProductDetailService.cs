@@ -101,6 +101,7 @@ namespace LOSMST.Business.Service
             foreach (var item in values)
             {
                 item.Package.ProductDetails = null;
+                item.Product.ProductDetails = null;
             }
             values = values.Where(x => x.StatusId == "3.1");
             foreach (var productDetail in values)
