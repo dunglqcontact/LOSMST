@@ -3,6 +3,7 @@ using LOSMST.Business.Service;
 using LOSMST.DataAccess.Data;
 using LOSMST.DataAccess.Repository.DatabaseRepository;
 using LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository;
+using LOSMST.Models.Helper.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -11,6 +12,7 @@ using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 builder.Services.AddDbContext<LOSMSTv01Context>(options => options.UseSqlServer(
@@ -44,7 +46,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 // Add CORS service
 builder.Services.AddCors();
-builder.Services.AddControllers().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+    options.SerializerSettings.DateFormatString = "dd'-'MM'-'yyyy' 'HH':'mm";
+});
 
 builder.Services.AddTransient<IAccountRepository, AccountRepository>();
 builder.Services.AddTransient<AccountService, AccountService>();
@@ -87,10 +93,10 @@ builder.Services.AddTransient<StoreRequestOrderService, StoreRequestOrderService
 
 builder.Services.AddTransient<AuthService, AuthService>();
 
-builder.Services.AddControllersWithViews()
+/*builder.Services.AddControllersWithViews()
                     .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-                    );
+                    );*/
 
 
 var app = builder.Build();
