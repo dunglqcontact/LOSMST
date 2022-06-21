@@ -26,6 +26,14 @@ namespace LOSMST.Business.Service
             {
                 values = values.Where(x => x.Id == customerParam.Id);
             }
+            if(customerParam.CustomerAccountId != null)
+            {
+                values = values.Where(x => x.CustomerAccountId == customerParam.CustomerAccountId);
+            }
+            if (customerParam.StoreId != null)
+            {
+                values = values.Where(x => x.StoreId == customerParam.StoreId);
+            }
             if (!string.IsNullOrWhiteSpace(customerParam.StatusId))
             {
                 if (customerParam.StatusId.Equals("deny"))
@@ -61,6 +69,19 @@ namespace LOSMST.Business.Service
             try
             {
                 _customerOrderRepository.InsertOrder(customerOrder);
+                _customerOrderRepository.SaveDbChange();
+                return true;
+            }catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool CancelCustomerOrder(string id)
+        {
+            try
+            {
+                _customerOrderRepository.CancelCustomerOrder(id);
                 _customerOrderRepository.SaveDbChange();
                 return true;
             }catch (Exception ex)

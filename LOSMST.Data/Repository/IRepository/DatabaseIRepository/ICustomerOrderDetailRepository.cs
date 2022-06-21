@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
 {
-    public interface ICustomerOrderRepository : GeneralIRepository<CustomerOrder>
+    public interface ICustomerOrderDetailRepository : GeneralIRepository<CustomerOrderDetail>
     {
-        public void InsertOrder(CustomerOrderInsertModel customerOrder);
-        public void CancelCustomerOrder(string id);
+        public IEnumerable<CustomerOrderDetail> GetAllCustomerOrderDetail();
     }
 }

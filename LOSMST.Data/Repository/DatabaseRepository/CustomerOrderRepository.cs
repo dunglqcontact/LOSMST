@@ -64,5 +64,11 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             _dbContext.Set<CustomerOrder>().Add(customerOrder);
             //_dbContext.CustomerOrders.Add(customerOrder);
         }
+        public void CancelCustomerOrder(string id)
+        {
+            var data = _dbContext.CustomerOrders.FirstOrDefault(x => x.Id == id);
+            data.StatusId = "2.5";
+            _dbContext.CustomerOrders.Update(data);
+        }
     }
 }

@@ -45,5 +45,16 @@ namespace LOSMST.API.Controllers
             }
             return BadRequest();
         }
+
+        [HttpPut("customer-order-cancel")]
+
+        public IActionResult CancelCustomerOrder([FromQuery] string id)
+        {
+            if (_customerOrderService.CancelCustomerOrder(id))
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
     }
 }

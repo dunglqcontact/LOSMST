@@ -101,6 +101,7 @@ namespace LOSMST.Business.Service
             foreach (var item in values)
             {
                 item.Package.ProductDetails = null;
+                item.Product.ProductDetails = null;
             }
             values = values.Where(x => x.StatusId == "3.1");
             foreach (var productDetail in values)
@@ -179,6 +180,81 @@ namespace LOSMST.Business.Service
             paging.PageSize);
         }
 
+        public PagedList<ProductDetail> GetStoreCart(ListIdString listId,
+                                                                    ProductDetailParameter productDetailParam,
+                                                                    PagingParameter paging)
+        {
+            var values = _productDetailRepository.GetProductDetailByListIdStoreManager(listId.ListId);
+            foreach (var item in values)
+            {
+                item.Package.ProductDetails = null;
+            }
+            foreach (var productDetail in values)
+            {
+                if (productDetail.Product != null)
+                {
+                    productDetail.Product.ProductDetails = null;
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(productDetailParam.includeProperties))
+            {
+                if (productDetailParam.includeProperties.Contains("Product"))
+                {
+                    foreach (var productDetail in values)
+                    {
+                        productDetail.Product.ProductDetails = null;
+                    }
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(productDetailParam.Id))
+            {
+                values = values.Where(x => x.Id == productDetailParam.Id);
+            }
+            if (productDetailParam.ProductId != null)
+            {
+                values = values.Where(x => x.ProductId == productDetailParam.ProductId);
+            }
+            if (!string.IsNullOrWhiteSpace(productDetailParam.PackageId))
+            {
+                values = values.Where(x => x.PackageId == productDetailParam.PackageId);
+            }
+            if (!string.IsNullOrWhiteSpace(productDetailParam.sort))
+            {
+                switch (productDetailParam.sort)
+                {
+                    case "Id":
+                        if (productDetailParam.dir == "asc")
+                            values = values.OrderBy(d => d.Id);
+                        else if (productDetailParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.Id);
+                        break;
+                    case "ProductId":
+                        if (productDetailParam.dir == "asc")
+                            values = values.OrderBy(d => d.ProductId);
+                        else if (productDetailParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.ProductId);
+                        break;
+                    case "PackageId":
+                        if (productDetailParam.dir == "asc")
+                            values = values.OrderBy(d => d.PackageId);
+                        else if (productDetailParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.PackageId);
+                        break;
+                    case "Volume":
+                        if (productDetailParam.dir == "asc")
+                            values = values.OrderBy(d => d.Volume);
+                        else if (productDetailParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.Volume);
+                        break;
+                }
+            }
+
+            return PagedList<ProductDetail>.ToPagedList(values.AsQueryable(),
+            paging.PageNumber,
+            paging.PageSize);
+        }
 
         public PagedList<ProductDetail> GetProductDetailByListId(ListIdString listId,
                                                                     ProductDetailParameter productDetailParam,
