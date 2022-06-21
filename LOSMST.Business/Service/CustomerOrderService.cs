@@ -24,8 +24,14 @@ namespace LOSMST.Business.Service
             var values = _customerOrderRepository.GetAll(includeProperties: customerParam.includeProperties);
             foreach (var item in values)
             {
-                item.CustomerAccount.CustomerOrders = null;
-                item.Store.CustomerOrders = null;
+                if (item.CustomerAccount != null)
+                {
+                    item.CustomerAccount.CustomerOrders = null;
+                }
+                if (item.Store != null)
+                {
+                    item.Store.CustomerOrders = null;
+                }
             }
             if (!string.IsNullOrWhiteSpace(customerParam.Id))
             {
@@ -82,11 +88,11 @@ namespace LOSMST.Business.Service
             }
         }
 
-        public bool CancelCustomerOrder(string id)
+        public bool CancelCustomerOrder(string id, string reason)
         {
             try
             {
-                _customerOrderRepository.CancelCustomerOrder(id);
+                _customerOrderRepository.CancelCustomerOrder(id, reason);
                 _customerOrderRepository.SaveDbChange();
                 return true;
             }catch (Exception ex)

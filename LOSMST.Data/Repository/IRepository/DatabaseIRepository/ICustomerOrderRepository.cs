@@ -12,6 +12,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
     public interface ICustomerOrderRepository : GeneralIRepository<CustomerOrder>
     {
         public void InsertOrder(CustomerOrderInsertModel customerOrder);
-        public void CancelCustomerOrder(string id);
+        public void CancelCustomerOrder(string id, string reason);
     }
 }
