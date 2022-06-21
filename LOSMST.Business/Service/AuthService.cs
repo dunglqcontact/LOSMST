@@ -78,7 +78,7 @@ namespace LOSMST.Business.Service
                     StatusId = account.StatusId,
                     Phone = account.Phone,
                     Avatar  = account.Avatar,
-                    //      Fullname = account.Fullname,
+                    Fullname = account.Fullname,
                     JwtToken = null,
                 };
                 var values = loginViewModel;
@@ -173,7 +173,7 @@ namespace LOSMST.Business.Service
                 var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Role, userViewModel.RoleId),
-             //   new Claim(ClaimTypes.Name, userViewModel.Fullname),
+                //new Claim(ClaimTypes.Name, userViewModel.Fullname),
                 new Claim(ClaimTypes.Email, userViewModel.Email)
             };
 
