@@ -11,5 +11,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
 {
     public interface ICustomerOrderDetailRepository : GeneralIRepository<CustomerOrderDetail>
     {
+        public IEnumerable<CustomerOrderDetail> GetAllCustomerOrderDetail();
     }
 }

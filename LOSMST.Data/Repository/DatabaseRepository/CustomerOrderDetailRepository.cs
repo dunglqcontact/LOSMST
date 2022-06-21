@@ -3,6 +3,7 @@ using LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository;
 using LOSMST.Models.Database;
 using LOSMST.Models.Helper.InsertHelper;
 using LOSMST.Models.Helper.Utils;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,12 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
         public CustomerOrderDetailRepository(LOSMSTv01Context dbContext): base(dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public IEnumerable<CustomerOrderDetail> GetAllCustomerOrderDetail()
+        {
+            var data = _dbContext.CustomerOrderDetails.Include(x => x.ProductDetail.Product);
+            return data.ToList();
         }
     }
 }

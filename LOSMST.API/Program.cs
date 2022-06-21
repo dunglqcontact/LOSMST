@@ -91,12 +91,18 @@ builder.Services.AddTransient<CustomerOrderService, CustomerOrderService>();
 builder.Services.AddTransient<IStoreRequestOrderRepository, StoreRequestOrderRepository>();
 builder.Services.AddTransient<StoreRequestOrderService, StoreRequestOrderService>();
 
+builder.Services.AddTransient<ICustomerOrderDetailRepository, CustomerOrderDetailRepository>();
+builder.Services.AddTransient<CustomerOrderDetailService, CustomerOrderDetailService>();
+
 builder.Services.AddTransient<AuthService, AuthService>();
 
-/*builder.Services.AddControllersWithViews()
+builder.Services.AddControllersWithViews()
                     .AddNewtonsoftJson(options =>
-                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-                    );*/
+                    {
+                        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                        options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+                        options.SerializerSettings.DateFormatString = "dd'-'MM'-'yyyy' 'HH':'mm";
+                    });
 
 
 var app = builder.Build();
