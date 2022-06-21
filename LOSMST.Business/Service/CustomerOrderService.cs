@@ -76,5 +76,18 @@ namespace LOSMST.Business.Service
                 return false;
             }
         }
+
+        public bool CancelCustomerOrder(string id)
+        {
+            try
+            {
+                _customerOrderRepository.CancelCustomerOrder(id);
+                _customerOrderRepository.SaveDbChange();
+                return true;
+            }catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }
