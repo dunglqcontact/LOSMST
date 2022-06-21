@@ -22,6 +22,17 @@ namespace LOSMST.Business.Service
         public PagedList<CustomerOrderDetail> GetAllCustomerOrderDetail(CustomerOrderDetailParameter orderDetailParam, PagingParameter paging)
         {
             var values = _customerOrderDetailRepository.GetAllCustomerOrderDetail();
+            foreach (var item in values)
+            {
+                if(item.ProductDetail != null)
+                {
+                    item.ProductDetail.CustomerOrderDetails = null;
+                    if(item.ProductDetail.Product != null)
+                    {
+                        item.ProductDetail.Product.ProductDetails = null;
+                    }
+                }
+            }
             if (orderDetailParam.Id != null)
             {
                 values = values.Where(x => x.Id == orderDetailParam.Id);
