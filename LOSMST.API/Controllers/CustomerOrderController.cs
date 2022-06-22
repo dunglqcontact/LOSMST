@@ -48,9 +48,9 @@ namespace LOSMST.API.Controllers
 
         [HttpPut("customer-order-cancel")]
 
-        public IActionResult CancelCustomerOrder(string id, string reason)
+        public IActionResult CancelCustomerOrder(CustomerOrder customerOrder)
         {
-            if (_customerOrderService.CancelCustomerOrder(id, reason))
+            if (_customerOrderService.CancelCustomerOrder(customerOrder.Id, customerOrder.Reason))
             {
                 return Ok();
             }
