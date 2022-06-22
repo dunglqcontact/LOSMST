@@ -20,7 +20,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             _dbContext = dbContext;
         }
 
-        public void InsertOrder(CustomerOrderInsertModel customerOrderInsert)
+        public CustomerOrder InsertOrder(CustomerOrderInsertModel customerOrderInsert)
         {
             DateTime orderDateTime = DateTime.Now;
             DateTime estimateDeliveryDate = orderDateTime.AddDays(1);
@@ -62,6 +62,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                                                             cartList
                                                             );
             _dbContext.Set<CustomerOrder>().Add(customerOrder);
+            return customerOrder;
             //_dbContext.CustomerOrders.Add(customerOrder);
         }
         public void CancelCustomerOrder(string id, string reason)

@@ -37,11 +37,12 @@ namespace LOSMST.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult InsertCusomterOrder(CustomerOrderInsertModel customerOrder)
+        public IActionResult InsertCusomterOrder(CustomerOrderInsertModel customerOrderInsert)
         {
-            if (_customerOrderService.InsertCart(customerOrder))
+            var customerOrder = _customerOrderService.InsertCart(customerOrderInsert);
+            if (customerOrder != null)
             {
-                return Ok();
+                return Ok(customerOrder);
             }
             return BadRequest();
         }

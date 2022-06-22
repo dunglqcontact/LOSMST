@@ -75,16 +75,16 @@ namespace LOSMST.Business.Service
                 paging.PageSize);
         }
 
-        public bool InsertCart(CustomerOrderInsertModel customerOrder)
+        public CustomerOrder InsertCart(CustomerOrderInsertModel customerOrderInsert)
         {
             try
             {
-                _customerOrderRepository.InsertOrder(customerOrder);
+                CustomerOrder customerOrder = _customerOrderRepository.InsertOrder(customerOrderInsert);
                 _customerOrderRepository.SaveDbChange();
-                return true;
+                return customerOrder;
             }catch (Exception ex)
             {
-                return false;
+                return null;
             }
         }
 
