@@ -120,5 +120,13 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             //_dbContext.StoreRequestOrders.Add(storeRequestOrder);
             _dbContext.Set<StoreRequestOrder>().Add(storeRequestOrder);
         }
+
+        public void CancelStoreRequestOrder(string id, string reason)
+        {
+            var data = _dbContext.StoreRequestOrders.FirstOrDefault(x => x.Id == id);
+            data.StatusId = "2.4";
+            data.Reason = reason;
+            _dbContext.StoreRequestOrders.Update(data);
+        }
     }
 }

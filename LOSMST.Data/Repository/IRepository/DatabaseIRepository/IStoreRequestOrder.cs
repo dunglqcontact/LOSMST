@@ -12,5 +12,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
     public interface IStoreRequestOrderRepository : GeneralIRepository<StoreRequestOrder>
     {
         public void InsertStoreRequestOrder(StoreRequestOrderInsertModel storeRequestOrderInsert);
+        public void CancelStoreRequestOrder(string id, string reason);
     }
 }

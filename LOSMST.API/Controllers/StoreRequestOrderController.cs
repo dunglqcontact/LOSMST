@@ -1,4 +1,5 @@
 ﻿using LOSMST.Business.Service;
+using LOSMST.Models.Database;
 using LOSMST.Models.Helper;
 using LOSMST.Models.Helper.DBOHelper;
 using LOSMST.Models.Helper.InsertHelper;
@@ -29,6 +30,17 @@ namespace LOSMST.API.Controllers
         public IActionResult InsertStoreRequestOrder(StoreRequestOrderInsertModel storeRequestOrder)
         {
             if (_storeRequestOrderService.InsertStoreRequestOrder(storeRequestOrder))
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        [HttpPut("store-request-order-cancel")]
+
+        public IActionResult CancelCustomerOrder(StoreRequestOrder storeRequestOrder)
+        {
+            if (_storeRequestOrderService.CancelStoreRequestOrder(storeRequestOrder.Id, storeRequestOrder.Reason))
             {
                 return Ok();
             }

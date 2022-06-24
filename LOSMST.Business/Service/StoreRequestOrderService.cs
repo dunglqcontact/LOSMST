@@ -23,34 +23,13 @@ namespace LOSMST.Business.Service
         public PagedList<StoreRequestOrder> GetAllStoreRequestOrder(StoreRequestOrderParameter storeRequestOrderParam, PagingParameter paging)
         {
             var values = _storeRequestOrderRepository.GetAll(includeProperties: storeRequestOrderParam.includeProperties);
-            if (storeRequestOrderParam.Id != null)
+            if (!string.IsNullOrWhiteSpace(storeRequestOrderParam.Id))
             {
                 values = values.Where(x => x.Id == storeRequestOrderParam.Id);
             }
-           
-            if (!string.IsNullOrWhiteSpace(storeRequestOrderParam.sort))
+            if (!string.IsNullOrWhiteSpace(storeRequestOrderParam.StatusId))
             {
-                switch (storeRequestOrderParam.sort)
-                {
-                    case "id":
-                        if(storeRequestOrderParam.dir == "asc")
-                            values = values.OrderBy(x => x.Id);
-                        else if(storeRequestOrderParam.dir == "desc")
-                            values.OrderByDescending(x => x.Id);
-                        break;
-/*                    case "productDetailId":
-                        if(storeRequestOrderParam.dir == "asc")
-                            values = values.OrderBy(values => values.ProductDetailId);
-                        else if(storeRequestOrderParam.dir=="desc")
-                            values = values.OrderByDescending(values => values.ProductDetailId);
-                        break;
-                    case "storeId":
-                        if (storeRequestOrderParam.dir == "asc")
-                            values = values.OrderBy(values => values.StoreId);
-                        else if (storeRequestOrderParam.dir == "desc")
-                            values = values.OrderByDescending(values => values.StoreId);
-                        break;*/
-                }
+                values = values.Where(x => x.StatusId == storeRequestOrderParam.StatusId);
             }
 
             return PagedList<StoreRequestOrder>.ToPagedList(values.AsQueryable(),
@@ -62,6 +41,19 @@ namespace LOSMST.Business.Service
             try
             {
                 _storeRequestOrderRepository.InsertStoreRequestOrder(storeRequestOrder);
+                _storeRequestOrderRepository.SaveDbChange();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool CancelStoreRequestOrder(string id, string reason)
+        {
+            try
+            {
+                _storeRequestOrderRepository.CancelStoreRequestOrder(id, reason);
                 _storeRequestOrderRepository.SaveDbChange();
                 return true;
             }
