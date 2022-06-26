@@ -100,5 +100,18 @@ namespace LOSMST.Business.Service
                 return false;
             }
         }
+        public bool ApproveCustomerOrder(string id, DateTime? estimatedReceiveDate)
+        {
+            try
+            {
+                _customerOrderRepository.ApproveCustomerOrder(id, estimatedReceiveDate);
+                _customerOrderRepository.SaveDbChange();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

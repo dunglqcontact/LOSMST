@@ -72,5 +72,14 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             data.Reason = reason;
             _dbContext.CustomerOrders.Update(data);
         }
+        public void ApproveCustomerOrder(string id, DateTime? estimatedReceiveDateStr)
+        {
+           /* DateTime myDate = DateTime.ParseExact(estimatedReceiveDateStr, "yyyy-MM-dd hh:mm tt",
+                                       System.Globalization.CultureInfo.InvariantCulture);*/
+            var data = _dbContext.CustomerOrders.FirstOrDefault(x => x.Id == id);
+            data.StatusId = "2.2";
+            data.EstimatedReceiveDate = estimatedReceiveDateStr;
+            _dbContext.CustomerOrders.Update(data);
+        }
     }
 }

@@ -57,5 +57,15 @@ namespace LOSMST.API.Controllers
             }
             return BadRequest();
         }
+        [HttpPut("customer-order-approvement")]
+
+        public IActionResult ApproveCustomerOrder([FromBody] CustomerOrder customerOrder)
+        {
+            if (_customerOrderService.ApproveCustomerOrder(customerOrder.Id, customerOrder.EstimatedReceiveDate))
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
     }
 }
