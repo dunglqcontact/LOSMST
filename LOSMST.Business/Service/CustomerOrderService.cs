@@ -100,6 +100,19 @@ namespace LOSMST.Business.Service
                 return false;
             }
         }
+        public bool DenyCustomerOrder(string id, string reason)
+        {
+            try
+            {
+                _customerOrderRepository.DenyCustomerOrder(id, reason);
+                _customerOrderRepository.SaveDbChange();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         public bool ApproveCustomerOrder(string id, DateTime? estimatedReceiveDate)
         {
             try

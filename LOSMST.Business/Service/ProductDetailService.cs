@@ -28,7 +28,10 @@ namespace LOSMST.Business.Service
             {
                 if(productDetailParam.includeProperties.Contains("Product"))
                 {
-                    values = values.Where(x => x.Product.CategoryId == productDetailParam.CategoryId);
+                    if (productDetailParam.CategoryId != 0)
+                    {
+                        values = values.Where(x => x.Product.CategoryId == productDetailParam.CategoryId);
+                    }
                 }
             }
             

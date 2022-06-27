@@ -81,5 +81,13 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             data.EstimatedReceiveDate = estimatedReceiveDateStr;
             _dbContext.CustomerOrders.Update(data);
         }
+
+        public void DenyCustomerOrder(string id, string reason)
+        {
+            var data = _dbContext.CustomerOrders.FirstOrDefault(x => x.Id == id);
+            data.StatusId = "2.4";
+            data.Reason = reason;
+            _dbContext.CustomerOrders.Update(data);
+        }
     }
 }

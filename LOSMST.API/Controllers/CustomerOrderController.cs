@@ -57,6 +57,16 @@ namespace LOSMST.API.Controllers
             }
             return BadRequest();
         }
+        [HttpPut("customer-order-denied")]
+
+        public IActionResult DenyCustomerOrder(CustomerOrder customerOrder)
+        {
+            if (_customerOrderService.DenyCustomerOrder(customerOrder.Id, customerOrder.Reason))
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
         [HttpPut("customer-order-approvement")]
 
         public IActionResult ApproveCustomerOrder([FromBody] CustomerOrder customerOrder)

@@ -14,5 +14,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
         public CustomerOrder InsertOrder(CustomerOrderInsertModel customerOrder);
         public void CancelCustomerOrder(string id, string reason);
         public void ApproveCustomerOrder(string id, DateTime? estimatedReceiveDateStr);
+        public void DenyCustomerOrder(string id, string reason);
     }
 }
