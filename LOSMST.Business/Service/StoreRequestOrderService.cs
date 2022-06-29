@@ -23,6 +23,13 @@ namespace LOSMST.Business.Service
         public PagedList<StoreRequestOrder> GetAllStoreRequestOrder(StoreRequestOrderParameter storeRequestOrderParam, PagingParameter paging)
         {
             var values = _storeRequestOrderRepository.GetAll(includeProperties: storeRequestOrderParam.includeProperties);
+            foreach (var item in values)
+            {
+                if (item.StoreRequest != null)
+                {
+                    item.StoreRequest.StoreRequestOrders = null;
+                }
+            }
             if (!string.IsNullOrWhiteSpace(storeRequestOrderParam.Id))
             {
                 values = values.Where(x => x.Id == storeRequestOrderParam.Id);
@@ -30,6 +37,14 @@ namespace LOSMST.Business.Service
             if (!string.IsNullOrWhiteSpace(storeRequestOrderParam.StatusId))
             {
                 values = values.Where(x => x.StatusId == storeRequestOrderParam.StatusId);
+            }
+            if (storeRequestOrderParam.StoreRequestId != null)
+            {
+                values = values.Where(x => x.StoreRequestId == storeRequestOrderParam.StoreRequestId);
+            }
+            if (storeRequestOrderParam.StoreSupplyCode != null)
+            {
+                values = values.Where(x => x.StoreSupplyCode == storeRequestOrderParam.StoreSupplyCode);
             }
 
             return PagedList<StoreRequestOrder>.ToPagedList(values.AsQueryable(),

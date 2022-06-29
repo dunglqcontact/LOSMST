@@ -23,7 +23,17 @@ namespace LOSMST.API.Controllers
         public IActionResult GetStoreCategories([FromQuery] StoreRequestOrderParameter storeRequestOrderParam, [FromQuery] PagingParameter paging)
         {
             var data = _storeRequestOrderService.GetAllStoreRequestOrder(storeRequestOrderParam, paging);
-            return Ok(data);
+            var metadata = new
+            {
+                data,
+                data.TotalCount,
+                data.PageSize,
+                data.CurrentPage,
+                data.TotalPages,
+                data.HasNext,
+                data.HasPrevious
+            };
+            return Ok(metadata);
         }
 
         [HttpPost]
