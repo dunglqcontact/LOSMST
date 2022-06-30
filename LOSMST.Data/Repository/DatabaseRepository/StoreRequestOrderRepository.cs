@@ -128,5 +128,13 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             data.Reason = reason;
             _dbContext.StoreRequestOrders.Update(data);
         }
+
+        public void DenyStoreRequestOrder(string id, string reason)
+        {
+            var data = _dbContext.StoreRequestOrders.FirstOrDefault(x => x.Id == id);
+            data.StatusId = "2.4";
+            data.Reason = reason;
+            _dbContext.StoreRequestOrders.Update(data);
+        }
     }
 }

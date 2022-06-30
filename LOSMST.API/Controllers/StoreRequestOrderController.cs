@@ -56,5 +56,16 @@ namespace LOSMST.API.Controllers
             }
             return BadRequest();
         }
+
+        [HttpPut("store-request-order-deny")]
+
+        public IActionResult DenyCustomerOrder(StoreRequestOrder storeRequestOrder)
+        {
+            if (_storeRequestOrderService.DenyStoreRequestOrder(storeRequestOrder.Id, storeRequestOrder.Reason))
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
     }
 }

@@ -30,12 +30,14 @@ namespace LOSMST.Business.Service
                     item.StoreRequest.StoreRequestOrders = null;
                 }
             }
-
-            if (storeRequestOrderParam.includeProperties.Contains("StoreRequest"))
+            if (!string.IsNullOrEmpty(storeRequestOrderParam.includeProperties))
             {
-                if (!string.IsNullOrWhiteSpace(storeRequestOrderParam.StoreRequestCode))
+                if (storeRequestOrderParam.includeProperties.Contains("StoreRequest"))
                 {
-                    values = values.Where(x => x.StoreRequest.Code == storeRequestOrderParam.StoreRequestCode);
+                    if (!string.IsNullOrWhiteSpace(storeRequestOrderParam.StoreRequestCode))
+                    {
+                        values = values.Where(x => x.StoreRequest.Code == storeRequestOrderParam.StoreRequestCode);
+                    }
                 }
             }
 
@@ -80,6 +82,19 @@ namespace LOSMST.Business.Service
             try
             {
                 _storeRequestOrderRepository.CancelStoreRequestOrder(id, reason);
+                _storeRequestOrderRepository.SaveDbChange();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool DenyStoreRequestOrder(string id, string reason)
+        {
+            try
+            {
+                _storeRequestOrderRepository.DenyStoreRequestOrder(id, reason);
                 _storeRequestOrderRepository.SaveDbChange();
                 return true;
             }
