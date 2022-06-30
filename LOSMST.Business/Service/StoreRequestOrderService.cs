@@ -30,10 +30,21 @@ namespace LOSMST.Business.Service
                     item.StoreRequest.StoreRequestOrders = null;
                 }
             }
+
+            if (storeRequestOrderParam.includeProperties.Contains("StoreRequest"))
+            {
+                if (!string.IsNullOrWhiteSpace(storeRequestOrderParam.StoreRequestCode))
+                {
+                    values = values.Where(x => x.StoreRequest.Code == storeRequestOrderParam.StoreRequestCode);
+                }
+            }
+
             if (!string.IsNullOrWhiteSpace(storeRequestOrderParam.Id))
             {
                 values = values.Where(x => x.Id == storeRequestOrderParam.Id);
             }
+
+
             if (!string.IsNullOrWhiteSpace(storeRequestOrderParam.StatusId))
             {
                 values = values.Where(x => x.StatusId == storeRequestOrderParam.StatusId);

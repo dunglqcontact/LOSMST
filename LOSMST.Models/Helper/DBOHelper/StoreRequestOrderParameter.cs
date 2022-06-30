@@ -12,6 +12,7 @@ namespace LOSMST.Models.Helper.DBOHelper
         public string? Id { get; set; } = null!;
         public string? StoreRequestInvoiceCode { get; set; }
         public int? StoreRequestId { get; set; }
+        public string? StoreRequestCode { get; set; }
         public string? StoreSupplyCode { get; set; }
         public DateTime? RequestDate { get; set; }
         public DateTime? ReceiveDate { get; set; }
