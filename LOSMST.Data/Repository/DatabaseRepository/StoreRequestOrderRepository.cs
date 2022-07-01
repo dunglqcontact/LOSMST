@@ -3,6 +3,7 @@ using LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository;
 using LOSMST.Models.Database;
 using LOSMST.Models.Helper.InsertHelper;
 using LOSMST.Models.Helper.Utils;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -135,6 +136,19 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             data.StatusId = "2.4";
             data.Reason = reason;
             _dbContext.StoreRequestOrders.Update(data);
+        }
+
+        public IEnumerable<StoreRequestOrder> GetAllStoreRequestOrder(string includeProperties = null)
+        {
+            IQueryable<StoreRequestOrder> data = _dbContext.StoreRequestOrders.Include("ProductStoreRequestDetails.ProductDetail");
+            if (includeProperties != null)
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    data = data.Include(includeProp);
+                }
+            }
+            return data;
         }
     }
 }

@@ -14,5 +14,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
         public void InsertStoreRequestOrder(StoreRequestOrderInsertModel storeRequestOrderInsert);
         public void CancelStoreRequestOrder(string id, string reason);
         public void DenyStoreRequestOrder(string id, string reason);
+        public IEnumerable<StoreRequestOrder> GetAllStoreRequestOrder(string includeProperties = null);
     }
 }

@@ -22,12 +22,18 @@ namespace LOSMST.Business.Service
 
         public PagedList<StoreRequestOrder> GetAllStoreRequestOrder(StoreRequestOrderParameter storeRequestOrderParam, PagingParameter paging)
         {
-            var values = _storeRequestOrderRepository.GetAll(includeProperties: storeRequestOrderParam.includeProperties);
+            var values = _storeRequestOrderRepository.GetAllStoreRequestOrder(includeProperties: storeRequestOrderParam.includeProperties);
             foreach (var item in values)
             {
                 if (item.StoreRequest != null)
                 {
                     item.StoreRequest.StoreRequestOrders = null;
+                }
+                if (item.ProductStoreRequestDetails != null) {
+                    for (int i = 0; i < item.ProductStoreRequestDetails.Count; i++)
+                    {
+                        item.ProductStoreRequestDetails.ElementAt(i).ProductDetail.ProductStoreRequestDetails = null;
+                    }
                 }
             }
             if (!string.IsNullOrEmpty(storeRequestOrderParam.includeProperties))
