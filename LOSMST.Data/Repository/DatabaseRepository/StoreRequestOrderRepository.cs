@@ -140,7 +140,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
         public IEnumerable<StoreRequestOrder> GetAllStoreRequestOrder(string includeProperties = null)
         {
-            IQueryable<StoreRequestOrder> data = _dbContext.StoreRequestOrders.Include("ProductStoreRequestDetails.ProductDetail");
+            IQueryable<StoreRequestOrder> data = _dbContext.StoreRequestOrders.Include("ProductStoreRequestDetails.ProductDetail.Product");
             if (includeProperties != null)
             {
                 foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
