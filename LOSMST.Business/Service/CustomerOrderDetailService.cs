@@ -27,6 +27,7 @@ namespace LOSMST.Business.Service
                 if(item.ProductDetail != null)
                 {
                     item.ProductDetail.CustomerOrderDetails = null;
+                    item.ProductDetail.Package.ProductDetails = null;
                     if(item.ProductDetail.Product != null)
                     {
                         item.ProductDetail.Product.ProductDetails = null;

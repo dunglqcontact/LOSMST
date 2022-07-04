@@ -23,7 +23,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
         public IEnumerable<CustomerOrderDetail> GetAllCustomerOrderDetail()
         {
-            var data = _dbContext.CustomerOrderDetails.Include(x => x.ProductDetail.Product);
+            var data = _dbContext.CustomerOrderDetails.Include(x => x.ProductDetail.Package).Include(x => x.ProductDetail.Product);
             return data.ToList();
         }
     }
