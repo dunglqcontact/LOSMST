@@ -90,20 +90,40 @@ namespace LOSMST.Business.Service
         public async Task<ViewModelLogin?> VerifyAccount(LoginEmailPassword loginRequest)
         {
             // Query account table in DB
-            var checkAccount = _accountRepository.GetFirstOrDefault(x => x.Email == loginRequest.Email && x.Password == loginRequest.Password);
-            if (checkAccount != null)
+            var checkAccount = _accountRepository.GetFirstOrDefault(filter: x => x.Email == loginRequest.Email && x.Password == loginRequest.Password, includeProperties:"Store");
+            if (checkAccount.Store != null)
             {
-                var viewLoginModel = new ViewModelLogin
+                if (checkAccount != null)
                 {
-                    Id = checkAccount.Id,
-                    Email = checkAccount.Email,
-                    RoleId = checkAccount.RoleId,
-                    StatusId = checkAccount.StatusId,
-                    Fullname = checkAccount.Fullname,
-                    StoreId = checkAccount.StoreId,
-                    JwtToken = null
-                };
-                return viewLoginModel;
+                    var viewLoginModel = new ViewModelLogin
+                    {
+                        Id = checkAccount.Id,
+                        Email = checkAccount.Email,
+                        RoleId = checkAccount.RoleId,
+                        StatusId = checkAccount.StatusId,
+                        Fullname = checkAccount.Fullname,
+                        StoreId = checkAccount.StoreId,
+                        StoreName = checkAccount.Store.Name,
+                        JwtToken = null
+                    };
+                    return viewLoginModel;
+                }
+            }
+            else
+            {
+                if (checkAccount != null)
+                {
+                    var viewLoginModel = new ViewModelLogin
+                    {
+                        Id = checkAccount.Id,
+                        Email = checkAccount.Email,
+                        RoleId = checkAccount.RoleId,
+                        StatusId = checkAccount.StatusId,
+                        Fullname = checkAccount.Fullname,
+                        JwtToken = null
+                    };
+                    return viewLoginModel;
+                }
             }
             return null;
         }
