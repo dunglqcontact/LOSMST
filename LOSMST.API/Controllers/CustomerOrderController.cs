@@ -77,5 +77,16 @@ namespace LOSMST.API.Controllers
             }
             return BadRequest();
         }
+
+        [HttpPut("customer-order-finish")]
+
+        public IActionResult FinishCustomerOrder([FromQuery] string customerOrderId)
+        {
+            if (_customerOrderService.FinishCustomerOrder(customerOrderId))
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
     }
 }

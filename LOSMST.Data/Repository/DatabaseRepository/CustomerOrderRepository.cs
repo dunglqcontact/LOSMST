@@ -89,5 +89,14 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             data.Reason = reason;
             _dbContext.CustomerOrders.Update(data);
         }
+
+        public void FinishCustomerOrder(string id)
+        {
+            DateTime receiveDate = DateTime.Now;
+            var data = _dbContext.CustomerOrders.FirstOrDefault(x => x.Id == id);
+            data.StatusId = "2.3";
+            data.ReceiveDate =  receiveDate;
+            _dbContext.CustomerOrders.Update(data);
+        }
     }
 }
