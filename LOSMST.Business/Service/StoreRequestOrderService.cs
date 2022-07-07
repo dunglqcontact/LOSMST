@@ -83,6 +83,20 @@ namespace LOSMST.Business.Service
                 return false;
             }
         }
+
+        public bool ApproveStoreRequestOrder(StoreRequestOrder storeRequestOrder)
+        {
+            try
+            {
+                _storeRequestOrderRepository.ApproveStoreRequestOrder(storeRequestOrder);
+                _storeRequestOrderRepository.SaveDbChange();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         public bool CancelStoreRequestOrder(string id, string reason)
         {
             try

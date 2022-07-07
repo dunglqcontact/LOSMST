@@ -150,5 +150,37 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             }
             return data;
         }
+
+        public void ApproveStoreRequestOrder(StoreRequestOrder storeRequestOrderInput)
+        {
+            if(storeRequestOrderInput != null)
+            {
+                if(storeRequestOrderInput.ProductStoreRequestDetails != null)
+                {
+                    var storeRequestOrder = _dbContext.StoreRequestOrders.FirstOrDefault(x => x.Id == storeRequestOrderInput.Id);
+                    storeRequestOrder.EstimatedReceiveDate = storeRequestOrderInput.EstimatedReceiveDate;
+                    _dbContext.StoreRequestOrders.Update(storeRequestOrder);
+                    var productStoreRequestDetailList = _dbContext.ProductStoreRequestDetails
+                                                        .Where(x => x.StoreRequestOrderId == storeRequestOrderInput.Id);
+                    if (productStoreRequestDetailList != null)
+                    {
+                        foreach (var item in productStoreRequestDetailList)
+                        {
+                            if (!storeRequestOrderInput.ProductStoreRequestDetails.Any(x => x.Id == item.Id))
+                            {
+                                _dbContext.ProductStoreRequestDetails.Remove(item);
+                            }
+                            else
+                            {
+                                item.Quantity = storeRequestOrderInput.ProductStoreRequestDetails.FirstOrDefault(x => x.Id == item.Id).Quantity;
+                                _dbContext.ProductStoreRequestDetails.Update(item);
+                            }
+                        }
+                    }
+                 //   _dbContext.StoreRequestOrders.Update(storeRequestOrderInput);
+
+                }
+            }
+        }
     }
 }

@@ -46,6 +46,16 @@ namespace LOSMST.API.Controllers
             return BadRequest();
         }
 
+        [HttpPut("approve")]
+        public IActionResult ApproveStoreRequestOrder(StoreRequestOrder storeRequestOrder)
+        {
+            if (_storeRequestOrderService.ApproveStoreRequestOrder(storeRequestOrder))
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
         [HttpPut("store-request-order-cancel")]
 
         public IActionResult CancelCustomerOrder(StoreRequestOrder storeRequestOrder)

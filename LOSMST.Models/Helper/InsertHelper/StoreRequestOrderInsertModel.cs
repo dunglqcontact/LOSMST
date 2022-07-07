@@ -8,6 +8,7 @@ namespace LOSMST.Models.Helper.InsertHelper
 {
     public class StoreRequestOrderInsertModel
     {
+        public string? StoreRequestOrderInsertId { get; set; }
         public int StoreRequestId { get; set; }
         public string StoreSupplyCode { get; set; }
         public List<ProductStoreRequestOrder> productStoreRequestOrders { get; set; }
