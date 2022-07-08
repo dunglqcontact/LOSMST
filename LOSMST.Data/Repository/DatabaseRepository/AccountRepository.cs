@@ -90,13 +90,29 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             var currentAccount = _dbContext.Accounts.FirstOrDefault(a => a.Id == account.Id);
             if(currentAccount != null)
             {
-                currentAccount.Fullname = account.Fullname;
-                currentAccount.Dob = account.Dob;
-                currentAccount.Avatar = account.Avatar;
-                currentAccount.Phone = account.Phone;
-                currentAccount.Gender = account.Gender;
-                _dbContext.Accounts.Update(currentAccount);
-                return true;
+                if (currentAccount.RoleId == "U06")
+                {
+                    currentAccount.Fullname = account.Fullname;
+                    currentAccount.Dob = account.Dob;
+                    currentAccount.Avatar = account.Avatar;
+                    currentAccount.Phone = account.Phone;
+                    currentAccount.Gender = account.Gender;
+                    _dbContext.Accounts.Update(currentAccount);
+                    return true;
+                }
+                else
+                {
+                    currentAccount.Fullname = account.Fullname;
+                    currentAccount.Dob = account.Dob;
+                    currentAccount.Avatar = account.Avatar;
+                    currentAccount.Address = account.Address;
+                    currentAccount.Phone = account.Phone;
+                    currentAccount.District = account.District;
+                    currentAccount.Ward = account.Ward;
+                    currentAccount.Gender = account.Gender;
+                    _dbContext.Accounts.Update(currentAccount);
+                    return true;
+                }
             }
             return false;
         }
