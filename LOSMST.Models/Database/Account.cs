@@ -15,7 +15,7 @@ namespace LOSMST.Models.Database
         public string? Password { get; set; }
         public string? Fullname { get; set; }
         public string? Avatar { get; set; }
-        public string RoleId { get; set; } = null!;
+        public string? RoleId { get; set; } = null!;
         public int? StoreId { get; set; }
         public bool? Gender { get; set; }
         public DateTime? Dob { get; set; }
