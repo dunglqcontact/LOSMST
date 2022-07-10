@@ -92,24 +92,111 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             {
                 if (currentAccount.RoleId == "U06")
                 {
-                    currentAccount.Fullname = account.Fullname;
-                    currentAccount.Dob = account.Dob;
-                    currentAccount.Avatar = account.Avatar;
-                    currentAccount.Phone = account.Phone;
-                    currentAccount.Gender = account.Gender;
+                    if(account.Id != null)
+                    {
+                        currentAccount.Id = account.Id;
+                    }
+                    if (account.Email != null)
+                    {
+                        currentAccount.Email = account.Email;
+                    }
+                    if (account.Password != null)
+                    {
+                        currentAccount.Password = account.Password;
+                    }
+                    if (account.Fullname != null)
+                    {
+                        currentAccount.Fullname = account.Fullname;
+                    }
+                    if (account.Avatar != null)
+                    {
+                        currentAccount.Avatar = account.Avatar;
+                    }
+                    if (account.RoleId != null)
+                    {
+                        currentAccount.RoleId = account.RoleId;
+                    }
+                    if (account.StoreId != null)
+                    {
+                        currentAccount.StoreId = account.StoreId;
+                    }
+                    if (account.Gender != null)
+                    {
+                        currentAccount.Gender = account.Gender;
+                    }
+                    if (account.Dob != null)
+                    {
+                        currentAccount.Dob = account.Dob;
+                    }
+                    if (account.Phone != null)
+                    {
+                        currentAccount.Phone = account.Phone;
+                    }
+                    if(account.StatusId != null)
+                    {
+                        currentAccount.StatusId = account.StatusId;
+                    }
                     _dbContext.Accounts.Update(currentAccount);
                     return true;
                 }
                 else
                 {
-                    currentAccount.Fullname = account.Fullname;
-                    currentAccount.Dob = account.Dob;
-                    currentAccount.Avatar = account.Avatar;
-                    currentAccount.Address = account.Address;
-                    currentAccount.Phone = account.Phone;
-                    currentAccount.District = account.District;
-                    currentAccount.Ward = account.Ward;
-                    currentAccount.Gender = account.Gender;
+                    if (account.Id != null)
+                    {
+                        currentAccount.Id = account.Id;
+                    }
+                    if (account.Email != null)
+                    {
+                        currentAccount.Email = account.Email;
+                    }
+                    if (account.Password != null)
+                    {
+                        currentAccount.Password = account.Password;
+                    }
+                    if (account.Fullname != null)
+                    {
+                        currentAccount.Fullname = account.Fullname;
+                    }
+                    if (account.Avatar != null)
+                    {
+                        currentAccount.Avatar = account.Avatar;
+                    }
+                    if (account.RoleId != null)
+                    {
+                        currentAccount.RoleId = account.RoleId;
+                    }
+                    if (account.StoreId != null)
+                    {
+                        currentAccount.StoreId = account.StoreId;
+                    }
+                    if (account.Gender != null)
+                    {
+                        currentAccount.Gender = account.Gender;
+                    }
+                    if (account.Dob != null)
+                    {
+                        currentAccount.Dob = account.Dob;
+                    }
+                    if (account.Phone != null)
+                    {
+                        currentAccount.Phone = account.Phone;
+                    }
+                    if (account.StatusId != null)
+                    {
+                        currentAccount.StatusId = account.StatusId;
+                    }
+                    if (account.Ward != null)
+                    {
+                        currentAccount.Ward = account.Ward;
+                    }
+                    if (account.Address != null)
+                    {
+                        currentAccount.Address = account.Address;
+                    }
+                    if (account.District != null)
+                    {
+                        currentAccount.District = account.District;
+                    }
                     _dbContext.Accounts.Update(currentAccount);
                     return true;
                 }

@@ -138,6 +138,14 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             _dbContext.StoreRequestOrders.Update(data);
         }
 
+/*        public void FinishStoreRequestOrder(string id, string reason)
+        {
+            var data = _dbContext.StoreRequestOrders.FirstOrDefault(x => x.Id == id);
+            data.StatusId = "2.3";
+            data.Reason = reason;
+            _dbContext.StoreRequestOrders.Update(data);
+        }*/
+
         public IEnumerable<StoreRequestOrder> GetAllStoreRequestOrder(string includeProperties = null)
         {
             IQueryable<StoreRequestOrder> data = _dbContext.StoreRequestOrders.Include("ProductStoreRequestDetails.ProductDetail.Product");
