@@ -94,6 +94,9 @@ builder.Services.AddTransient<StoreRequestOrderService, StoreRequestOrderService
 builder.Services.AddTransient<ICustomerOrderDetailRepository, CustomerOrderDetailRepository>();
 builder.Services.AddTransient<CustomerOrderDetailService, CustomerOrderDetailService>();
 
+builder.Services.AddTransient<IImportInventoryRepository, ImportInventoryRepository>();
+builder.Services.AddTransient<ImportInventoryService, ImportInventoryService>();
+
 builder.Services.AddTransient<AuthService, AuthService>();
 
 builder.Services.AddControllersWithViews()
