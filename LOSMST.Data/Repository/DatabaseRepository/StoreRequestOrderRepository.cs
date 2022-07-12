@@ -158,6 +158,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                 if(storeRequestOrderInput.ProductStoreRequestDetails != null)
                 {
                     var storeRequestOrder = _dbContext.StoreRequestOrders.FirstOrDefault(x => x.Id == storeRequestOrderInput.Id);
+                    var storeSupply = _dbContext.Stores.FirstOrDefault(x => x.Code == storeRequestOrder.StoreSupplyCode);
                     storeRequestOrder.EstimatedReceiveDate = storeRequestOrderInput.EstimatedReceiveDate;
                     storeRequestOrder.StatusId = "2.2";
                     _dbContext.StoreRequestOrders.Update(storeRequestOrder);
@@ -165,6 +166,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                                                         .Where(x => x.StoreRequestOrderId == storeRequestOrderInput.Id);
                     if (productStoreRequestDetailList != null)
                     {
+                        List<ProductStoreRequestDetail> updatelist = new List<ProductStoreRequestDetail>();
                         foreach (var item in productStoreRequestDetailList)
                         {
                             if (!storeRequestOrderInput.ProductStoreRequestDetails.Any(x => x.Id == item.Id))
@@ -173,13 +175,42 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                             }
                             else
                             {
+                                /*var stroreSupplyInventory = _dbContext.StoreProductDetails.FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId);
+                                if (stroreSupplyInventory != null)
+                                {
+                                    if (storeSupply.Code != "XNBL")
+                                    {
+                                        if (stroreSupplyInventory.CurrentQuantity >= item.Quantity)
+                                        {
+                                            var currentQuantity = stroreSupplyInventory.CurrentQuantity - item.Quantity;
+                                            stroreSupplyInventory.CurrentQuantity = currentQuantity;
+                                            _dbContext.StoreProductDetails.Update(stroreSupplyInventory);
+                                        }
+                                    }
+                                }*/
+                                updatelist.Add(item);
                                 item.Quantity = storeRequestOrderInput.ProductStoreRequestDetails.FirstOrDefault(x => x.Id == item.Id).Quantity;
                                 _dbContext.ProductStoreRequestDetails.Update(item);
                             }
                         }
+                        foreach (var item in updatelist)
+                        {
+                            var stroreSupplyInventory = _dbContext.StoreProductDetails.FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId && x.StoreId == storeSupply.Id);
+                            if (stroreSupplyInventory != null)
+                            {
+                                if (storeSupply.Code != "XNBL")
+                                {
+                                    if (stroreSupplyInventory.CurrentQuantity >= item.Quantity)
+                                    {
+                                        var currentQuantity = stroreSupplyInventory.CurrentQuantity - item.Quantity;
+                                        stroreSupplyInventory.CurrentQuantity = currentQuantity;
+                                        _dbContext.StoreProductDetails.Update(stroreSupplyInventory);
+                                    }
+                                }
+                            }
+                        }
                     }
                  //   _dbContext.StoreRequestOrders.Update(storeRequestOrderInput);
-
                 }
             }
         }
