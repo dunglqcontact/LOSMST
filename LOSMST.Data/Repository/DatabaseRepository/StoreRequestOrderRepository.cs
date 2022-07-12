@@ -91,7 +91,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             {
                 var lastStoreRequestOrder = checkStoreRequestOrderIdTemp.OrderBy(x => x.Id).Last();
                 var id = lastStoreRequestOrder.Id;
-                var lastOrderCount = id.Substring(13);
+                var lastOrderCount = id.Substring(12);
                 var count = Int32.Parse(lastOrderCount) + 1;
                 storeRequestOrderId = storeRequestOrderId + count.ToString(countOrderEachDate);
             }
@@ -132,10 +132,26 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
         public void DenyStoreRequestOrder(string id, string reason)
         {
-            var data = _dbContext.StoreRequestOrders.FirstOrDefault(x => x.Id == id);
-            data.StatusId = "2.4";
-            data.Reason = reason;
-            _dbContext.StoreRequestOrders.Update(data);
+            var storeRequestOrder = _dbContext.StoreRequestOrders.Include(x => x.ProductStoreRequestDetails).FirstOrDefault(x => x.Id == id);
+            var storeSupply = _dbContext.Stores.FirstOrDefault(x => x.Code == storeRequestOrder.StoreSupplyCode && x.StatusId == "1.1");
+            if (storeRequestOrder.StatusId == "2.1")
+            {
+                storeRequestOrder.StatusId = "2.4";
+                storeRequestOrder.Reason = reason;
+            }
+            else if (storeRequestOrder.StatusId == "2.2")
+            {
+                storeRequestOrder.StatusId = "2.4";
+                storeRequestOrder.Reason = reason;
+                foreach (var item in storeRequestOrder.ProductStoreRequestDetails)
+                {
+                    var storeInventory = _dbContext.StoreProductDetails
+                        .FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId && x.StoreId == storeSupply.Id);
+                    storeInventory.CurrentQuantity += item.Quantity;
+                    _dbContext.StoreProductDetails.Update(storeInventory);
+                }
+            }
+            _dbContext.StoreRequestOrders.Update(storeRequestOrder);
         }
 
         public IEnumerable<StoreRequestOrder> GetAllStoreRequestOrder(string includeProperties = null)
@@ -158,7 +174,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                 if(storeRequestOrderInput.ProductStoreRequestDetails != null)
                 {
                     var storeRequestOrder = _dbContext.StoreRequestOrders.FirstOrDefault(x => x.Id == storeRequestOrderInput.Id);
-                    var storeSupply = _dbContext.Stores.FirstOrDefault(x => x.Code == storeRequestOrder.StoreSupplyCode);
+                    var storeSupply = _dbContext.Stores.FirstOrDefault(x => x.Code == storeRequestOrder.StoreSupplyCode && x.StatusId == "1.1");
                     storeRequestOrder.EstimatedReceiveDate = storeRequestOrderInput.EstimatedReceiveDate;
                     storeRequestOrder.StatusId = "2.2";
                     _dbContext.StoreRequestOrders.Update(storeRequestOrder);
@@ -252,7 +268,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                         importId = importId + count.ToString(countOrderEachDateFormat);
                     }
 
-                    var storeSupplyOrder = _dbContext.Stores.FirstOrDefault(x => x.Code == storeRequestOrder.StoreSupplyCode);
+                    var storeSupplyOrder = _dbContext.Stores.FirstOrDefault(x => x.Code == storeRequestOrder.StoreSupplyCode && x.StatusId == "1.1");
                     string exportId = dateString + "" + storeSupplyOrder.Id.ToString(storeIdFormat);
 
                     var checkExportInventory = _dbContext.ExportInventories.Where(x => x.Id.Contains(exportId));

@@ -106,13 +106,54 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             _dbContext.CustomerOrders.Update(data);
         }
 
-        public void FinishCustomerOrder(string id)
+        public void FinishCustomerOrder(string customerOrderId)
         {
             DateTime receiveDate = DateTime.Now;
-            var data = _dbContext.CustomerOrders.FirstOrDefault(x => x.Id == id);
-            data.StatusId = "2.3";
-            data.ReceiveDate =  receiveDate;
-            _dbContext.CustomerOrders.Update(data);
+            var dateString = receiveDate.ToString("yyMMdd");
+            var customerOrder = _dbContext.CustomerOrders.Include(x => x.CustomerOrderDetails).FirstOrDefault(x => x.Id == customerOrderId);
+            customerOrder.StatusId = "2.3";
+            customerOrder.ReceiveDate =  receiveDate;
+            _dbContext.CustomerOrders.Update(customerOrder);
+
+            string storeIdFormat = "00.##";
+            string countOrderEachDateFormat = "00.##";
+            
+            string exportId = dateString + "" + customerOrder.StoreId?.ToString(storeIdFormat);
+
+
+            var checkExportInventory = _dbContext.ExportInventories.Where(x => x.Id.Contains(exportId));
+
+            if (!IEnumerableCheckNull.IsAny(checkExportInventory))
+            {
+                int count = 1;
+
+                exportId = exportId + count.ToString(countOrderEachDateFormat);
+            }
+            else
+            {
+                var lastExport = checkExportInventory.OrderBy(x => x.Id).Last();
+                var id = lastExport.Id;
+                var lastOrderCount = id.Substring(8);
+                var count = Int32.Parse(lastOrderCount) + 1;
+                exportId = exportId + count.ToString(countOrderEachDateFormat);
+            }
+
+            List<ExportInventoryDetail> exportInventoryDetails = new List<ExportInventoryDetail>();
+            foreach (var item in customerOrder.CustomerOrderDetails)
+            {
+                ExportInventoryDetail detail = new ExportInventoryDetail();
+                detail.Quantity = item.Quantity;
+                detail.Price = item.Price;
+                detail.ProductDetailId = item.ProductDetailId;
+                detail.ExportInventoryId = exportId;
+                exportInventoryDetails.Add(detail);
+            }
+            ExportInventory exportInventory = new ExportInventory();
+            exportInventory.Id = exportId;
+            exportInventory.ExportDate = receiveDate;
+            exportInventory.ExportInventoryDetails = exportInventoryDetails;
+            exportInventory.StoreId = (int)customerOrder.StoreId;
+            _dbContext.ExportInventories.Add(exportInventory);
         }
     }
 }
