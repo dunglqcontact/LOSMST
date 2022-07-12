@@ -123,5 +123,22 @@ namespace LOSMST.Business.Service
                 return false;
             }
         }
+
+        public bool FinishOrder(string orderId)
+        {
+            try
+            {
+                if (_storeRequestOrderRepository.FinishStoreRequestOrder(orderId))
+                {
+                    _storeRequestOrderRepository.SaveDbChange();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

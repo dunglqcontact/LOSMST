@@ -19,21 +19,5 @@ namespace LOSMST.Business.Service
         {
             _importInventoryRepository = importInventoryRepository;
         }
-        public bool ImportInventory(string orderId)
-        {
-            try
-            {
-                if (_importInventoryRepository.CreateAnImportInventory(orderId))
-                {
-                    _importInventoryRepository.SaveDbChange();
-                    return true;
-                }
-                return false;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
     }
 }

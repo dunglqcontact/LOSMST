@@ -77,5 +77,15 @@ namespace LOSMST.API.Controllers
             }
             return BadRequest();
         }
+
+        [HttpPut("order-finished")]
+        public IActionResult AddImportInventory(string storeRequestId)
+        {
+            if (_storeRequestOrderService.FinishOrder(storeRequestId))
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
     }
 }

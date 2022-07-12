@@ -18,15 +18,5 @@ namespace LOSMST.API.Controllers
         {
             _importInventoryService = importInventory;
         }      
-
-        [HttpPost]
-        public IActionResult AddImportInventory(string storeRequestId)
-        {
-            if(_importInventoryService.ImportInventory(storeRequestId))
-            {
-                return Ok();
-            }
-            return BadRequest();
-        }
     }
 }
