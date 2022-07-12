@@ -3,6 +3,7 @@ using LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository;
 using LOSMST.Models.Database;
 using LOSMST.Models.Helper.InsertHelper;
 using LOSMST.Models.Helper.Utils;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,10 +77,25 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
         {
            /* DateTime myDate = DateTime.ParseExact(estimatedReceiveDateStr, "yyyy-MM-dd hh:mm tt",
                                        System.Globalization.CultureInfo.InvariantCulture);*/
-            var data = _dbContext.CustomerOrders.FirstOrDefault(x => x.Id == id);
-            data.StatusId = "2.2";
-            data.EstimatedReceiveDate = estimatedReceiveDateStr;
-            _dbContext.CustomerOrders.Update(data);
+            var customerOrder = _dbContext.CustomerOrders.Include(x => x.CustomerOrderDetails).FirstOrDefault(x => x.Id == id);
+            
+            foreach (var item in customerOrder.CustomerOrderDetails)
+            {
+                var storeSelling = _dbContext.StoreProductDetails
+                    .FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId && x.StoreId == customerOrder.StoreId);
+                if (storeSelling != null)
+                {
+                    if(storeSelling.CurrentQuantity >= item.Quantity)
+                    {
+                        var currentQuantity = storeSelling.CurrentQuantity - item.Quantity;
+                        storeSelling.CurrentQuantity = currentQuantity;
+                        _dbContext.StoreProductDetails.Update(storeSelling);
+                    }
+                }
+            }
+            customerOrder.StatusId = "2.2";
+            customerOrder.EstimatedReceiveDate = estimatedReceiveDateStr;
+            _dbContext.CustomerOrders.Update(customerOrder);
         }
 
         public void DenyCustomerOrder(string id, string reason)
