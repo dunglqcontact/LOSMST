@@ -19,11 +19,11 @@ namespace LOSMST.Business.Service
         {
             _importInventoryRepository = importInventoryRepository;
         }
-        public bool ImportInventory(string orderId, ImportInventory importInventory)
+        public bool ImportInventory(string orderId)
         {
             try
             {
-                if (_importInventoryRepository.CreateAnImportInventory(orderId, importInventory))
+                if (_importInventoryRepository.CreateAnImportInventory(orderId))
                 {
                     _importInventoryRepository.SaveDbChange();
                     return true;

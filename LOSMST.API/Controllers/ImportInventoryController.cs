@@ -20,9 +20,9 @@ namespace LOSMST.API.Controllers
         }      
 
         [HttpPost]
-        public IActionResult AddImportInventory(string storeRequestId,[FromBody] ImportInventory importInventory)
+        public IActionResult AddImportInventory(string storeRequestId)
         {
-            if(_importInventoryService.ImportInventory(storeRequestId, importInventory))
+            if(_importInventoryService.ImportInventory(storeRequestId))
             {
                 return Ok();
             }

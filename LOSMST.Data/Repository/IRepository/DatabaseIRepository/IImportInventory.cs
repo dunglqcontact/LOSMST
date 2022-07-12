@@ -9,6 +9,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
 {
     public interface IImportInventoryRepository : GeneralIRepository<ImportInventory>
     {
-        public bool CreateAnImportInventory(string storeRequestOrderId, ImportInventory importInventory);
+        public bool CreateAnImportInventory(string storeRequestOrderId);
     }
 }
