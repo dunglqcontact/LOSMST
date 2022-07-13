@@ -178,7 +178,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                     storeRequestOrder.EstimatedReceiveDate = storeRequestOrderInput.EstimatedReceiveDate;
                     storeRequestOrder.StatusId = "2.2";
                     _dbContext.StoreRequestOrders.Update(storeRequestOrder);
-                    var productStoreRequestDetailList = _dbContext.ProductStoreRequestDetails
+                    var productStoreRequestDetailList = _dbContext.ProductStoreRequestDetails.Include(x => x.ProductDetail)
                                                         .Where(x => x.StoreRequestOrderId == storeRequestOrderInput.Id);
                     if (productStoreRequestDetailList != null)
                     {
@@ -205,7 +205,16 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                                     }
                                 }*/
                                 updatelist.Add(item);
-                                item.Quantity = storeRequestOrderInput.ProductStoreRequestDetails.FirstOrDefault(x => x.Id == item.Id).Quantity;
+                                if (item.ProductDetail.PackageId != "P")
+                                {
+                                    item.Quantity = storeRequestOrderInput.ProductStoreRequestDetails.FirstOrDefault(x => x.Id == item.Id).Quantity;
+                                }
+                                else
+                                {
+                                    var quantity = storeRequestOrderInput.ProductStoreRequestDetails.FirstOrDefault(x => x.Id == item.Id).Quantity;
+                                    var volume = item.ProductDetail.Volume;
+                                    item.Quantity = (int)(quantity * volume);
+                                }
                                 _dbContext.ProductStoreRequestDetails.Update(item);
                             }
                         }
