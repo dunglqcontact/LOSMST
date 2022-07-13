@@ -137,11 +137,11 @@ namespace LOSMST.Business.Service
             }
         }
 
-        public bool FinishCustomerOrder(string id)
+        public bool FinishCustomerOrder(string customerOrderId, int staffAccountId)
         {
             try
             {
-                _customerOrderRepository.FinishCustomerOrder(id);
+                _customerOrderRepository.FinishCustomerOrder(customerOrderId, staffAccountId);
                 _customerOrderRepository.SaveDbChange();
                 return true;
             }

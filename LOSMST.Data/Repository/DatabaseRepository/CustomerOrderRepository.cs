@@ -106,13 +106,14 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             _dbContext.CustomerOrders.Update(data);
         }
 
-        public void FinishCustomerOrder(string customerOrderId)
+        public void FinishCustomerOrder(string customerOrderId, int staffAccountId)
         {
             DateTime receiveDate = DateTime.Now;
             var dateString = receiveDate.ToString("yyMMdd");
             var customerOrder = _dbContext.CustomerOrders.Include(x => x.CustomerOrderDetails).FirstOrDefault(x => x.Id == customerOrderId);
             customerOrder.StatusId = "2.3";
             customerOrder.ReceiveDate =  receiveDate;
+            customerOrder.StaffAccountId = staffAccountId;
             _dbContext.CustomerOrders.Update(customerOrder);
 
             string storeIdFormat = "00.##";

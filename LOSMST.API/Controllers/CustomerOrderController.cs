@@ -80,9 +80,9 @@ namespace LOSMST.API.Controllers
 
         [HttpPut("customer-order-finish")]
 
-        public IActionResult FinishCustomerOrder([FromQuery] string customerOrderId)
+        public IActionResult FinishCustomerOrder([FromQuery] string customerOrderId, [FromQuery] int staffAccountId)
         {
-            if (_customerOrderService.FinishCustomerOrder(customerOrderId))
+            if (_customerOrderService.FinishCustomerOrder(customerOrderId, staffAccountId))
             {
                 return Ok();
             }
