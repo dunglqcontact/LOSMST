@@ -25,5 +25,11 @@ namespace LOSMST.Business.Service
             var data = _productStoreRequestDetailRepository.GetProductStoreRequestDetailInventoryViewModels(storeRequestOrderId);
             return data;
         }
+
+        public IEnumerable<ProductStoreRequestDetailInventoryViewModel> GetProductStoreRequestDetailStoreRequestInventoryViewModels(string storeRequestOrderId)
+        {
+            var data = _productStoreRequestDetailRepository.GetProductStoreRequestDetailStoreRequestInventoryViewModels(storeRequestOrderId);
+            return data;
+        }
     }
 }

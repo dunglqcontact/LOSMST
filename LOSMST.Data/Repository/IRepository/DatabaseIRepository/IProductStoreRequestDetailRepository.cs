@@ -12,5 +12,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
     public interface IProductStoreRequestDetailRepository : GeneralIRepository<ProductStoreRequestDetail>
     {
         public IEnumerable<ProductStoreRequestDetailInventoryViewModel> GetProductStoreRequestDetailInventoryViewModels(string storeRequestOrderId);
+        public IEnumerable<ProductStoreRequestDetailInventoryViewModel> GetProductStoreRequestDetailStoreRequestInventoryViewModels(string storeRequestOrderId);
     }
 }

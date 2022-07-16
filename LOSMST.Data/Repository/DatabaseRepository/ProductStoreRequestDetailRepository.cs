@@ -42,5 +42,28 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             }
             return viewModelList;
         }
+
+        public IEnumerable<ProductStoreRequestDetailInventoryViewModel> GetProductStoreRequestDetailStoreRequestInventoryViewModels(string storeRequestOrderId)
+        {
+            var storeRequestOrder = _dbContext.StoreRequestOrders.FirstOrDefault(x => x.Id == storeRequestOrderId);
+            Store? storeSupplyOrder = _dbContext.Stores.FirstOrDefault(x => x.Code == storeRequestOrder.StoreSupplyCode);
+            List<ProductStoreRequestDetailInventoryViewModel> viewModelList = new List<ProductStoreRequestDetailInventoryViewModel>();
+            var productStoreRequestDetail = _dbContext.ProductStoreRequestDetails.Where(x => x.StoreRequestOrderId == storeRequestOrderId).Include(x => x.ProductDetail.Product);
+            foreach (var item in productStoreRequestDetail)
+            {
+                ProductStoreRequestDetailInventoryViewModel viewModel = new ProductStoreRequestDetailInventoryViewModel();
+                viewModel.ProductStoreRequestDetail = item;
+
+                viewModelList.Add(viewModel);
+            }
+            foreach (var item in viewModelList)
+            {
+                item.ProductStoreRequestDetail.ProductDetail.Product.ProductDetails = null;
+                item.CurrentQuantity = _dbContext.StoreProductDetails.FirstOrDefault(x => x.ProductDetailId == item.ProductStoreRequestDetail.ProductDetailId && x.StoreId == storeRequestOrder.StoreRequestId).CurrentQuantity;
+                item.ProductStoreRequestDetail.ProductDetail.StoreProductDetails = null;
+                item.ProductStoreRequestDetail.StoreRequestOrder.ProductStoreRequestDetails = null;
+            }
+            return viewModelList;
+        }
     }
 }

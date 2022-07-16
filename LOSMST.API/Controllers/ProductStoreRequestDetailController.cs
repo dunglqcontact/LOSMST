@@ -23,5 +23,13 @@ namespace LOSMST.API.Controllers
 
             return Ok(data);
         }
+
+        [HttpGet("store-request-inventory")]
+        public IActionResult GetProductStoreRequestDetailStoreRequestInventoryViewModels([FromQuery] string storeRequestOrderId)
+        {
+            var data = _productStoreRequestDetailService.GetProductStoreRequestDetailStoreRequestInventoryViewModels(storeRequestOrderId);
+
+            return Ok(data);
+        }
     }
 }
