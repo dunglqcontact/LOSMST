@@ -48,6 +48,8 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                         inventoryStatisticalViewModel.ProductDetailId = productDetail.Id;
                         inventoryStatisticalViewModel.BeginingNumberPeriod = item.Quantity;
                         inventoryStatisticalViewModel.ProductName = item.ProductDetail.Product.Name;
+                        inventoryStatisticalViewModel.Volume = item.ProductDetail?.Volume;
+                        inventoryStatisticalViewModel.PackageId = item.ProductDetail.PackageId;
                         inventory.Add(inventoryStatisticalViewModel);
                     }
                 }
@@ -86,6 +88,8 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                         inventoryStatisticalViewModel.ProductDetailId = productDetail.Id;
                         inventoryStatisticalViewModel.ImportInPeriod = item.Quantity;
                         inventoryStatisticalViewModel.ProductName = item.ProductDetail.Product.Name;
+                        inventoryStatisticalViewModel.Volume = item.ProductDetail?.Volume;
+                        inventoryStatisticalViewModel.PackageId = item.ProductDetail.PackageId;
                         inventory.Add(inventoryStatisticalViewModel);
                     }
                 }
