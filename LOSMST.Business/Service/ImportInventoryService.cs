@@ -19,5 +19,43 @@ namespace LOSMST.Business.Service
         {
             _importInventoryRepository = importInventoryRepository;
         }
+
+        public PagedList<ImportInventory> GetAllAccounts(ImportInventoryParameter importInventoryParam, PagingParameter paging)
+        {
+            var values = _importInventoryRepository
+                .GetAll(includeProperties: "ImportInventoryDetails");
+
+            if (importInventoryParam.Id != null)
+            {
+                values = values.Where(x => x.Id == importInventoryParam.Id);
+            }
+
+            if (importInventoryParam.StoreId != null)
+            {
+                values = values.Where(x => x.StoreId == importInventoryParam.StoreId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(importInventoryParam.sort))
+            {
+                switch (importInventoryParam.sort)
+                {
+                    case "id":
+                        if (importInventoryParam.dir == "asc")
+                            values = values.OrderBy(d => d.Id);
+                        else if (importInventoryParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.Id);
+                        break;
+                    case "importDate":
+                        if (importInventoryParam.dir == "asc")
+                            values = values.OrderBy(d => d.ImportDate);
+                        else if (importInventoryParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.ImportDate);
+                        break;
+                }
+            }
+            return PagedList<ImportInventory>.ToPagedList(values.AsQueryable(),
+            paging.PageNumber,
+            paging.PageSize);
+        }
     }
 }
