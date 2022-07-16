@@ -98,6 +98,9 @@ builder.Services.AddTransient<CustomerOrderDetailService, CustomerOrderDetailSer
 builder.Services.AddTransient<IImportInventoryRepository, ImportInventoryRepository>();
 builder.Services.AddTransient<ImportInventoryService, ImportInventoryService>();
 
+builder.Services.AddTransient<IExportInventoryRepository, ExportInventoryRepository>();
+builder.Services.AddTransient<ExportInventoryService, ExportInventoryService>();
+
 builder.Services.AddTransient<IInventoryStatisticalRepository, InventoryStatisticalRepository>();
 builder.Services.AddTransient<InventoryStatisticalService, InventoryStatisticalService>();
 
