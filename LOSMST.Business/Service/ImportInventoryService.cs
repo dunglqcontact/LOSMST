@@ -23,7 +23,7 @@ namespace LOSMST.Business.Service
         public PagedList<ImportInventory> GetAllAccounts(ImportInventoryParameter importInventoryParam, PagingParameter paging)
         {
             var values = _importInventoryRepository
-                .GetAll(includeProperties: "ImportInventoryDetails");
+                .GetAll(includeProperties: "ImportInventoryDetails,Store");
 
             if (importInventoryParam.Id != null)
             {
@@ -33,6 +33,12 @@ namespace LOSMST.Business.Service
             if (importInventoryParam.StoreId != null)
             {
                 values = values.Where(x => x.StoreId == importInventoryParam.StoreId);
+            }
+
+            if(importInventoryParam.FromDate != null && importInventoryParam.ToDate != null)
+            {
+                values = values
+                    .Where(x => x.ImportDate >= importInventoryParam.FromDate && x.ImportDate <= importInventoryParam.ToDate);
             }
 
             if (!string.IsNullOrWhiteSpace(importInventoryParam.sort))

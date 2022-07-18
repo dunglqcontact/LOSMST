@@ -23,8 +23,11 @@ namespace LOSMST.Business.Service
         public PagedList<ExportInventory> GetAllAccounts(ExportInventoryParameter exportInventoryParam, PagingParameter paging)
         {
             var values = _exportInventoryRepository
-                .GetAll(includeProperties: "ExportInventoryDetails");
-
+                .GetAll(includeProperties: "ExportInventoryDetails,Store");
+            foreach (var item in values)
+            {
+                item.Store.ExportInventories = null;
+            }
             if (exportInventoryParam.Id != null)
             {
                 values = values.Where(x => x.Id == exportInventoryParam.Id);
@@ -33,6 +36,12 @@ namespace LOSMST.Business.Service
             if (exportInventoryParam.StoreId != null)
             {
                 values = values.Where(x => x.StoreId == exportInventoryParam.StoreId);
+            }
+
+            if (exportInventoryParam.FromDate != null && exportInventoryParam.ToDate != null)
+            {
+                values = values
+                    .Where(x => x.ExportDate >= exportInventoryParam.FromDate && x.ExportDate <= exportInventoryParam.ToDate);
             }
 
             if (!string.IsNullOrWhiteSpace(exportInventoryParam.sort))
