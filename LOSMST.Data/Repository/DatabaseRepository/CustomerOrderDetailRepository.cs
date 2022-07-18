@@ -2,6 +2,7 @@
 using LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository;
 using LOSMST.Models.Database;
 using LOSMST.Models.Helper.InsertHelper;
+using LOSMST.Models.Helper.SearchingModel;
 using LOSMST.Models.Helper.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -25,6 +26,35 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
         {
             var data = _dbContext.CustomerOrderDetails.Include(x => x.ProductDetail.Package).Include(x => x.ProductDetail.Product);
             return data.ToList();
+        }
+
+        public IEnumerable<CustomerOrderDetailInventoryViewModel> GetProductStoreRequestDetailInventoryViewModels(string customerOrderId)
+        {
+            var customerOrder = _dbContext.CustomerOrders.FirstOrDefault(x => x.Id == customerOrderId);
+            List<CustomerOrderDetailInventoryViewModel> viewModelList = new List<CustomerOrderDetailInventoryViewModel>();
+            var customerOrderDetails = _dbContext.CustomerOrderDetails.Where(x => x.CustomerOrderId == customerOrderId).Include(x => x.ProductDetail.Package).Include(x => x.ProductDetail.Product);
+            foreach (var item in customerOrderDetails)
+            {
+                CustomerOrderDetailInventoryViewModel viewModel = new CustomerOrderDetailInventoryViewModel();
+                viewModel.CustomerOrderDetail = item;
+
+                viewModelList.Add(viewModel);
+            }
+            foreach (var item in viewModelList)
+            {
+                var storeProductDetail = _dbContext.StoreProductDetails.FirstOrDefault(x => x.ProductDetailId == item.CustomerOrderDetail.ProductDetailId && x.StoreId == customerOrder.StoreId);
+                if (storeProductDetail == null)
+                {
+                    item.CurrentQuantity = 0;
+                }
+                else {
+                    item.CurrentQuantity = storeProductDetail.CurrentQuantity;
+                    item.CustomerOrderDetail.CustomerOrder.CustomerOrderDetails = null;
+                    item.CustomerOrderDetail.ProductDetail.Package.ProductDetails = null;
+                    item.CustomerOrderDetail.ProductDetail.Product.ProductDetails = null;
+                }
+            }
+            return viewModelList;
         }
     }
 }

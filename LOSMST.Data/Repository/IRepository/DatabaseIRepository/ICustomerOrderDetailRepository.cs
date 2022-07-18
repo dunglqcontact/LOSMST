@@ -1,5 +1,6 @@
 ﻿using LOSMST.Models.Database;
 using LOSMST.Models.Helper.InsertHelper;
+using LOSMST.Models.Helper.SearchingModel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,5 +13,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
     public interface ICustomerOrderDetailRepository : GeneralIRepository<CustomerOrderDetail>
     {
         public IEnumerable<CustomerOrderDetail> GetAllCustomerOrderDetail();
+        public IEnumerable<CustomerOrderDetailInventoryViewModel> GetProductStoreRequestDetailInventoryViewModels(string customerOrderId);
     }
 }

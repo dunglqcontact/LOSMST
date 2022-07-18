@@ -35,5 +35,13 @@ namespace LOSMST.API.Controllers
             };
             return Ok(metadata);
         }
+
+        [HttpGet("inventory")]
+        public IActionResult GetCustomerOrderDetailsWithInventory([FromQuery] string customerOrderId)
+        {
+            var data = _customerOrderDetailService.GetAllCustomerOrderDetailWithInventory(customerOrderId);
+
+            return Ok(data);
+        }
     }
 }

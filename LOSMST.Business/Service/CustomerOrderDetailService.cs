@@ -3,6 +3,7 @@ using LOSMST.Models.Database;
 using LOSMST.Models.Helper;
 using LOSMST.Models.Helper.DBOHelper;
 using LOSMST.Models.Helper.InsertHelper;
+using LOSMST.Models.Helper.SearchingModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,12 @@ namespace LOSMST.Business.Service
             return PagedList<CustomerOrderDetail>.ToPagedList(values.AsQueryable(),
                 paging.PageNumber,
                 paging.PageSize);
+        }
+
+        public IEnumerable<CustomerOrderDetailInventoryViewModel> GetAllCustomerOrderDetailWithInventory(string customerOrderId)
+        {
+            var values = _customerOrderDetailRepository.GetProductStoreRequestDetailInventoryViewModels(customerOrderId);
+            return values;
         }
     }
 }
