@@ -35,10 +35,18 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             }
             foreach (var item in viewModelList)
             {
-                item.ProductStoreRequestDetail.ProductDetail.Product.ProductDetails = null;
-                item.CurrentQuantity = _dbContext.StoreProductDetails.FirstOrDefault(x => x.ProductDetailId == item.ProductStoreRequestDetail.ProductDetailId && x.StoreId == storeSupplyOrder.Id).CurrentQuantity;
-                item.ProductStoreRequestDetail.ProductDetail.StoreProductDetails = null;
-                item.ProductStoreRequestDetail.StoreRequestOrder.ProductStoreRequestDetails = null;
+                var storeProductDetail = _dbContext.StoreProductDetails.FirstOrDefault(x => x.ProductDetailId == item.ProductStoreRequestDetail.ProductDetailId && x.StoreId == storeSupplyOrder.Id);
+                if (storeProductDetail == null)
+                {
+                    item.CurrentQuantity = 0;
+                }
+                else
+                {
+                    item.CurrentQuantity = storeProductDetail.CurrentQuantity;
+                    item.ProductStoreRequestDetail.ProductDetail.Product.ProductDetails = null;
+                    item.ProductStoreRequestDetail.ProductDetail.StoreProductDetails = null;
+                    item.ProductStoreRequestDetail.StoreRequestOrder.ProductStoreRequestDetails = null;
+                }
             }
             return viewModelList;
         }
@@ -58,10 +66,18 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             }
             foreach (var item in viewModelList)
             {
-                item.ProductStoreRequestDetail.ProductDetail.Product.ProductDetails = null;
-                item.CurrentQuantity = _dbContext.StoreProductDetails.FirstOrDefault(x => x.ProductDetailId == item.ProductStoreRequestDetail.ProductDetailId && x.StoreId == storeRequestOrder.StoreRequestId).CurrentQuantity;
-                item.ProductStoreRequestDetail.ProductDetail.StoreProductDetails = null;
-                item.ProductStoreRequestDetail.StoreRequestOrder.ProductStoreRequestDetails = null;
+                var storeProductDetail = _dbContext.StoreProductDetails.FirstOrDefault(x => x.ProductDetailId == item.ProductStoreRequestDetail.ProductDetailId && x.StoreId == storeRequestOrder.StoreRequestId);
+                if (storeProductDetail == null)
+                {
+                    item.CurrentQuantity = 0;
+                }
+                else
+                {
+                    item.CurrentQuantity = storeProductDetail.CurrentQuantity;
+                    item.ProductStoreRequestDetail.ProductDetail.Product.ProductDetails = null;
+                    item.ProductStoreRequestDetail.ProductDetail.StoreProductDetails = null;
+                    item.ProductStoreRequestDetail.StoreRequestOrder.ProductStoreRequestDetails = null;
+                }
             }
             return viewModelList;
         }
