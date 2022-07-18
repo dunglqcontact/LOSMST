@@ -2,6 +2,7 @@
 using LOSMST.Business.Service;
 using LOSMST.DataAccess.Data;
 using LOSMST.DataAccess.Repository.DatabaseRepository;
+using LOSMST.DataAccess.Repository.IRepository;
 using LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository;
 using LOSMST.Models.Helper.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -93,6 +94,20 @@ builder.Services.AddTransient<StoreRequestOrderService, StoreRequestOrderService
 
 builder.Services.AddTransient<ICustomerOrderDetailRepository, CustomerOrderDetailRepository>();
 builder.Services.AddTransient<CustomerOrderDetailService, CustomerOrderDetailService>();
+
+builder.Services.AddTransient<IImportInventoryRepository, ImportInventoryRepository>();
+builder.Services.AddTransient<ImportInventoryService, ImportInventoryService>();
+
+builder.Services.AddTransient<IExportInventoryRepository, ExportInventoryRepository>();
+builder.Services.AddTransient<ExportInventoryService, ExportInventoryService>();
+
+builder.Services.AddTransient<IInventoryStatisticalRepository, InventoryStatisticalRepository>();
+builder.Services.AddTransient<InventoryStatisticalService, InventoryStatisticalService>();
+
+builder.Services.AddTransient<IProductStoreRequestDetailRepository, ProductStoreRequestDetailRepository>();
+builder.Services.AddTransient<ProductStoreRequestDetailService, ProductStoreRequestDetailService>();
+
+//builder.Services.AddScoped<IInventoryStatisticalRepository, InventoryStatisticalRepository>();
 
 builder.Services.AddTransient<AuthService, AuthService>();
 

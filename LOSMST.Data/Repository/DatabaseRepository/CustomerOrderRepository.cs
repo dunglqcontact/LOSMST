@@ -3,6 +3,7 @@ using LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository;
 using LOSMST.Models.Database;
 using LOSMST.Models.Helper.InsertHelper;
 using LOSMST.Models.Helper.Utils;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             _dbContext = dbContext;
         }
 
-        public void InsertOrder(CustomerOrderInsertModel customerOrderInsert)
+        public CustomerOrder InsertOrder(CustomerOrderInsertModel customerOrderInsert)
         {
             DateTime orderDateTime = DateTime.Now;
             DateTime estimateDeliveryDate = orderDateTime.AddDays(1);
@@ -62,13 +63,98 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                                                             cartList
                                                             );
             _dbContext.Set<CustomerOrder>().Add(customerOrder);
+            return customerOrder;
             //_dbContext.CustomerOrders.Add(customerOrder);
         }
-        public void CancelCustomerOrder(string id)
+        public void CancelCustomerOrder(string id, string reason)
         {
             var data = _dbContext.CustomerOrders.FirstOrDefault(x => x.Id == id);
             data.StatusId = "2.5";
+            data.Reason = reason;
             _dbContext.CustomerOrders.Update(data);
+        }
+        public void ApproveCustomerOrder(string id, DateTime? estimatedReceiveDateStr)
+        {
+           /* DateTime myDate = DateTime.ParseExact(estimatedReceiveDateStr, "yyyy-MM-dd hh:mm tt",
+                                       System.Globalization.CultureInfo.InvariantCulture);*/
+            var customerOrder = _dbContext.CustomerOrders.Include(x => x.CustomerOrderDetails).FirstOrDefault(x => x.Id == id);
+            
+            foreach (var item in customerOrder.CustomerOrderDetails)
+            {
+                var storeSelling = _dbContext.StoreProductDetails
+                    .FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId && x.StoreId == customerOrder.StoreId);
+                if (storeSelling != null)
+                {
+                    if(storeSelling.CurrentQuantity >= item.Quantity)
+                    {
+                        var currentQuantity = storeSelling.CurrentQuantity - item.Quantity;
+                        storeSelling.CurrentQuantity = currentQuantity;
+                        _dbContext.StoreProductDetails.Update(storeSelling);
+                    }
+                }
+            }
+            customerOrder.StatusId = "2.2";
+            customerOrder.EstimatedReceiveDate = estimatedReceiveDateStr;
+            _dbContext.CustomerOrders.Update(customerOrder);
+        }
+
+        public void DenyCustomerOrder(string id, string reason)
+        {
+            var data = _dbContext.CustomerOrders.FirstOrDefault(x => x.Id == id);
+            data.StatusId = "2.4";
+            data.Reason = reason;
+            _dbContext.CustomerOrders.Update(data);
+        }
+
+        public void FinishCustomerOrder(string customerOrderId, int staffAccountId)
+        {
+            DateTime receiveDate = DateTime.Now;
+            var dateString = receiveDate.ToString("yyMMdd");
+            var customerOrder = _dbContext.CustomerOrders.Include(x => x.CustomerOrderDetails).FirstOrDefault(x => x.Id == customerOrderId);
+            customerOrder.StatusId = "2.3";
+            customerOrder.ReceiveDate =  receiveDate;
+            customerOrder.StaffAccountId = staffAccountId;
+            _dbContext.CustomerOrders.Update(customerOrder);
+
+            string storeIdFormat = "00.##";
+            string countOrderEachDateFormat = "00.##";
+            
+            string exportId = dateString + "" + customerOrder.StoreId?.ToString(storeIdFormat);
+
+
+            var checkExportInventory = _dbContext.ExportInventories.Where(x => x.Id.Contains(exportId));
+
+            if (!IEnumerableCheckNull.IsAny(checkExportInventory))
+            {
+                int count = 1;
+
+                exportId = exportId + count.ToString(countOrderEachDateFormat);
+            }
+            else
+            {
+                var lastExport = checkExportInventory.OrderBy(x => x.Id).Last();
+                var id = lastExport.Id;
+                var lastOrderCount = id.Substring(8);
+                var count = Int32.Parse(lastOrderCount) + 1;
+                exportId = exportId + count.ToString(countOrderEachDateFormat);
+            }
+
+            List<ExportInventoryDetail> exportInventoryDetails = new List<ExportInventoryDetail>();
+            foreach (var item in customerOrder.CustomerOrderDetails)
+            {
+                ExportInventoryDetail detail = new ExportInventoryDetail();
+                detail.Quantity = item.Quantity;
+                detail.Price = item.Price;
+                detail.ProductDetailId = item.ProductDetailId;
+                detail.ExportInventoryId = exportId;
+                exportInventoryDetails.Add(detail);
+            }
+            ExportInventory exportInventory = new ExportInventory();
+            exportInventory.Id = exportId;
+            exportInventory.ExportDate = receiveDate;
+            exportInventory.ExportInventoryDetails = exportInventoryDetails;
+            exportInventory.StoreId = (int)customerOrder.StoreId;
+            _dbContext.ExportInventories.Add(exportInventory);
         }
     }
 }

@@ -78,7 +78,7 @@ namespace LOSMST.Business.Service
                     StatusId = account.StatusId,
                     Phone = account.Phone,
                     Avatar  = account.Avatar,
-                    //      Fullname = account.Fullname,
+                    Fullname = account.Fullname,
                     JwtToken = null,
                 };
                 var values = loginViewModel;
@@ -90,21 +90,47 @@ namespace LOSMST.Business.Service
         public async Task<ViewModelLogin?> VerifyAccount(LoginEmailPassword loginRequest)
         {
             // Query account table in DB
-            var checkAccount = _accountRepository.GetFirstOrDefault(x => x.Email == loginRequest.Email && x.Password == loginRequest.Password);
+
+            var checkAccount = _accountRepository.GetFirstOrDefault(filter: x => x.Email == loginRequest.Email && x.Password == loginRequest.Password, includeProperties: "Store");
             if (checkAccount != null)
             {
-                var viewLoginModel = new ViewModelLogin
+                if (checkAccount.Store != null)
                 {
-                    Id = checkAccount.Id,
-                    Email = checkAccount.Email,
-                    RoleId = checkAccount.RoleId,
-                    StatusId = checkAccount.StatusId,
-                    Fullname = checkAccount.Fullname,
-                    StoreId = checkAccount.StoreId,
-                    JwtToken = null
-                };
-                return viewLoginModel;
+                    if (checkAccount != null)
+                    {
+                        var viewLoginModel = new ViewModelLogin
+                        {
+                            Id = checkAccount.Id,
+                            Email = checkAccount.Email,
+                            RoleId = checkAccount.RoleId,
+                            StatusId = checkAccount.StatusId,
+                            Fullname = checkAccount.Fullname,
+                            StoreId = checkAccount.StoreId,
+                            StoreName = checkAccount.Store.Name,
+                            Avatar = checkAccount.Avatar,
+                            JwtToken = null
+                        };
+                        return viewLoginModel;
+                    }
+                }
+                else
+                {
+
+                    var viewLoginModel = new ViewModelLogin
+                    {
+                        Id = checkAccount.Id,
+                        Email = checkAccount.Email,
+                        RoleId = checkAccount.RoleId,
+                        StatusId = checkAccount.StatusId,
+                        Fullname = checkAccount.Fullname,
+                        Avatar = checkAccount.Avatar,
+                        JwtToken = null
+                    };
+                    return viewLoginModel;
+
+                }
             }
+
             return null;
         }
 
@@ -173,7 +199,7 @@ namespace LOSMST.Business.Service
                 var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Role, userViewModel.RoleId),
-             //   new Claim(ClaimTypes.Name, userViewModel.Fullname),
+                //new Claim(ClaimTypes.Name, userViewModel.Fullname),
                 new Claim(ClaimTypes.Email, userViewModel.Email)
             };
 

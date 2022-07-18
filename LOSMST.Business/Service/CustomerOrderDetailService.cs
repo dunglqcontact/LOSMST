@@ -3,6 +3,7 @@ using LOSMST.Models.Database;
 using LOSMST.Models.Helper;
 using LOSMST.Models.Helper.DBOHelper;
 using LOSMST.Models.Helper.InsertHelper;
+using LOSMST.Models.Helper.SearchingModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,18 @@ namespace LOSMST.Business.Service
         public PagedList<CustomerOrderDetail> GetAllCustomerOrderDetail(CustomerOrderDetailParameter orderDetailParam, PagingParameter paging)
         {
             var values = _customerOrderDetailRepository.GetAllCustomerOrderDetail();
+            foreach (var item in values)
+            {
+                if(item.ProductDetail != null)
+                {
+                    item.ProductDetail.CustomerOrderDetails = null;
+                    item.ProductDetail.Package.ProductDetails = null;
+                    if(item.ProductDetail.Product != null)
+                    {
+                        item.ProductDetail.Product.ProductDetails = null;
+                    }
+                }
+            }
             if (orderDetailParam.Id != null)
             {
                 values = values.Where(x => x.Id == orderDetailParam.Id);
@@ -35,6 +48,12 @@ namespace LOSMST.Business.Service
             return PagedList<CustomerOrderDetail>.ToPagedList(values.AsQueryable(),
                 paging.PageNumber,
                 paging.PageSize);
+        }
+
+        public IEnumerable<CustomerOrderDetailInventoryViewModel> GetAllCustomerOrderDetailWithInventory(string customerOrderId)
+        {
+            var values = _customerOrderDetailRepository.GetProductStoreRequestDetailInventoryViewModels(customerOrderId);
+            return values;
         }
     }
 }

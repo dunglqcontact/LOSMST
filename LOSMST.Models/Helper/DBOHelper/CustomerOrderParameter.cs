@@ -14,6 +14,7 @@ namespace LOSMST.Models.Helper.DBOHelper
         public int? StaffAccountId { get; set; }
         public int? ManagerAccountId { get; set; }
         public int? CustomerAccountId { get; set; }
+        public string? CustomerAccountName { get; set; }
         public string? StatusId { get; set; } = null!;
         public string? Reason { get; set; }
         public DateTime? OrderDate { get; set; }

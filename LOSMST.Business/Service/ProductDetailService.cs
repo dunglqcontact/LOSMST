@@ -24,6 +24,17 @@ namespace LOSMST.Business.Service
         public PagedList<ProductDetail> GetAllProductDetails(ProductDetailParameter productDetailParam, PagingParameter paging)
         {
             var values = _productDetailRepository.GetAll(includeProperties: productDetailParam.includeProperties);
+            if (productDetailParam.includeProperties != null)
+            {
+                if(productDetailParam.includeProperties.Contains("Product"))
+                {
+                    if (productDetailParam.CategoryId != 0)
+                    {
+                        values = values.Where(x => x.Product.CategoryId == productDetailParam.CategoryId);
+                    }
+                }
+            }
+            
 
             if (!string.IsNullOrWhiteSpace(productDetailParam.includeProperties))
             {

@@ -14,5 +14,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
         public int UpdatePassword(int accountId, string currentPassword, string newPassword);
         public void CreateLocalAccount(Account account);
         public Account CheckAccountBasicInfor(int accountId);
+        public bool UpdateAccount(Account account);
     }
 }

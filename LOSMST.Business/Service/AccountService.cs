@@ -120,7 +120,7 @@ namespace LOSMST.Business.Service
         {
             try
             {
-                _accountRepository.Update(account);
+                _accountRepository.UpdateAccount(account);
                 _accountRepository.SaveDbChange();
                 return true;
             }

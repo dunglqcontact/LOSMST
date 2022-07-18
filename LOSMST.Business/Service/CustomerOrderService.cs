@@ -22,6 +22,27 @@ namespace LOSMST.Business.Service
         public PagedList<CustomerOrder> GetAllCustomerOrder(CustomerOrderParameter customerParam, PagingParameter paging)
         {
             var values = _customerOrderRepository.GetAll(includeProperties: customerParam.includeProperties);
+            if (customerParam.includeProperties != null)
+            {
+                if (customerParam.includeProperties.Contains("CustomerAccount"))
+                {
+                    if (!string.IsNullOrEmpty(customerParam.CustomerAccountName))
+                    {
+                        values = values.Where(x => x.CustomerAccount.Fullname.Contains(customerParam.CustomerAccountName,  StringComparison.InvariantCultureIgnoreCase));
+                    }
+                }
+            }
+            foreach (var item in values)
+            {
+                if (item.CustomerAccount != null)
+                {
+                    item.CustomerAccount.CustomerOrders = null;
+                }
+                if (item.Store != null)
+                {
+                    item.Store.CustomerOrders = null;
+                }
+            }
             if (!string.IsNullOrWhiteSpace(customerParam.Id))
             {
                 values = values.Where(x => x.Id == customerParam.Id);
@@ -64,30 +85,72 @@ namespace LOSMST.Business.Service
                 paging.PageSize);
         }
 
-        public bool InsertCart(CustomerOrderInsertModel customerOrder)
+        public CustomerOrder InsertCart(CustomerOrderInsertModel customerOrderInsert)
         {
             try
             {
-                _customerOrderRepository.InsertOrder(customerOrder);
+                CustomerOrder customerOrder = _customerOrderRepository.InsertOrder(customerOrderInsert);
+                _customerOrderRepository.SaveDbChange();
+                return customerOrder;
+            }catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool CancelCustomerOrder(string id, string reason)
+        {
+            try
+            {
+                _customerOrderRepository.CancelCustomerOrder(id, reason);
                 _customerOrderRepository.SaveDbChange();
                 return true;
             }catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool DenyCustomerOrder(string id, string reason)
+        {
+            try
+            {
+                _customerOrderRepository.DenyCustomerOrder(id, reason);
+                _customerOrderRepository.SaveDbChange();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool ApproveCustomerOrder(string id, DateTime? estimatedReceiveDate)
+        {
+            try
+            {
+                _customerOrderRepository.ApproveCustomerOrder(id, estimatedReceiveDate);
+                _customerOrderRepository.SaveDbChange();
+                return true;
+            }
+            catch (Exception ex)
             {
                 return false;
             }
         }
 
-        public bool CancelCustomerOrder(string id)
+        public bool FinishCustomerOrder(string customerOrderId, int staffAccountId)
         {
             try
             {
-                _customerOrderRepository.CancelCustomerOrder(id);
+                _customerOrderRepository.FinishCustomerOrder(customerOrderId, staffAccountId);
                 _customerOrderRepository.SaveDbChange();
                 return true;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return false;
             }
         }
+
+
     }
 }

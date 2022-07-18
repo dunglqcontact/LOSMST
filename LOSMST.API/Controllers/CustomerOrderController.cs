@@ -37,20 +37,52 @@ namespace LOSMST.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult InsertCusomterOrder(CustomerOrderInsertModel customerOrder)
+        public IActionResult InsertCusomterOrder(CustomerOrderInsertModel customerOrderInsert)
         {
-            if (_customerOrderService.InsertCart(customerOrder))
+            var customerOrder = _customerOrderService.InsertCart(customerOrderInsert);
+            if (customerOrder != null)
             {
-                return Ok();
+                return Ok(customerOrder);
             }
             return BadRequest();
         }
 
         [HttpPut("customer-order-cancel")]
 
-        public IActionResult CancelCustomerOrder([FromQuery] string id)
+        public IActionResult CancelCustomerOrder(CustomerOrder customerOrder)
         {
-            if (_customerOrderService.CancelCustomerOrder(id))
+            if (_customerOrderService.CancelCustomerOrder(customerOrder.Id, customerOrder.Reason))
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+        [HttpPut("customer-order-denied")]
+
+        public IActionResult DenyCustomerOrder(CustomerOrder customerOrder)
+        {
+            if (_customerOrderService.DenyCustomerOrder(customerOrder.Id, customerOrder.Reason))
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+        [HttpPut("customer-order-approvement")]
+
+        public IActionResult ApproveCustomerOrder([FromBody] CustomerOrder customerOrder)
+        {
+            if (_customerOrderService.ApproveCustomerOrder(customerOrder.Id, customerOrder.EstimatedReceiveDate))
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        [HttpPut("customer-order-finish")]
+
+        public IActionResult FinishCustomerOrder([FromQuery] string customerOrderId, [FromQuery] int staffAccountId)
+        {
+            if (_customerOrderService.FinishCustomerOrder(customerOrderId, staffAccountId))
             {
                 return Ok();
             }
