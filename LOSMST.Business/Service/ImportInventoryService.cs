@@ -20,10 +20,15 @@ namespace LOSMST.Business.Service
             _importInventoryRepository = importInventoryRepository;
         }
 
-        public PagedList<ImportInventory> GetAllAccounts(ImportInventoryParameter importInventoryParam, PagingParameter paging)
+        public PagedList<ImportInventory> GetAllImportInventory(ImportInventoryParameter importInventoryParam, PagingParameter paging)
         {
             var values = _importInventoryRepository
                 .GetAll(includeProperties: "ImportInventoryDetails,Store");
+
+            foreach(var importInventory in values)
+            {
+                importInventory.Store.ImportInventories = null;
+            }
 
             if (importInventoryParam.Id != null)
             {
@@ -37,6 +42,14 @@ namespace LOSMST.Business.Service
 
             if(importInventoryParam.FromDate != null && importInventoryParam.ToDate != null)
             {
+                string fromDateStr = "0" + importInventoryParam.FromDate.Value;
+                fromDateStr = fromDateStr.Substring(0,10) + " 00:00:00";
+                string toDateStr = "0" + importInventoryParam.ToDate.Value;
+                toDateStr = toDateStr.Substring(0, 10) + " 23:59:59";
+                DateTime fromDate = DateTime.ParseExact(fromDateStr, "MM/dd/yyyy HH:mm:ss",
+                                           System.Globalization.CultureInfo.InvariantCulture);
+                DateTime toDate = DateTime.ParseExact(toDateStr, "MM/dd/yyyy HH:mm:ss",
+                                           System.Globalization.CultureInfo.InvariantCulture);
                 values = values
                     .Where(x => x.ImportDate >= importInventoryParam.FromDate && x.ImportDate <= importInventoryParam.ToDate);
             }

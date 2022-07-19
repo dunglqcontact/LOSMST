@@ -22,7 +22,7 @@ namespace LOSMST.API.Controllers
         [HttpGet]
         public IActionResult GetImportInventory([FromQuery] ImportInventoryParameter importInventoryParam, [FromQuery] PagingParameter paging)
         {
-            var data = _importInventoryService.GetAllAccounts(importInventoryParam, paging);
+            var data = _importInventoryService.GetAllImportInventory(importInventoryParam, paging);
             var metadata = new
             {
                 data,

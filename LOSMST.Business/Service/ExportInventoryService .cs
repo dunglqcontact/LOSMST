@@ -40,6 +40,14 @@ namespace LOSMST.Business.Service
 
             if (exportInventoryParam.FromDate != null && exportInventoryParam.ToDate != null)
             {
+                string fromDateStr = "0" + exportInventoryParam.FromDate.Value;
+                fromDateStr = fromDateStr.Substring(0, 10) + " 00:00:00";
+                string toDateStr = "0" + exportInventoryParam.ToDate.Value;
+                toDateStr = toDateStr.Substring(0, 10) + " 23:59:59";
+                DateTime fromDate = DateTime.ParseExact(fromDateStr, "MM/dd/yyyy HH:mm:ss",
+                                           System.Globalization.CultureInfo.InvariantCulture);
+                DateTime toDate = DateTime.ParseExact(toDateStr, "MM/dd/yyyy HH:mm:ss",
+                                           System.Globalization.CultureInfo.InvariantCulture);
                 values = values
                     .Where(x => x.ExportDate >= exportInventoryParam.FromDate && x.ExportDate <= exportInventoryParam.ToDate);
             }
