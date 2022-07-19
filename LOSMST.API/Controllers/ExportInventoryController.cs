@@ -22,7 +22,7 @@ namespace LOSMST.API.Controllers
         [HttpGet]
         public IActionResult GetExportInventory([FromQuery] ExportInventoryParameter exportInventoryParam, [FromQuery] PagingParameter paging)
         {
-            var data = _exportInventoryService.GetAllAccounts(exportInventoryParam, paging);
+            var data = _exportInventoryService.exportInventories(exportInventoryParam, paging);
             var metadata = new
             {
                 data,

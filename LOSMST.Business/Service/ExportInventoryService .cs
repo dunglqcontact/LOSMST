@@ -20,7 +20,7 @@ namespace LOSMST.Business.Service
             _exportInventoryRepository = exportInventoryRepository;
         }
 
-        public PagedList<ExportInventory> GetAllAccounts(ExportInventoryParameter exportInventoryParam, PagingParameter paging)
+        public PagedList<ExportInventory> exportInventories(ExportInventoryParameter exportInventoryParam, PagingParameter paging)
         {
             var values = _exportInventoryRepository
                 .GetAll(includeProperties: "ExportInventoryDetails,Store");
