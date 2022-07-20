@@ -107,6 +107,9 @@ builder.Services.AddTransient<InventoryStatisticalService, InventoryStatisticalS
 builder.Services.AddTransient<IProductStoreRequestDetailRepository, ProductStoreRequestDetailRepository>();
 builder.Services.AddTransient<ProductStoreRequestDetailService, ProductStoreRequestDetailService>();
 
+builder.Services.AddTransient<IPriceRepository, PriceRepository>();
+builder.Services.AddTransient<PriceService, PriceService>();
+
 //builder.Services.AddScoped<IInventoryStatisticalRepository, InventoryStatisticalRepository>();
 
 builder.Services.AddTransient<AuthService, AuthService>();
