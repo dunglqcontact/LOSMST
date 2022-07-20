@@ -23,11 +23,15 @@ namespace LOSMST.Business.Service
         public PagedList<ImportInventory> GetAllImportInventory(ImportInventoryParameter importInventoryParam, PagingParameter paging)
         {
             var values = _importInventoryRepository
-                .GetAll(includeProperties: "ImportInventoryDetails,Store");
+                .GetAll(includeProperties: "ImportInventoryDetails.ProductDetail,Store");
 
             foreach(var importInventory in values)
             {
                 importInventory.Store.ImportInventories = null;
+                foreach (var item in importInventory.ImportInventoryDetails)
+                {
+                    item.ProductDetail.ImportInventoryDetails = null;
+                }
             }
 
             if (importInventoryParam.Id != null)

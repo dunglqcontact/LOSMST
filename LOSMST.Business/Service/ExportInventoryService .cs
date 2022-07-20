@@ -23,10 +23,14 @@ namespace LOSMST.Business.Service
         public PagedList<ExportInventory> exportInventories(ExportInventoryParameter exportInventoryParam, PagingParameter paging)
         {
             var values = _exportInventoryRepository
-                .GetAll(includeProperties: "ExportInventoryDetails,Store");
-            foreach (var item in values)
+                .GetAll(includeProperties: "ExportInventoryDetails.ProductDetail,Store");
+            foreach (var inventory in values)
             {
-                item.Store.ExportInventories = null;
+                inventory.Store.ExportInventories = null;
+                foreach (var item in inventory.ExportInventoryDetails)
+                {
+                    item.ProductDetail.ExportInventoryDetails = null;
+                }
             }
             if (exportInventoryParam.Id != null)
             {
