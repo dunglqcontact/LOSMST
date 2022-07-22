@@ -2,6 +2,7 @@
 using LOSMST.Models.Database;
 using LOSMST.Models.Helper;
 using LOSMST.Models.Helper.DBOHelper;
+using LOSMST.Models.Helper.SearchingModel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,15 +21,15 @@ namespace LOSMST.Business.Service
             _importInventoryRepository = importInventoryRepository;
         }
 
-        public PagedList<ImportInventory> GetAllImportInventory(ImportInventoryParameter importInventoryParam, PagingParameter paging)
+        public PagedList<ImportInventoryWithStoreSupplyViewModel> GetAllImportInventory(ImportInventoryParameter importInventoryParam, PagingParameter paging)
         {
-            var values = _importInventoryRepository
-                .GetAll(includeProperties: "ImportInventoryDetails.ProductDetail,Store");
+            var values = _importInventoryRepository.GetImportInventoryWithStoreSupply();
 
-            foreach(var importInventory in values)
+            foreach(var import in values)
             {
-                importInventory.Store.ImportInventories = null;
-                foreach (var item in importInventory.ImportInventoryDetails)
+                import.importInventory.Store.ImportInventories = null;
+                import.importInventory.Store.StoreRequestOrders = null;
+                foreach (var item in import.importInventory.ImportInventoryDetails)
                 {
                     item.ProductDetail.ImportInventoryDetails = null;
                 }
@@ -36,12 +37,12 @@ namespace LOSMST.Business.Service
 
             if (importInventoryParam.Id != null)
             {
-                values = values.Where(x => x.Id == importInventoryParam.Id);
+                values = values.Where(x => x.importInventory.Id == importInventoryParam.Id);
             }
 
             if (importInventoryParam.StoreId != null)
             {
-                values = values.Where(x => x.StoreId == importInventoryParam.StoreId);
+                values = values.Where(x => x.importInventory.StoreId == importInventoryParam.StoreId);
             }
 
             if(importInventoryParam.FromDate != null && importInventoryParam.ToDate != null)
@@ -73,7 +74,7 @@ namespace LOSMST.Business.Service
                 DateTime toDate = DateTime.ParseExact(toDateStr, "MM/dd/yyyy HH:mm:ss",
                                            System.Globalization.CultureInfo.InvariantCulture);
                 values = values
-                    .Where(x => x.ImportDate >= importInventoryParam.FromDate && x.ImportDate <= importInventoryParam.ToDate);
+                    .Where(x => x.importInventory.ImportDate >= importInventoryParam.FromDate && x.importInventory.ImportDate <= importInventoryParam.ToDate);
             }
 
             if (!string.IsNullOrWhiteSpace(importInventoryParam.sort))
@@ -82,19 +83,19 @@ namespace LOSMST.Business.Service
                 {
                     case "id":
                         if (importInventoryParam.dir == "asc")
-                            values = values.OrderBy(d => d.Id);
+                            values = values.OrderBy(d => d.importInventory.Id);
                         else if (importInventoryParam.dir == "desc")
-                            values = values.OrderByDescending(d => d.Id);
+                            values = values.OrderByDescending(d => d.importInventory.Id);
                         break;
                     case "importDate":
                         if (importInventoryParam.dir == "asc")
-                            values = values.OrderBy(d => d.ImportDate);
+                            values = values.OrderBy(d => d.importInventory.ImportDate);
                         else if (importInventoryParam.dir == "desc")
-                            values = values.OrderByDescending(d => d.ImportDate);
+                            values = values.OrderByDescending(d => d.importInventory.ImportDate);
                         break;
                 }
             }
-            return PagedList<ImportInventory>.ToPagedList(values.AsQueryable(),
+            return PagedList<ImportInventoryWithStoreSupplyViewModel>.ToPagedList(values.AsQueryable(),
             paging.PageNumber,
             paging.PageSize);
         }
