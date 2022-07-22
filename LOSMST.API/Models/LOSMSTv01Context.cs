@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using LOSMST.Models.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace LOSMST.DataAccess.Data
+namespace LOSMST.API.Models
 {
     public partial class LOSMSTv01Context : DbContext
     {
