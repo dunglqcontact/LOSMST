@@ -267,6 +267,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                         exportInventory.ExportDate = orderDateTime;
                         exportInventory.ExportInventoryDetails = exportInventoryDetails;
                         exportInventory.StoreId = storeSupplyOrder.Id;
+                        exportInventory.StoreImportCode = storeRequestOrder.StoreRequest.Code;
 
                         _dbContext.ExportInventories.Add(exportInventory);
                     }
@@ -346,6 +347,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                     importInventory.ImportDate = orderDateTime;
                     importInventory.ImportInventoryDetails = importInventoryDetails;
                     importInventory.StoreId = storeRequestOrder.StoreRequestId;
+                    importInventory.ExportStoreCode = storeRequestOrder.StoreSupplyCode;
                     _dbContext.ImportInventories.Add(importInventory);
 
                     return true;
