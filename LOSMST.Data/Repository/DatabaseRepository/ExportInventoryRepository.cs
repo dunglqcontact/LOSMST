@@ -20,5 +20,6 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
         {
             _dbContext = dbContext;
         }
+
     }
 }
