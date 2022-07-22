@@ -22,7 +22,6 @@ namespace LOSMST.Models.Database
         public int StoreRequestId { get; set; }
         public string? StoreSupplyCode { get; set; } = null!;
         public DateTime? RequestDate { get; set; }
-        public DateTime? ExportDate { get; set; }
         public DateTime? ReceiveDate { get; set; }
         public string? Reason { get; set; }
         public DateTime? EstimatedReceiveDate { get; set; }

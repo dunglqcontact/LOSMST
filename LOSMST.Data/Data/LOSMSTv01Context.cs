@@ -243,6 +243,12 @@ namespace LOSMST.DataAccess.Data
 
                 entity.Property(e => e.StoreId).HasColumnName("storeId");
 
+                entity.Property(e => e.StoreImportCode)
+                    .HasMaxLength(4)
+                    .IsUnicode(false)
+                    .HasColumnName("storeImportCode")
+                    .IsFixedLength();
+
                 entity.HasOne(d => d.Store)
                     .WithMany(p => p.ExportInventories)
                     .HasForeignKey(d => d.StoreId)
@@ -293,6 +299,12 @@ namespace LOSMST.DataAccess.Data
                     .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("id")
+                    .IsFixedLength();
+
+                entity.Property(e => e.ExportStoreCode)
+                    .HasMaxLength(4)
+                    .IsUnicode(false)
+                    .HasColumnName("exportStoreCode")
                     .IsFixedLength();
 
                 entity.Property(e => e.ImportDate)
@@ -729,10 +741,6 @@ namespace LOSMST.DataAccess.Data
                 entity.Property(e => e.EstimatedReceiveDate)
                     .HasColumnType("datetime")
                     .HasColumnName("estimatedReceiveDate");
-
-                entity.Property(e => e.ExportDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("exportDate");
 
                 entity.Property(e => e.Reason)
                     .HasMaxLength(500)
