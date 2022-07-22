@@ -2,6 +2,7 @@
 using LOSMST.Models.Database;
 using LOSMST.Models.Helper;
 using LOSMST.Models.Helper.DBOHelper;
+using LOSMST.Models.Helper.SearchingModel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,26 +21,26 @@ namespace LOSMST.Business.Service
             _exportInventoryRepository = exportInventoryRepository;
         }
 
-        public PagedList<ExportInventory> exportInventories(ExportInventoryParameter exportInventoryParam, PagingParameter paging)
+        public PagedList<ExportInventoryWithStoreSupplyViewModel> exportInventories(ExportInventoryParameter exportInventoryParam, PagingParameter paging)
         {
             var values = _exportInventoryRepository
-                .GetAll(includeProperties: "ExportInventoryDetails.ProductDetail,Store");
+                .GetExportInventoryWithStoreRequest();
             foreach (var inventory in values)
             {
-                inventory.Store.ExportInventories = null;
-                foreach (var item in inventory.ExportInventoryDetails)
+                inventory.ExportInventory.Store.ExportInventories = null;
+                foreach (var item in inventory.ExportInventory.ExportInventoryDetails)
                 {
                     item.ProductDetail.ExportInventoryDetails = null;
                 }
             }
             if (exportInventoryParam.Id != null)
             {
-                values = values.Where(x => x.Id == exportInventoryParam.Id);
+                values = values.Where(x => x.ExportInventory.Id == exportInventoryParam.Id);
             }
 
             if (exportInventoryParam.StoreId != null)
             {
-                values = values.Where(x => x.StoreId == exportInventoryParam.StoreId);
+                values = values.Where(x => x.ExportInventory.StoreId == exportInventoryParam.StoreId);
             }
 
             if (exportInventoryParam.FromDate != null && exportInventoryParam.ToDate != null)
@@ -71,7 +72,7 @@ namespace LOSMST.Business.Service
                 DateTime toDate = DateTime.ParseExact(toDateStr, "MM/dd/yyyy HH:mm:ss",
                                            System.Globalization.CultureInfo.InvariantCulture);
                 values = values
-                    .Where(x => x.ExportDate >= exportInventoryParam.FromDate && x.ExportDate <= exportInventoryParam.ToDate);
+                    .Where(x => x.ExportInventory.ExportDate >= exportInventoryParam.FromDate && x.ExportInventory.ExportDate <= exportInventoryParam.ToDate);
             }
 
             if (!string.IsNullOrWhiteSpace(exportInventoryParam.sort))
@@ -80,19 +81,19 @@ namespace LOSMST.Business.Service
                 {
                     case "id":
                         if (exportInventoryParam.dir == "asc")
-                            values = values.OrderBy(d => d.Id);
+                            values = values.OrderBy(d => d.ExportInventory.Id);
                         else if (exportInventoryParam.dir == "desc")
-                            values = values.OrderByDescending(d => d.Id);
+                            values = values.OrderByDescending(d => d.ExportInventory.Id);
                         break;
                     case "exportDate":
                         if (exportInventoryParam.dir == "asc")
-                            values = values.OrderBy(d => d.ExportDate);
+                            values = values.OrderBy(d => d.ExportInventory.ExportDate);
                         else if (exportInventoryParam.dir == "desc")
-                            values = values.OrderByDescending(d => d.ExportDate);
+                            values = values.OrderByDescending(d => d.ExportInventory.ExportDate);
                         break;
                 }
             }
-            return PagedList<ExportInventory>.ToPagedList(values.AsQueryable(),
+            return PagedList<ExportInventoryWithStoreSupplyViewModel>.ToPagedList(values.AsQueryable(),
             paging.PageNumber,
             paging.PageSize);
         }

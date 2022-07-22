@@ -173,7 +173,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             {
                 if(storeRequestOrderInput.ProductStoreRequestDetails != null)
                 {
-                    var storeRequestOrder = _dbContext.StoreRequestOrders.FirstOrDefault(x => x.Id == storeRequestOrderInput.Id);
+                    var storeRequestOrder = _dbContext.StoreRequestOrders.Include(x => x.StoreRequest).FirstOrDefault(x => x.Id == storeRequestOrderInput.Id);
                     var storeSupply = _dbContext.Stores.FirstOrDefault(x => x.Code == storeRequestOrder.StoreSupplyCode && x.StatusId == "1.1");
                     storeRequestOrder.EstimatedReceiveDate = storeRequestOrderInput.EstimatedReceiveDate;
                     storeRequestOrder.StatusId = "2.2";
