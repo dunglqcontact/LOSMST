@@ -27,9 +27,9 @@ namespace LOSMST.Business.Service
 
             foreach(var import in values)
             {
-                import.importInventory.Store.ImportInventories = null;
-                import.importInventory.Store.StoreRequestOrders = null;
-                foreach (var item in import.importInventory.ImportInventoryDetails)
+                import.ImportInventory.Store.ImportInventories = null;
+                import.ImportInventory.Store.StoreRequestOrders = null;
+                foreach (var item in import.ImportInventory.ImportInventoryDetails)
                 {
                     item.ProductDetail.ImportInventoryDetails = null;
                 }
@@ -37,12 +37,12 @@ namespace LOSMST.Business.Service
 
             if (importInventoryParam.Id != null)
             {
-                values = values.Where(x => x.importInventory.Id == importInventoryParam.Id);
+                values = values.Where(x => x.ImportInventory.Id == importInventoryParam.Id);
             }
 
             if (importInventoryParam.StoreId != null)
             {
-                values = values.Where(x => x.importInventory.StoreId == importInventoryParam.StoreId);
+                values = values.Where(x => x.ImportInventory.StoreId == importInventoryParam.StoreId);
             }
 
             if(importInventoryParam.FromDate != null && importInventoryParam.ToDate != null)
@@ -74,7 +74,7 @@ namespace LOSMST.Business.Service
                 DateTime toDate = DateTime.ParseExact(toDateStr, "MM/dd/yyyy HH:mm:ss",
                                            System.Globalization.CultureInfo.InvariantCulture);
                 values = values
-                    .Where(x => x.importInventory.ImportDate >= importInventoryParam.FromDate && x.importInventory.ImportDate <= importInventoryParam.ToDate);
+                    .Where(x => x.ImportInventory.ImportDate >= importInventoryParam.FromDate && x.ImportInventory.ImportDate <= importInventoryParam.ToDate);
             }
 
             if (!string.IsNullOrWhiteSpace(importInventoryParam.sort))
@@ -83,15 +83,15 @@ namespace LOSMST.Business.Service
                 {
                     case "id":
                         if (importInventoryParam.dir == "asc")
-                            values = values.OrderBy(d => d.importInventory.Id);
+                            values = values.OrderBy(d => d.ImportInventory.Id);
                         else if (importInventoryParam.dir == "desc")
-                            values = values.OrderByDescending(d => d.importInventory.Id);
+                            values = values.OrderByDescending(d => d.ImportInventory.Id);
                         break;
                     case "importDate":
                         if (importInventoryParam.dir == "asc")
-                            values = values.OrderBy(d => d.importInventory.ImportDate);
+                            values = values.OrderBy(d => d.ImportInventory.ImportDate);
                         else if (importInventoryParam.dir == "desc")
-                            values = values.OrderByDescending(d => d.importInventory.ImportDate);
+                            values = values.OrderByDescending(d => d.ImportInventory.ImportDate);
                         break;
                 }
             }

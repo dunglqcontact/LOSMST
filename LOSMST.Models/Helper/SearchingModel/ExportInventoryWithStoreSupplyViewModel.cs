@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace LOSMST.Models.Helper.SearchingModel
 {
-    public class ImportInventoryWithStoreSupplyViewModel
+    public class ExportInventoryWithStoreSupplyViewModel
     {
-        public ImportInventory ImportInventory { get; set; }
-        public Store StoreSupply { get; set; }
+        public ExportInventory ExportInventory { get; set; }
+        public Store StoreRequest { get; set; }
     }
 }

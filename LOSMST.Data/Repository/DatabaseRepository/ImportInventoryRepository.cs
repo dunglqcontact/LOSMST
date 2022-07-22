@@ -28,12 +28,12 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             foreach (var importInventory in importInventories)
             {
                 ImportInventoryWithStoreSupplyViewModel inventoryWithStoreSupplyViewModel = new ImportInventoryWithStoreSupplyViewModel();
-                inventoryWithStoreSupplyViewModel.importInventory = importInventory;
+                inventoryWithStoreSupplyViewModel.ImportInventory = importInventory;
                 importInventoryWithStoreSupplyViewModels.Add(inventoryWithStoreSupplyViewModel);
             }
             foreach (var item in importInventoryWithStoreSupplyViewModels)
             {
-                var storeRequestOrder = _dbContext.StoreRequestOrders.FirstOrDefault(x => x.ReceiveDate == item.importInventory.ImportDate);
+                var storeRequestOrder = _dbContext.StoreRequestOrders.FirstOrDefault(x => x.ReceiveDate == item.ImportInventory.ImportDate);
                 if (storeRequestOrder != null)
                 {
                     var storeSupply = _dbContext.Stores.FirstOrDefault(x => x.Code == storeRequestOrder.StoreSupplyCode);
