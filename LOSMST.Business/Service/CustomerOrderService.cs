@@ -55,6 +55,37 @@ namespace LOSMST.Business.Service
             {
                 values = values.Where(x => x.StoreId == customerParam.StoreId);
             }
+            if (customerParam.FromDate != null && customerParam.ToDate != null)
+            {
+                string fromDateStr = "0" + customerParam.FromDate.ToString();
+                fromDateStr = fromDateStr.Substring(0, 10);
+                if (fromDateStr.Substring(9) == " ")
+                {
+                    fromDateStr = fromDateStr.Substring(0, 3) + "0" + fromDateStr.Substring(3) + "00:00:00";
+                }
+                else
+                {
+                    fromDateStr += " 00:00:00";
+                }
+
+                string toDateStr = "0" + customerParam.ToDate.ToString();
+                toDateStr = toDateStr.Substring(0, 10);
+                if (toDateStr.Substring(9) == " ")
+                {
+                    toDateStr = toDateStr.Substring(0, 3) + "0" + toDateStr.Substring(3) + "23:59:59";
+                }
+                else
+                {
+                    toDateStr += " 23:59:59";
+                }
+
+                DateTime fromDate = DateTime.ParseExact(fromDateStr, "MM/dd/yyyy HH:mm:ss",
+                                           System.Globalization.CultureInfo.InvariantCulture);
+                DateTime toDate = DateTime.ParseExact(toDateStr, "MM/dd/yyyy HH:mm:ss",
+                                           System.Globalization.CultureInfo.InvariantCulture);
+                values = values
+                    .Where(x => x.ReceiveDate >= customerParam.FromDate && x.ReceiveDate <= customerParam.ToDate);
+            }
             if (!string.IsNullOrWhiteSpace(customerParam.StatusId))
             {
                 if (customerParam.StatusId.Equals("deny"))

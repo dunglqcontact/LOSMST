@@ -20,6 +20,8 @@ namespace LOSMST.Models.Helper.DBOHelper
         public DateTime? OrderDate { get; set; }
         public DateTime? EstimatedReceiveDate { get; set; }
         public DateTime? ReceiveDate { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
 
         public string? dir { get; set; } = "asc";
         public string? sort { get; set; } = null;
