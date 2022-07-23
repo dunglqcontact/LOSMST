@@ -27,12 +27,12 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             foreach (var exportInventory in exportInventories)
             {
                 ExportInventoryWithStoreSupplyViewModel exportWithStoreSupplyViewModel = new ExportInventoryWithStoreSupplyViewModel();
-                exportWithStoreSupplyViewModel.ExportInventory = exportInventory;
+                exportWithStoreSupplyViewModel.Inventory = exportInventory;
                 exportInventoryWithStoreSupplyViewModels.Add(exportWithStoreSupplyViewModel);
             }
             foreach (var item in exportInventoryWithStoreSupplyViewModels)
             {
-                var store = _dbContext.Stores.FirstOrDefault(x => x.Code == item.ExportInventory.StoreImportCode);
+                var store = _dbContext.Stores.FirstOrDefault(x => x.Code == item.Inventory.StoreImportCode);
                 if (store != null)
                 {
                     item.StoreRequest = store;

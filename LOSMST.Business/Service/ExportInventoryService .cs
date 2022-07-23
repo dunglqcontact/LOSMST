@@ -27,20 +27,20 @@ namespace LOSMST.Business.Service
                 .GetExportInventoryWithStoreRequest();
             foreach (var inventory in values)
             {
-                inventory.ExportInventory.Store.ExportInventories = null;
-                foreach (var item in inventory.ExportInventory.ExportInventoryDetails)
+                inventory.Inventory.Store.ExportInventories = null;
+                foreach (var item in inventory.Inventory.ExportInventoryDetails)
                 {
                     item.ProductDetail.ExportInventoryDetails = null;
                 }
             }
             if (exportInventoryParam.Id != null)
             {
-                values = values.Where(x => x.ExportInventory.Id == exportInventoryParam.Id);
+                values = values.Where(x => x.Inventory.Id == exportInventoryParam.Id);
             }
 
             if (exportInventoryParam.StoreId != null)
             {
-                values = values.Where(x => x.ExportInventory.StoreId == exportInventoryParam.StoreId);
+                values = values.Where(x => x.Inventory.StoreId == exportInventoryParam.StoreId);
             }
 
             if (exportInventoryParam.FromDate != null && exportInventoryParam.ToDate != null)
@@ -72,7 +72,7 @@ namespace LOSMST.Business.Service
                 DateTime toDate = DateTime.ParseExact(toDateStr, "MM/dd/yyyy HH:mm:ss",
                                            System.Globalization.CultureInfo.InvariantCulture);
                 values = values
-                    .Where(x => x.ExportInventory.ExportDate >= exportInventoryParam.FromDate && x.ExportInventory.ExportDate <= exportInventoryParam.ToDate);
+                    .Where(x => x.Inventory.ExportDate >= exportInventoryParam.FromDate && x.Inventory.ExportDate <= exportInventoryParam.ToDate);
             }
 
             if (!string.IsNullOrWhiteSpace(exportInventoryParam.sort))
@@ -81,15 +81,15 @@ namespace LOSMST.Business.Service
                 {
                     case "id":
                         if (exportInventoryParam.dir == "asc")
-                            values = values.OrderBy(d => d.ExportInventory.Id);
+                            values = values.OrderBy(d => d.Inventory.Id);
                         else if (exportInventoryParam.dir == "desc")
-                            values = values.OrderByDescending(d => d.ExportInventory.Id);
+                            values = values.OrderByDescending(d => d.Inventory.Id);
                         break;
                     case "exportDate":
                         if (exportInventoryParam.dir == "asc")
-                            values = values.OrderBy(d => d.ExportInventory.ExportDate);
+                            values = values.OrderBy(d => d.Inventory.ExportDate);
                         else if (exportInventoryParam.dir == "desc")
-                            values = values.OrderByDescending(d => d.ExportInventory.ExportDate);
+                            values = values.OrderByDescending(d => d.Inventory.ExportDate);
                         break;
                 }
             }

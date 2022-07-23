@@ -9,7 +9,7 @@ namespace LOSMST.Models.Helper.SearchingModel
 {
     public class ImportInventoryWithStoreSupplyViewModel
     {
-        public ImportInventory ImportInventory { get; set; }
+        public ImportInventory Inventory { get; set; }
         public Store StoreSupply { get; set; }
     }
 }
