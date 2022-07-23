@@ -49,8 +49,8 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
             List<PriceDetail> priceDetails = new List<PriceDetail>();
 
-            var filePath = fileUrl + "\\" + fileName;
-            FileInfo fileInfo = new FileInfo(filePath);
+            //var filePath = fileUrl + "\\" + fileName;
+            FileInfo fileInfo = new FileInfo(fileUrl);
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (ExcelPackage package = new ExcelPackage(fileInfo))
             {

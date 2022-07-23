@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.OleDb;
 using System.Net.Http.Headers;
 using LOSMST.Business.Service;
+using LOSMST.Models.Helper.InsertHelper;
 
 namespace LOSMST.API.Controllers
 {
@@ -21,9 +22,15 @@ namespace LOSMST.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult ImportPrice(string fileUrl, string fileName)
+        public IActionResult ImportPrice([FromForm] FileModel file)
         {
-            var data = _priceService.ImportPrice(fileUrl, fileName);
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", file.FileName);
+
+            using (Stream stream = new FileStream(path, FileMode.Create))
+            {
+                file.FormFile.CopyTo(stream);
+            }
+            var data = _priceService.ImportPrice(path, file.FileName);
             return Ok(data);
         }
     }
