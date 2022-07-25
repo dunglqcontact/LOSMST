@@ -10,6 +10,6 @@ namespace LOSMST.Models.Helper.SearchingModel
     public class ExportInventoryWithStoreSupplyViewModel
     {
         public ExportInventory Inventory { get; set; }
-        public Store StoreRequest { get; set; }
+        public Store OtherStore { get; set; }
     }
 }

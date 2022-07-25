@@ -36,7 +36,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                 var store = _dbContext.Stores.FirstOrDefault(x => x.Code == item.Inventory.ExportStoreCode);
                 if (store != null)
                 {
-                    item.StoreSupply = store;
+                    item.OtherStore = store;
                 }
             }
             return importInventoryWithStoreSupplyViewModels;
