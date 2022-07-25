@@ -24,7 +24,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
         public Price ImportPriceToExcel(string fileUrl, string fileName)
         {
-            DateTime currentDate = DateTime.Now;
+            DateTime currentDate = DateTime.Now.AddHours(7);
             var dateString = currentDate.ToString("yyMMdd");
 
             string countOrderEachDate = "00.##";

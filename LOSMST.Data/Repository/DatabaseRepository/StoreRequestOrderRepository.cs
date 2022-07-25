@@ -23,7 +23,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
         // Generate Store Request Order Id template
         static string StoreRequestOrderIdTempGen(StoreRequestOrderInsertModel storeRequestOrderInsert)
         {
-            DateTime orderDateTime = DateTime.Now;
+            DateTime orderDateTime = DateTime.Now.AddHours(7);
             var dateString = orderDateTime.ToString("yyMMdd");
 
             string storeRequestId = "000.##";
@@ -223,7 +223,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                             }
                         }
 
-                        DateTime orderDateTime = DateTime.Now;
+                        DateTime orderDateTime = DateTime.Now.AddHours(7);
                         var dateString = orderDateTime.ToString("yyMMdd");
 
                         string storeIdFormat = "00.##";
@@ -278,7 +278,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
         public bool FinishStoreRequestOrder(string storeRequestOrderId)
         {
-            DateTime orderDateTime = DateTime.Now;
+            DateTime orderDateTime = DateTime.Now.AddHours(7);
             var dateString = orderDateTime.ToString("yyMMdd");
             var storeRequestOrder = _dbContext.StoreRequestOrders.Include(x => x.ProductStoreRequestDetails).FirstOrDefault(x => x.Id == storeRequestOrderId);
             if (storeRequestOrder != null)

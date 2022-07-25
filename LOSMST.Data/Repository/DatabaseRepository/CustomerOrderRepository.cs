@@ -23,7 +23,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
         public CustomerOrder InsertOrder(CustomerOrderInsertModel customerOrderInsert)
         {
-            DateTime orderDateTime = DateTime.Now;
+            DateTime orderDateTime = DateTime.Now.AddHours(7);
             DateTime estimateDeliveryDate = orderDateTime.AddDays(1);
             var dateString = orderDateTime.ToString("yyMMdd");
 
@@ -100,7 +100,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             customerOrder.EstimatedReceiveDate = estimatedReceiveDateStr;
             _dbContext.CustomerOrders.Update(customerOrder);
 
-            DateTime receiveDate = DateTime.Now;
+            DateTime receiveDate = DateTime.Now.AddHours(7);
             var dateString = receiveDate.ToString("yyMMdd");
 
             string storeIdFormat = "00.##";
@@ -155,7 +155,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
         public void FinishCustomerOrder(string customerOrderId, int staffAccountId)
         {
-            DateTime receiveDate = DateTime.Now;
+            DateTime receiveDate = DateTime.Now.AddHours(7);
             var dateString = receiveDate.ToString("yyMMdd");
             var customerOrder = _dbContext.CustomerOrders.Include(x => x.CustomerOrderDetails).FirstOrDefault(x => x.Id == customerOrderId);
             customerOrder.StatusId = "2.3";
