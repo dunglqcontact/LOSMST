@@ -32,6 +32,7 @@ namespace LOSMST.Business.Service
                 foreach (var item in import.Inventory.ImportInventoryDetails)
                 {
                     item.ProductDetail.ImportInventoryDetails = null;
+                    item.ProductDetail.Product.ProductDetails = null;
                 }
             }
 

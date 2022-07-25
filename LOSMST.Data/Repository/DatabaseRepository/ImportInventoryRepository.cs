@@ -24,7 +24,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
         public IEnumerable<ImportInventoryWithStoreSupplyViewModel> GetImportInventoryWithStoreSupply()
         {
             List<ImportInventoryWithStoreSupplyViewModel> importInventoryWithStoreSupplyViewModels = new List<ImportInventoryWithStoreSupplyViewModel>();
-            var importInventories = _dbContext.ImportInventories.Include("ImportInventoryDetails.ProductDetail").Include(x => x.Store);
+            var importInventories = _dbContext.ImportInventories.Include("ImportInventoryDetails.ProductDetail.Product").Include(x => x.Store);
             foreach (var importInventory in importInventories)
             {
                 ImportInventoryWithStoreSupplyViewModel inventoryWithStoreSupplyViewModel = new ImportInventoryWithStoreSupplyViewModel();
