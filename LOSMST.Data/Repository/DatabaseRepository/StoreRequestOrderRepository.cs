@@ -113,7 +113,8 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
                         var cartList = CreateCartList(storeRequestOrderInsert, storeRequestOrderId);*/
 
-            StoreRequestOrder storeRequestOrder = new StoreRequestOrder(storeRequestOrderId,
+            StoreRequestOrder storeRequestOrder = new StoreRequestOrder(orderDateTime,
+                                                            storeRequestOrderId,
                                                             storeRequestOrderInsert.StoreRequestId,
                                                             storeRequestOrderInsert.StoreSupplyCode,
                                                             cartList

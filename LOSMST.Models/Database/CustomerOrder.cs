@@ -10,13 +10,14 @@ namespace LOSMST.Models.Database
             CustomerOrderDetails = new HashSet<CustomerOrderDetail>();
         }
 
-        public CustomerOrder(string id, double totalPrice, int storeId, int customerAccountId, ICollection<CustomerOrderDetail> customerOrderDetails)
+        public CustomerOrder(string id, double totalPrice, int storeId, int customerAccountId, ICollection<CustomerOrderDetail> customerOrderDetails, DateTime orderDate)
         {
             Id = id;
             TotalPrice = totalPrice;
             StoreId = storeId;
             CustomerAccountId = customerAccountId;
             CustomerOrderDetails = customerOrderDetails;
+            OrderDate = OrderDate;
         }
 
         public string Id { get; set; } = null!;

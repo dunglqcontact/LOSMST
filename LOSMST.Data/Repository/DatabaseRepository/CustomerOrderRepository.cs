@@ -60,7 +60,8 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                                                             customerOrderInsert.TotalPrice,
                                                             customerOrderInsert.StoreId,
                                                             customerOrderInsert.CustomerId,
-                                                            cartList
+                                                            cartList,
+                                                            orderDateTime
                                                             );
             _dbContext.Set<CustomerOrder>().Add(customerOrder);
             return customerOrder;
