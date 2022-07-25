@@ -70,7 +70,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
         public void InsertStoreRequestOrder(StoreRequestOrderInsertModel storeRequestOrderInsert)
         {
-            DateTime orderDateTime = DateTime.Now;
+            DateTime orderDateTime = DateTime.Now.AddHours(7);
             var dateString = orderDateTime.ToString("yyMMdd");
 
             string storeRequestId = "00.##";
