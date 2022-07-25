@@ -23,7 +23,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
         public IEnumerable<ExportInventoryWithStoreSupplyViewModel> GetExportInventoryWithStoreRequest()
         {
             List<ExportInventoryWithStoreSupplyViewModel> exportInventoryWithStoreSupplyViewModels = new List<ExportInventoryWithStoreSupplyViewModel>();
-            var exportInventories = _dbContext.ExportInventories.Include("ExportInventoryDetails.ProductDetail").Include(x => x.Store);
+            var exportInventories = _dbContext.ExportInventories.Include("ExportInventoryDetails.ProductDetail.Product").Include(x => x.Store);
             foreach (var exportInventory in exportInventories)
             {
                 ExportInventoryWithStoreSupplyViewModel exportWithStoreSupplyViewModel = new ExportInventoryWithStoreSupplyViewModel();

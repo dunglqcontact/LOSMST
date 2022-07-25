@@ -31,6 +31,7 @@ namespace LOSMST.Business.Service
                 foreach (var item in inventory.Inventory.ExportInventoryDetails)
                 {
                     item.ProductDetail.ExportInventoryDetails = null;
+                    item.ProductDetail.Product.ProductDetails = null;
                 }
             }
             if (exportInventoryParam.Id != null)
