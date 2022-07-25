@@ -14,5 +14,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
         public IEnumerable<ProductDetail> GetProductDetailWithPrice(string includeProperties = null);
         public IEnumerable<ProductDetail> GetProductDetailByListId(List<string> listIdString);
         public IEnumerable<ProductDetail> GetProductDetailByListIdStoreManager(List<string> listIdString);
+        public IEnumerable<ProductDetail> GetProductDetailAllWithPrice();
     }
 }

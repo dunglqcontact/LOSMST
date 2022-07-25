@@ -68,6 +68,20 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             return data;
         }
 
+        public IEnumerable<ProductDetail> GetProductDetailAllWithPrice()
+        {
+            var price = _dbContext.Prices.FirstOrDefault(x => x.StatusId == "1.1");
+
+            var data = _dbContext.ProductDetails
+                            .Where(x => x.StatusId == "3.1")
+                            .Include(x => x.PriceDetails.Where(x => x.PriceId == price.Id)).Include(x => x.Product).Include(x => x.Package);
+            foreach (var item in data)
+            {
+                var priceDetail = item.PriceDetails;
+            }
+            return data;
+        }
+
         public IEnumerable<ProductDetail> GetProductDetailByListIdStoreManager(List<string> listIdString)
         {
             var data = _dbContext.ProductDetails.Where(x => x.StatusId == "3.1" && listIdString.Contains(x.Id) && x.PriceDetails.Count != 0)

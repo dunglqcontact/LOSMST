@@ -53,6 +53,23 @@ namespace LOSMST.API.Controllers
             return Ok(metadata);
         }
 
+        [HttpGet("all-product-detail-price")]
+        public IActionResult GetAllProductDetailWithPrice([FromQuery] ProductDetailParameter productDetailParam, [FromQuery] PagingParameter paging)
+        {
+            var data = _productDetailService.GetAllProductDetailWithPrice(productDetailParam, paging);
+            var metadata = new
+            {
+                data,
+                data.TotalCount,
+                data.PageSize,
+                data.CurrentPage,
+                data.TotalPages,
+                data.HasNext,
+                data.HasPrevious
+            };
+            return Ok(metadata);
+        }
+
         [HttpPost("cart")]
         public IActionResult GetProductInCart([FromBody] ListIdString listIdString,[FromQuery] ProductDetailParameter productDetailParam, [FromQuery] PagingParameter paging)
         {
