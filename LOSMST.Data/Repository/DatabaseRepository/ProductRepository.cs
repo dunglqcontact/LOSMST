@@ -22,11 +22,8 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
         {
             var data = _dbContext.Prices.FirstOrDefault(x => x.StatusId == "1.1");
             var result = _dbContext.PriceDetails.Where(x => x.PriceId == data.Id);
-            var values = result.Where(x => x.ProductDetail.ProductId == productId);
-            foreach (var item in values)
-            {
-                var bc = item;
-            }
+            var values = result.Where(x => x.ProductDetail.ProductId == productId && x.ProductDetail.StatusId == "3.1");
+
             return values;
         }
 
