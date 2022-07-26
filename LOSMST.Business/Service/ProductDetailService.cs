@@ -148,6 +148,18 @@ namespace LOSMST.Business.Service
             {
                 values = values.Where(x => x.PackageId == productDetailParam.PackageId);
             }
+            if (!string.IsNullOrWhiteSpace(productDetailParam.ProductName))
+            {
+                values = values.Where(x => x.Product.Name == productDetailParam.ProductName);
+            }
+            if (productDetailParam.CategoryId != null)
+            {
+                values = values.Where(x => x.Product.CategoryId == productDetailParam.CategoryId);
+            }
+            if (!string.IsNullOrWhiteSpace(productDetailParam.StatusId))
+            {
+                values = values.Where(x => x.StatusId == productDetailParam.StatusId);
+            }
             if (!string.IsNullOrWhiteSpace(productDetailParam.sort))
             {
                 switch (productDetailParam.sort)
@@ -232,6 +244,18 @@ namespace LOSMST.Business.Service
             if (!string.IsNullOrWhiteSpace(productDetailParam.PackageId))
             {
                 values = values.Where(x => x.PackageId == productDetailParam.PackageId);
+            }
+            if (!string.IsNullOrWhiteSpace(productDetailParam.ProductName))
+            {
+                values = values.Where(x => x.Product.Name == productDetailParam.ProductName);
+            }
+            if (productDetailParam.CategoryId != null)
+            {
+                values = values.Where(x => x.Product.CategoryId == productDetailParam.CategoryId);
+            }
+            if (!string.IsNullOrWhiteSpace(productDetailParam.StatusId))
+            {
+                values = values.Where(x => x.StatusId == productDetailParam.StatusId);
             }
             if (!string.IsNullOrWhiteSpace(productDetailParam.sort))
             {
