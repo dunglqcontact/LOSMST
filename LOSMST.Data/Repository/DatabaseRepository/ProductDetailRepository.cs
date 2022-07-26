@@ -73,7 +73,6 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             var price = _dbContext.Prices.FirstOrDefault(x => x.StatusId == "1.1");
 
             var data = _dbContext.ProductDetails
-                            .Where(x => x.StatusId == "3.1")
                             .Include(x => x.PriceDetails.Where(x => x.PriceId == price.Id)).Include(x => x.Product).Include(x => x.Package);
             foreach (var item in data)
             {

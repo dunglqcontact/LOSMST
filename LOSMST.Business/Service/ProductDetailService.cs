@@ -113,7 +113,6 @@ namespace LOSMST.Business.Service
                 item.Package.ProductDetails = null;
                 item.Product.ProductDetails = null;
             }
-            values = values.Where(x => x.StatusId == "3.1");
             foreach (var productDetail in values)
             {
                 if (productDetail.PriceDetails != null)
@@ -150,7 +149,7 @@ namespace LOSMST.Business.Service
             }
             if (!string.IsNullOrWhiteSpace(productDetailParam.ProductName))
             {
-                values = values.Where(x => x.Product.Name == productDetailParam.ProductName);
+                values = values.Where(x => x.Product.Name.Contains(productDetailParam.ProductName, StringComparison.InvariantCultureIgnoreCase));
             }
             if (productDetailParam.CategoryId != null)
             {
@@ -247,7 +246,7 @@ namespace LOSMST.Business.Service
             }
             if (!string.IsNullOrWhiteSpace(productDetailParam.ProductName))
             {
-                values = values.Where(x => x.Product.Name == productDetailParam.ProductName);
+                values = values.Where(x => x.Product.Name.Contains(productDetailParam.ProductName, StringComparison.InvariantCultureIgnoreCase));
             }
             if (productDetailParam.CategoryId != null)
             {
