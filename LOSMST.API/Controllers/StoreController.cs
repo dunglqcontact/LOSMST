@@ -35,6 +35,23 @@ namespace LOSMST.API.Controllers
             return Ok(metadata);
         }
 
+        [HttpGet("store-sort")]
+        public IActionResult GetAllStoresSort([FromQuery] StoreParameter storeParam, [FromQuery] PagingParameter paging)
+        {
+            var data = _storeService.GetAllStoresSort(storeParam, paging);
+            var metadata = new
+            {
+                data,
+                data.TotalCount,
+                data.PageSize,
+                data.CurrentPage,
+                data.TotalPages,
+                data.HasNext,
+                data.HasPrevious
+            };
+            return Ok(metadata);
+        }
+
         [HttpGet("manager-existence")]
         public IActionResult CheckStoreManager(string storeCode, string roleId)
         {

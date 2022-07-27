@@ -44,5 +44,17 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             var store = _dbContext.Stores.FirstOrDefault(s => s.Email == storeEmail && s.StatusId == "1.1");
             return store != null;
         }
+        public IEnumerable<Store> GetStoreSort()
+        {
+            List<Store> data = new List<Store>();
+            var xnbl = _dbContext.Stores.FirstOrDefault(x => x.Code == "XNBL");
+            var storeList = _dbContext.Stores.Where(x => x.Code != "XNBL").OrderBy(x => x.Code);
+            data.Add(xnbl);
+            foreach (var item in storeList)
+            {
+                data.Add(item);
+            }
+            return data;
+        }
     }
 }

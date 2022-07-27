@@ -12,5 +12,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
         public bool CheckStoreManager(string storeCode, string roleId);
         public Store GetCurrentStoreByStoreCode(string storeCode);
         public bool CheckCurrentStoreByStoreEmail(string storeEmail);
+        public IEnumerable<Store> GetStoreSort();
     }
 }
