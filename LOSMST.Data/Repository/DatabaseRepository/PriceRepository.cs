@@ -32,6 +32,8 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             string priceId = dateString + "";
 
             var checkPriceId = _dbContext.Prices.Where(x => x.Id.Contains(priceId));
+            var currentActivePrice = _dbContext.Prices.Include(x => x.PriceDetails).FirstOrDefault(x => x.StatusId == "1.1");
+
             if (!IEnumerableCheckNull.IsAny(checkPriceId))
             {
                 int count = 1;
@@ -49,7 +51,6 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
             List<PriceDetail> priceDetails = new List<PriceDetail>();
 
-            //var filePath = fileUrl + "\\" + fileName;
             FileInfo fileInfo = new FileInfo(fileUrl);
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (ExcelPackage package = new ExcelPackage(fileInfo))
@@ -64,15 +65,26 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                     {
                         if(col == 1)
                         {
-                            priceDetail.ProductDetailId = worksheet.Cells[row,col].Value.ToString();
+                            if (worksheet.Cells[row, col].Value == null)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                priceDetail.ProductDetailId = worksheet.Cells[row, col].Value.ToString();
+                            }
                         }
                         if(col == 6)
                         {
-                            priceDetail.RetailPrice = double.Parse(worksheet.Cells[row, col].Value.ToString());
+                            var text = worksheet.Cells[row, col].Value.ToString();
+                            string numeric = new String(text.Where(Char.IsDigit).ToArray());
+                            priceDetail.RetailPrice = double.Parse(numeric);
                         }
                         if (col == 7)
                         {
-                            priceDetail.WholesalePrice = double.Parse(worksheet.Cells[row, col].Value.ToString());
+                            var text = worksheet.Cells[row, col].Value.ToString();
+                            string numeric = new String(text.Where(Char.IsDigit).ToArray());
+                            priceDetail.WholesalePrice = double.Parse(numeric);
                         }
                         if (priceDetail.ProductDetailId != null
                             && priceDetail.RetailPrice != 0
@@ -81,8 +93,33 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                             priceDetail.PriceId = priceDetail.ProductDetailId.ToString();
                         }
                     }
-                    priceDetails.Add(priceDetail);
+                    if (priceDetail.PriceId == null)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        priceDetails.Add(priceDetail);
+                    }
                 }
+            }
+            if (currentActivePrice != null)
+            {
+                foreach (var activePrice in currentActivePrice.PriceDetails)
+                {
+                    var checkPriceExisted = priceDetails.FirstOrDefault(x => x.ProductDetailId == activePrice.ProductDetailId);
+                    if (checkPriceExisted == null)
+                    {
+                        PriceDetail newPriceDetail = new PriceDetail();
+                        newPriceDetail.ProductDetailId = activePrice.ProductDetailId;
+                        newPriceDetail.RetailPrice = activePrice.RetailPrice;
+                        newPriceDetail.WholesalePrice = activePrice.WholesalePrice;
+                        priceDetails.Add(newPriceDetail);
+                    }
+                }
+                currentActivePrice.StatusId = "1.2";
+                currentActivePrice.EndDate = currentDate;
+                _dbContext.Prices.Update(currentActivePrice);
             }
             Price price = new Price();
             price.Id = priceId;
