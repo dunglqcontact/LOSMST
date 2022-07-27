@@ -65,6 +65,24 @@ namespace LOSMST.Business.Service
             {
                 values = values.Where(x => x.StoreSupplyCode == storeRequestOrderParam.StoreSupplyCode);
             }
+            if (!string.IsNullOrWhiteSpace(storeRequestOrderParam.sort))
+            {
+                switch (storeRequestOrderParam.sort)
+                {
+                    case "id":
+                        if (storeRequestOrderParam.dir == "asc")
+                            values = values.OrderBy(d => d.Id);
+                        else if (storeRequestOrderParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.Id);
+                        break;
+                    case "request-date":
+                        if (storeRequestOrderParam.dir == "asc")
+                            values = values.OrderBy(d => d.RequestDate);
+                        else if (storeRequestOrderParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.RequestDate);
+                        break;
+                }
+            }
 
             return PagedList<StoreRequestOrder>.ToPagedList(values.AsQueryable(),
                 paging.PageNumber,
