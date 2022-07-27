@@ -128,6 +128,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             var data = _dbContext.StoreRequestOrders.FirstOrDefault(x => x.Id == id);
             data.StatusId = "2.5";
             data.Reason = reason;
+            data.ReceiveDate = DateTime.Now.AddHours(7);
             _dbContext.StoreRequestOrders.Update(data);
         }
 
@@ -152,6 +153,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                     _dbContext.StoreProductDetails.Update(storeInventory);
                 }
             }
+            storeRequestOrder.ReceiveDate = DateTime.Now.AddHours(7);
             _dbContext.StoreRequestOrders.Update(storeRequestOrder);
         }
 
