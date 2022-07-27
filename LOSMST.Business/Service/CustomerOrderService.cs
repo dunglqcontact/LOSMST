@@ -108,6 +108,12 @@ namespace LOSMST.Business.Service
                         else if (customerParam.dir == "desc")
                             values = values.OrderByDescending(d => d.Id);
                         break;
+                    case "order-date":
+                        if (customerParam.dir == "asc")
+                            values = values.OrderBy(d => d.OrderDate);
+                        else if (customerParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.OrderDate);
+                        break;
                 }
             }
 
