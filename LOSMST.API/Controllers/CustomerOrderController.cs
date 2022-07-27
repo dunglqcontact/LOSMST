@@ -71,7 +71,7 @@ namespace LOSMST.API.Controllers
 
         public IActionResult ApproveCustomerOrder([FromBody] CustomerOrder customerOrder)
         {
-            if (_customerOrderService.ApproveCustomerOrder(customerOrder.Id, customerOrder.EstimatedReceiveDate))
+            if (_customerOrderService.ApproveCustomerOrder(customerOrder.Id, customerOrder.EstimatedReceiveDate, customerOrder.ManagerAccountId))
             {
                 return Ok();
             }

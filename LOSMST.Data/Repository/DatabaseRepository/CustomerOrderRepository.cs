@@ -74,7 +74,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             data.Reason = reason;
             _dbContext.CustomerOrders.Update(data);
         }
-        public void ApproveCustomerOrder(string customerOrderId, DateTime? estimatedReceiveDateStr)
+        public void ApproveCustomerOrder(string customerOrderId, DateTime? estimatedReceiveDateStr, int? managerAccountId)
         {
            /* DateTime myDate = DateTime.ParseExact(estimatedReceiveDateStr, "yyyy-MM-dd hh:mm tt",
                                        System.Globalization.CultureInfo.InvariantCulture);*/
@@ -98,6 +98,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             }
             customerOrder.StatusId = "2.2";
             customerOrder.EstimatedReceiveDate = estimatedReceiveDateStr;
+            customerOrder.ManagerAccountId = managerAccountId;
             _dbContext.CustomerOrders.Update(customerOrder);
 
             DateTime receiveDate = DateTime.Now.AddHours(7);
