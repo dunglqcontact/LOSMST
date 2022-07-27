@@ -17,7 +17,7 @@ namespace LOSMST.Models.Database
             StoreId = storeId;
             CustomerAccountId = customerAccountId;
             CustomerOrderDetails = customerOrderDetails;
-            OrderDate = OrderDate;
+            OrderDate = orderDate;
         }
 
         public string Id { get; set; } = null!;
