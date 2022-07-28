@@ -72,6 +72,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             var data = _dbContext.CustomerOrders.FirstOrDefault(x => x.Id == id);
             data.StatusId = "2.5";
             data.Reason = reason;
+            data.ReceiveDate = DateTime.Now.AddHours(7);
             _dbContext.CustomerOrders.Update(data);
         }
         public void ApproveCustomerOrder(string customerOrderId, DateTime? estimatedReceiveDateStr, int? managerAccountId)
@@ -151,6 +152,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             var data = _dbContext.CustomerOrders.FirstOrDefault(x => x.Id == id);
             data.StatusId = "2.4";
             data.Reason = reason;
+            data.ReceiveDate = DateTime.Now.AddHours(7);
             _dbContext.CustomerOrders.Update(data);
         }
 
