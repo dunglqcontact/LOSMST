@@ -330,6 +330,11 @@ namespace LOSMST.Business.Service
             {
                 values = values.Where(x => x.Id == productDetailParam.Id);
             }
+
+            if (productDetailParam.CategoryId != null)
+            {
+                values = values.Where(x => x.Product.CategoryId == productDetailParam.CategoryId);
+            }
             if (productDetailParam.ProductId != null)
             {
                 values = values.Where(x => x.ProductId == productDetailParam.ProductId);
