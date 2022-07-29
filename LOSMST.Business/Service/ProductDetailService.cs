@@ -193,6 +193,12 @@ namespace LOSMST.Business.Service
                         else if (productDetailParam.dir == "desc")
                             values = values.OrderByDescending(d => d.WholeSalePriceQuantity);
                         break;
+                    case "category-id":
+                        if (productDetailParam.dir == "asc")
+                            values = values.OrderBy(d => d.Product.CategoryId);
+                        else if (productDetailParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.Product.CategoryId);
+                        break;
                 }
             }
 
@@ -289,6 +295,12 @@ namespace LOSMST.Business.Service
                             values = values.OrderBy(d => d.WholeSalePriceQuantity);
                         else if (productDetailParam.dir == "desc")
                             values = values.OrderByDescending(d => d.WholeSalePriceQuantity);
+                        break;
+                    case "category-id":
+                        if (productDetailParam.dir == "asc")
+                            values = values.OrderBy(d => d.Product.CategoryId);
+                        else if (productDetailParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.Product.CategoryId);
                         break;
                 }
             }

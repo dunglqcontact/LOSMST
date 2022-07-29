@@ -26,10 +26,10 @@ namespace LOSMST.Business.Service
             {
                 if (customerParam.includeProperties.Contains("CustomerAccount"))
                 {
-                    if (!string.IsNullOrEmpty(customerParam.CustomerAccountName))
+                    /*if (!string.IsNullOrEmpty(customerParam.CustomerAccountName))
                     {
-                        values = values.Where(x => x.CustomerAccount.Fullname.Contains(customerParam.CustomerAccountName,  StringComparison.InvariantCultureIgnoreCase));
-                    }
+                        values = values.Where(x => x.CustomerAccount.Fullname == "Bảo Khang");
+                    }*/
                 }
             }
             foreach (var item in values)
@@ -84,7 +84,7 @@ namespace LOSMST.Business.Service
                 DateTime toDate = DateTime.ParseExact(toDateStr, "MM/dd/yyyy HH:mm:ss",
                                            System.Globalization.CultureInfo.InvariantCulture);
                 values = values
-                    .Where(x => x.ReceiveDate >= customerParam.FromDate && x.ReceiveDate <= customerParam.ToDate);
+                    .Where(x => x.ReceiveDate >= fromDate && x.ReceiveDate <= toDate);
             }
             if (!string.IsNullOrWhiteSpace(customerParam.StatusId))
             {

@@ -255,7 +255,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
                         List<ExportInventoryDetail> exportInventoryDetails = new List<ExportInventoryDetail>();
 
-                        foreach (var item in storeRequestOrder.ProductStoreRequestDetails)
+                        foreach (var item in updatelist)
                         {
                             ExportInventoryDetail exportInventoryDetail = new ExportInventoryDetail();
 
