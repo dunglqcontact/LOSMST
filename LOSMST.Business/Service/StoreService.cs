@@ -202,6 +202,11 @@ namespace LOSMST.Business.Service
             var values = _storeRepository.GetCurrentStoreByStoreCode(storeCode);
             return values;
         }
+        public IEnumerable<string> GetActiveStoreCodeWithSorting()
+        {
+            var values = _storeRepository.GetActiveStoreCodeWithSorting();
+            return values;
+        }
 
         public bool CheckCurrentStoreByStoreEmail(string storeEmail)
         {

@@ -13,5 +13,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
         public Store GetCurrentStoreByStoreCode(string storeCode);
         public bool CheckCurrentStoreByStoreEmail(string storeEmail);
         public IEnumerable<Store> GetStoreSort();
+        public IEnumerable<String> GetActiveStoreCodeWithSorting();
     }
 }

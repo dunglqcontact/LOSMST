@@ -56,5 +56,16 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             }
             return data;
         }
+
+        public IEnumerable<string> GetActiveStoreCodeWithSorting()
+        {
+            var storeList = _dbContext.Stores.Where(x => x.StatusId == "1.1").OrderBy(x => x.Code);
+            List<string> storeCodes = new List<string>();
+            foreach (var store in storeList)
+            {
+                storeCodes.Add(store.Code);
+            }
+            return storeCodes;
+        }
     }
 }

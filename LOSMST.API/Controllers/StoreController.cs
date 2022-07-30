@@ -73,6 +73,13 @@ namespace LOSMST.API.Controllers
             return Ok(data);
         }
 
+        [HttpGet("admin-store-code")]
+        public IActionResult GetActiveStoreCodeWithSorting()
+        {
+            var data = _storeService.GetActiveStoreCodeWithSorting();
+            return Ok(data);
+        }
+
         [HttpPost]
         public IActionResult AddStore(Store store)
         {
