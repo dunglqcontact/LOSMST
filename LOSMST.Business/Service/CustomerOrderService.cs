@@ -26,10 +26,10 @@ namespace LOSMST.Business.Service
             {
                 if (customerParam.includeProperties.Contains("CustomerAccount"))
                 {
-                    /*if (!string.IsNullOrEmpty(customerParam.CustomerAccountName))
+                    if (!string.IsNullOrEmpty(customerParam.CustomerAccountName))
                     {
-                        values = values.Where(x => x.CustomerAccount.Fullname == "Bảo Khang");
-                    }*/
+                        values = values.Where(x => x.CustomerAccount.Fullname != null && x.CustomerAccount.Fullname.Contains(customerParam.CustomerAccountName,StringComparison.InvariantCultureIgnoreCase));
+                    }
                 }
             }
             foreach (var item in values)
