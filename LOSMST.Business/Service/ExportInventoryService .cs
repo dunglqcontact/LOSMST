@@ -73,7 +73,7 @@ namespace LOSMST.Business.Service
                 DateTime toDate = DateTime.ParseExact(toDateStr, "MM/dd/yyyy HH:mm:ss",
                                            System.Globalization.CultureInfo.InvariantCulture);
                 values = values
-                    .Where(x => x.Inventory.ExportDate >= exportInventoryParam.FromDate && x.Inventory.ExportDate <= exportInventoryParam.ToDate);
+                    .Where(x => x.Inventory.ExportDate >= fromDate && x.Inventory.ExportDate <= toDate);
             }
 
             if (!string.IsNullOrWhiteSpace(exportInventoryParam.sort))

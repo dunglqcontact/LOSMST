@@ -16,5 +16,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
         public void ApproveCustomerOrder(string customerOrderId, DateTime? estimatedReceiveDateStr, int? managerAccountId);
         public void DenyCustomerOrder(string id, string reason);
         public void FinishCustomerOrder(string customerOrderId, int staffAccountId);
+        public IEnumerable<Account> GetCustomerAccountByName(string fullname);
     }
 }

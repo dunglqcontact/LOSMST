@@ -75,6 +75,13 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             data.ReceiveDate = DateTime.Now.AddHours(7);
             _dbContext.CustomerOrders.Update(data);
         }
+
+        public IEnumerable<Account> GetCustomerAccountByName(string fullname)
+        {
+            var values = _dbContext.Accounts.Where(x => x.Fullname.Contains(fullname, StringComparison.InvariantCultureIgnoreCase));
+            return values;
+        }
+
         public void ApproveCustomerOrder(string customerOrderId, DateTime? estimatedReceiveDateStr, int? managerAccountId)
         {
            /* DateTime myDate = DateTime.ParseExact(estimatedReceiveDateStr, "yyyy-MM-dd hh:mm tt",
