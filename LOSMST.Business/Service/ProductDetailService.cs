@@ -307,9 +307,9 @@ namespace LOSMST.Business.Service
             return values;
         }
 
-        public PagedList<ProductDetail> GetProductDetailWithPrice(ProductDetailParameter productDetailParam, PagingParameter paging)
+        public async Task<PagedList<ProductDetail>> GetProductDetailWithPrice(ProductDetailParameter productDetailParam, PagingParameter paging)
         {
-            var values = _productDetailRepository.GetProductDetailWithPrice();
+            var values = await _productDetailRepository.GetProductDetailWithPrice();
             foreach (var item in values)
             {
                 item.Package.ProductDetails = null;
