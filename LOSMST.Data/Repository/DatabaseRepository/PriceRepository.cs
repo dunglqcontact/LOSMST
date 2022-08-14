@@ -10,12 +10,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 
 namespace LOSMST.DataAccess.Repository.DatabaseRepository
 {
     public class PriceRepository : GeneralRepository<Price>, IPriceRepository
     {
         private readonly LOSMSTv01Context _dbContext;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
         public PriceRepository(LOSMSTv01Context dbContext) : base(dbContext)
         {
