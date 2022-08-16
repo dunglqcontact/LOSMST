@@ -20,16 +20,20 @@ namespace LOSMST.Business.Service
             _priceRepository = priceRepository;
         }
 
-        public Price ImportPrice(string fileUrl, string fileName)
+        public IEnumerable<int> ImportPrice(string fileUrl, string fileName)
         {
             try
             {
                 var values = _priceRepository.ImportPriceToExcel(fileUrl, fileName);
-                _priceRepository.SaveDbChange();
+                if (values == null)
+                {
+                    _priceRepository.SaveDbChange();
+                    return new List<int> { 0 };
+                }
                 return values;
             }catch (Exception ex)
             {
-                return null;
+                return new List<int> { -1};
             }
         }
     }

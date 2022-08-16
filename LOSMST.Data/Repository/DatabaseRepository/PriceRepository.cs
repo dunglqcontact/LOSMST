@@ -24,8 +24,9 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             _dbContext = dbContext;
         }
 
-        public Price ImportPriceToExcel(string fileUrl, string fileName)
+        public IEnumerable<int> ImportPriceToExcel(string fileUrl, string fileName)
         {
+            List<int> errorRowList = new List<int>();
             DateTime currentDate = DateTime.Now.AddHours(7);
             var dateString = currentDate.ToString("yyMMdd");
 
@@ -69,6 +70,11 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                         {
                             if (worksheet.Cells[row, col].Value == null)
                             {
+                                var checkErrorExisted = errorRowList.FirstOrDefault(x => x == row);
+                                if (checkErrorExisted == 0)
+                                {
+                                    errorRowList.Add(row);
+                                }
                                 break;
                             }
                             else
@@ -78,12 +84,30 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                         }
                         if(col == 6)
                         {
+                            if (worksheet.Cells[row, col].Value == null)
+                            {
+                                var checkErrorExisted = errorRowList.FirstOrDefault(x => x == row);
+                                if (checkErrorExisted == 0)
+                                {
+                                    errorRowList.Add(row);
+                                }
+                                break;
+                            }
                             var text = worksheet.Cells[row, col].Value.ToString();
                             string numeric = new String(text.Where(Char.IsDigit).ToArray());
                             priceDetail.RetailPrice = double.Parse(numeric);
                         }
                         if (col == 7)
                         {
+                            if (worksheet.Cells[row, col].Value == null)
+                            {
+                                var checkErrorExisted = errorRowList.FirstOrDefault(x => x == row);
+                                if (checkErrorExisted == 0)
+                                {
+                                    errorRowList.Add(row);
+                                }
+                                break;
+                            }
                             var text = worksheet.Cells[row, col].Value.ToString();
                             string numeric = new String(text.Where(Char.IsDigit).ToArray());
                             priceDetail.WholesalePrice = double.Parse(numeric);
@@ -92,12 +116,12 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                             && priceDetail.RetailPrice != 0
                             && priceDetail.WholesalePrice != 0)
                         {
-                            priceDetail.PriceId = priceDetail.ProductDetailId.ToString();
+                            priceDetail.PriceId = priceId;
                         }
                     }
                     if (priceDetail.PriceId == null)
                     {
-                        break;
+
                     }
                     else
                     {
@@ -105,32 +129,38 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                     }
                 }
             }
-            if (currentActivePrice != null)
+            if (errorRowList.Count() == 0)
             {
-                foreach (var activePrice in currentActivePrice.PriceDetails)
+                if (currentActivePrice != null)
                 {
-                    var checkPriceExisted = priceDetails.FirstOrDefault(x => x.ProductDetailId == activePrice.ProductDetailId);
-                    if (checkPriceExisted == null)
+                    foreach (var activePrice in currentActivePrice.PriceDetails)
                     {
-                        PriceDetail newPriceDetail = new PriceDetail();
-                        newPriceDetail.ProductDetailId = activePrice.ProductDetailId;
-                        newPriceDetail.RetailPrice = activePrice.RetailPrice;
-                        newPriceDetail.WholesalePrice = activePrice.WholesalePrice;
-                        priceDetails.Add(newPriceDetail);
+                        var checkPriceExisted = priceDetails.FirstOrDefault(x => x.ProductDetailId == activePrice.ProductDetailId);
+                        if (checkPriceExisted == null)
+                        {
+                            PriceDetail newPriceDetail = new PriceDetail();
+                            newPriceDetail.ProductDetailId = activePrice.ProductDetailId;
+                            newPriceDetail.RetailPrice = activePrice.RetailPrice;
+                            newPriceDetail.WholesalePrice = activePrice.WholesalePrice;
+                            priceDetails.Add(newPriceDetail);
+                        }
                     }
+                    currentActivePrice.StatusId = "1.2";
+                    currentActivePrice.EndDate = currentDate;
+                    _dbContext.Prices.Update(currentActivePrice);
                 }
-                currentActivePrice.StatusId = "1.2";
-                currentActivePrice.EndDate = currentDate;
-                _dbContext.Prices.Update(currentActivePrice);
+                Price price = new Price();
+                price.Id = priceId;
+                price.StartDate = currentDate;
+                price.PriceDetails = priceDetails;
+
+                _dbContext.Prices.Add(price);
+                return null;
             }
-            Price price = new Price();
-            price.Id = priceId;
-            price.StartDate = currentDate;
-            price.PriceDetails = priceDetails;
-
-            _dbContext.Prices.Add(price);
-
-            return price;
+            else
+            {
+                return errorRowList;
+            }
         }
     }
 }
