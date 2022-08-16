@@ -40,37 +40,7 @@ namespace LOSMST.API.Controllers
             var data = _priceService.ImportPrice(path, file.FileName);
             if (data.Count() != 1)
             {
-                FileInfo fileInfo = new FileInfo(path);
-                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-                ExcelPackage packageSample = new ExcelPackage(fileInfo);
-                ExcelWorksheet worksheetSample = packageSample.Workbook.Worksheets.FirstOrDefault();
-
-
-                await Task.Yield();
-                var list = new List<PriceExportModel>();
-
-                var stream = new MemoryStream();
-
-                using (var package = new ExcelPackage(stream))
-                {
-                    var workSheet = package.Workbook.Worksheets.Add("Bảng giá dầu mỡ nhờn", worksheetSample);
-                    int colCount = workSheet.Dimension.End.Column;
-                    int rowCount = workSheet.Dimension.End.Row;
-                    foreach (var rowItem in data)
-                    {
-                        using (var range = workSheet.Cells[rowItem, 1, rowItem, 7])
-                        {
-                            range.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                            range.Style.Fill.BackgroundColor.SetColor(Color.Red);
-                        }
-                    }
-                    package.Save();
-                }
-                stream.Position = 0;
-                //string excelName = $"Bang gia dau mo nhon {DateTime.Now.ToString("dd_MM_yyyy HHHH_mm_ss")} Error.xlsx";
-                string excelName = $"conchonocanconmeo.xlsx";
-                //return File(stream, "application/octet-stream", excelName);  
-                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+                return BadRequest();
             }
             return Ok(true);
         }
