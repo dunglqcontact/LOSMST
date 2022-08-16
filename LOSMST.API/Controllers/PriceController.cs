@@ -38,7 +38,7 @@ namespace LOSMST.API.Controllers
                 file.FormFile.CopyTo(stream);
             }
             var data = _priceService.ImportPrice(path, file.FileName);
-            if (data.Count() != 1)
+            if (data == false)
             {
                 return BadRequest();
             }

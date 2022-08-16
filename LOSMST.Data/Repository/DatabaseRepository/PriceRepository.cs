@@ -24,9 +24,9 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             _dbContext = dbContext;
         }
 
-        public IEnumerable<int> ImportPriceToExcel(string fileUrl, string fileName)
+        public bool ImportPriceToExcel(string fileUrl, string fileName)
         {
-            List<int> errorRowList = new List<int>();
+            bool flag = true;
             DateTime currentDate = DateTime.Now.AddHours(7);
             var dateString = currentDate.ToString("yyMMdd");
 
@@ -70,11 +70,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                         {
                             if (worksheet.Cells[row, col].Value == null)
                             {
-                                var checkErrorExisted = errorRowList.FirstOrDefault(x => x == row);
-                                if (checkErrorExisted == 0)
-                                {
-                                    errorRowList.Add(row);
-                                }
+                                flag = false;
                                 break;
                             }
                             else
@@ -86,11 +82,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                         {
                             if (worksheet.Cells[row, col].Value == null)
                             {
-                                var checkErrorExisted = errorRowList.FirstOrDefault(x => x == row);
-                                if (checkErrorExisted == 0)
-                                {
-                                    errorRowList.Add(row);
-                                }
+                                flag = false;
                                 break;
                             }
                             var text = worksheet.Cells[row, col].Value.ToString();
@@ -101,11 +93,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                         {
                             if (worksheet.Cells[row, col].Value == null)
                             {
-                                var checkErrorExisted = errorRowList.FirstOrDefault(x => x == row);
-                                if (checkErrorExisted == 0)
-                                {
-                                    errorRowList.Add(row);
-                                }
+                                flag = false;
                                 break;
                             }
                             var text = worksheet.Cells[row, col].Value.ToString();
@@ -129,7 +117,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                     }
                 }
             }
-            if (errorRowList.Count() == 0)
+            if (flag == true)
             {
                 if (currentActivePrice != null)
                 {
@@ -155,11 +143,11 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                 price.PriceDetails = priceDetails;
 
                 _dbContext.Prices.Add(price);
-                return null;
+                return true;
             }
             else
             {
-                return errorRowList;
+                return false;
             }
         }
     }
