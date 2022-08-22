@@ -21,5 +21,25 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             _dbContext = dbContext;
         }
 
+        public IEnumerable<ImportInventoryWithStoreSupplyViewModel> GetImportInventoryWithStoreSupply()
+        {
+            List<ImportInventoryWithStoreSupplyViewModel> importInventoryWithStoreSupplyViewModels = new List<ImportInventoryWithStoreSupplyViewModel>();
+            var importInventories = _dbContext.ImportInventories.Include("ImportInventoryDetails.ProductDetail.Product").Include(x => x.Store);
+            foreach (var importInventory in importInventories)
+            {
+                ImportInventoryWithStoreSupplyViewModel inventoryWithStoreSupplyViewModel = new ImportInventoryWithStoreSupplyViewModel();
+                inventoryWithStoreSupplyViewModel.Inventory = importInventory;
+                importInventoryWithStoreSupplyViewModels.Add(inventoryWithStoreSupplyViewModel);
+            }
+            foreach (var item in importInventoryWithStoreSupplyViewModels)
+            {
+                var store = _dbContext.Stores.FirstOrDefault(x => x.Code == item.Inventory.ExportStoreCode);
+                if (store != null)
+                {
+                    item.OtherStore = store;
+                }
+            }
+            return importInventoryWithStoreSupplyViewModels;
+        }
     }
 }

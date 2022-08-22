@@ -243,6 +243,12 @@ namespace LOSMST.DataAccess.Data
 
                 entity.Property(e => e.StoreId).HasColumnName("storeId");
 
+                entity.Property(e => e.StoreImportCode)
+                    .HasMaxLength(4)
+                    .IsUnicode(false)
+                    .HasColumnName("storeImportCode")
+                    .IsFixedLength();
+
                 entity.HasOne(d => d.Store)
                     .WithMany(p => p.ExportInventories)
                     .HasForeignKey(d => d.StoreId)
@@ -293,6 +299,12 @@ namespace LOSMST.DataAccess.Data
                     .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("id")
+                    .IsFixedLength();
+
+                entity.Property(e => e.ExportStoreCode)
+                    .HasMaxLength(4)
+                    .IsUnicode(false)
+                    .HasColumnName("exportStoreCode")
                     .IsFixedLength();
 
                 entity.Property(e => e.ImportDate)
@@ -554,7 +566,7 @@ namespace LOSMST.DataAccess.Data
                 entity.Property(e => e.Quantity).HasColumnName("quantity");
 
                 entity.Property(e => e.StoreRequestOrderId)
-                    .HasMaxLength(15)
+                    .HasMaxLength(14)
                     .IsUnicode(false)
                     .HasColumnName("storeRequestOrderId")
                     .IsFixedLength();
@@ -721,7 +733,7 @@ namespace LOSMST.DataAccess.Data
                 entity.ToTable("StoreRequestOrder");
 
                 entity.Property(e => e.Id)
-                    .HasMaxLength(15)
+                    .HasMaxLength(14)
                     .IsUnicode(false)
                     .HasColumnName("id")
                     .IsFixedLength();

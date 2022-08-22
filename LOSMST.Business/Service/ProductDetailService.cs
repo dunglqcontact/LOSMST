@@ -105,10 +105,211 @@ namespace LOSMST.Business.Service
             paging.PageSize);
         }
 
-
-        public PagedList<ProductDetail> GetProductDetailWithPrice(ProductDetailParameter productDetailParam, PagingParameter paging)
+        public PagedList<ProductDetail> GetAllProductDetailWithPrice(ProductDetailParameter productDetailParam, PagingParameter paging)
         {
-            var values = _productDetailRepository.GetProductDetailWithPrice();
+            var values = _productDetailRepository.GetProductDetailAllWithPrice();
+            foreach (var item in values)
+            {
+                item.Package.ProductDetails = null;
+                item.Product.ProductDetails = null;
+            }
+            foreach (var productDetail in values)
+            {
+                if (productDetail.PriceDetails != null)
+                {
+                    for (int i = 0; i < productDetail.PriceDetails.Count; i++)
+                    {
+                        productDetail.PriceDetails.ElementAt(i).Price = null;
+                    }
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(productDetailParam.includeProperties))
+            {
+                if (productDetailParam.includeProperties.Contains("Product"))
+                {
+                    foreach (var productDetail in values)
+                    {
+                        productDetail.Product.ProductDetails = null;
+                    }
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(productDetailParam.Id))
+            {
+                values = values.Where(x => x.Id == productDetailParam.Id);
+            }
+            if (productDetailParam.ProductId != null)
+            {
+                values = values.Where(x => x.ProductId == productDetailParam.ProductId);
+            }
+            if (!string.IsNullOrWhiteSpace(productDetailParam.PackageId))
+            {
+                values = values.Where(x => x.PackageId == productDetailParam.PackageId);
+            }
+            if (!string.IsNullOrWhiteSpace(productDetailParam.ProductName))
+            {
+                values = values.Where(x => x.Product.Name.Contains(productDetailParam.ProductName, StringComparison.InvariantCultureIgnoreCase));
+            }
+            if (productDetailParam.CategoryId != null)
+            {
+                values = values.Where(x => x.Product.CategoryId == productDetailParam.CategoryId);
+            }
+            if (!string.IsNullOrWhiteSpace(productDetailParam.StatusId))
+            {
+                values = values.Where(x => x.StatusId == productDetailParam.StatusId);
+            }
+            if (!string.IsNullOrWhiteSpace(productDetailParam.sort))
+            {
+                switch (productDetailParam.sort)
+                {
+                    case "Id":
+                        if (productDetailParam.dir == "asc")
+                            values = values.OrderBy(d => d.Id);
+                        else if (productDetailParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.Id);
+                        break;
+                    case "ProductId":
+                        if (productDetailParam.dir == "asc")
+                            values = values.OrderBy(d => d.ProductId);
+                        else if (productDetailParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.ProductId);
+                        break;
+                    case "PackageId":
+                        if (productDetailParam.dir == "asc")
+                            values = values.OrderBy(d => d.PackageId);
+                        else if (productDetailParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.PackageId);
+                        break;
+                    case "Volume":
+                        if (productDetailParam.dir == "asc")
+                            values = values.OrderBy(d => d.Volume);
+                        else if (productDetailParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.Volume);
+                        break;
+                    case "QuantityWholeSalePrice":
+                        if (productDetailParam.dir == "asc")
+                            values = values.OrderBy(d => d.WholeSalePriceQuantity);
+                        else if (productDetailParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.WholeSalePriceQuantity);
+                        break;
+                    case "category-id":
+                        if (productDetailParam.dir == "asc")
+                            values = values.OrderBy(d => d.Product.CategoryId);
+                        else if (productDetailParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.Product.CategoryId);
+                        break;
+                }
+            }
+
+            return PagedList<ProductDetail>.ToPagedList(values.AsQueryable(),
+            paging.PageNumber,
+            paging.PageSize);
+        }
+
+        public IEnumerable<ProductDetail> GetAllProductDetailWithPriceNonPaging(ProductDetailParameter productDetailParam, PagingParameter paging)
+        {
+            var values = _productDetailRepository.GetProductDetailAllWithPrice();
+            foreach (var item in values)
+            {
+                item.Package.ProductDetails = null;
+                item.Product.ProductDetails = null;
+            }
+            values = values.Where(x => x.StatusId == "3.1");
+            foreach (var productDetail in values)
+            {
+                if (productDetail.PriceDetails != null)
+                {
+                    for (int i = 0; i < productDetail.PriceDetails.Count; i++)
+                    {
+                        productDetail.PriceDetails.ElementAt(i).Price = null;
+                    }
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(productDetailParam.includeProperties))
+            {
+                if (productDetailParam.includeProperties.Contains("Product"))
+                {
+                    foreach (var productDetail in values)
+                    {
+                        productDetail.Product.ProductDetails = null;
+                    }
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(productDetailParam.Id))
+            {
+                values = values.Where(x => x.Id == productDetailParam.Id);
+            }
+            if (productDetailParam.ProductId != null)
+            {
+                values = values.Where(x => x.ProductId == productDetailParam.ProductId);
+            }
+            if (!string.IsNullOrWhiteSpace(productDetailParam.PackageId))
+            {
+                values = values.Where(x => x.PackageId == productDetailParam.PackageId);
+            }
+            if (!string.IsNullOrWhiteSpace(productDetailParam.ProductName))
+            {
+                values = values.Where(x => x.Product.Name.Contains(productDetailParam.ProductName, StringComparison.InvariantCultureIgnoreCase));
+            }
+            if (productDetailParam.CategoryId != null)
+            {
+                values = values.Where(x => x.Product.CategoryId == productDetailParam.CategoryId);
+            }
+            if (!string.IsNullOrWhiteSpace(productDetailParam.StatusId))
+            {
+                values = values.Where(x => x.StatusId == productDetailParam.StatusId);
+            }
+            if (!string.IsNullOrWhiteSpace(productDetailParam.sort))
+            {
+                switch (productDetailParam.sort)
+                {
+                    case "Id":
+                        if (productDetailParam.dir == "asc")
+                            values = values.OrderBy(d => d.Id);
+                        else if (productDetailParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.Id);
+                        break;
+                    case "ProductId":
+                        if (productDetailParam.dir == "asc")
+                            values = values.OrderBy(d => d.ProductId);
+                        else if (productDetailParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.ProductId);
+                        break;
+                    case "PackageId":
+                        if (productDetailParam.dir == "asc")
+                            values = values.OrderBy(d => d.PackageId);
+                        else if (productDetailParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.PackageId);
+                        break;
+                    case "Volume":
+                        if (productDetailParam.dir == "asc")
+                            values = values.OrderBy(d => d.Volume);
+                        else if (productDetailParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.Volume);
+                        break;
+                    case "QuantityWholeSalePrice":
+                        if (productDetailParam.dir == "asc")
+                            values = values.OrderBy(d => d.WholeSalePriceQuantity);
+                        else if (productDetailParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.WholeSalePriceQuantity);
+                        break;
+                    case "category-id":
+                        if (productDetailParam.dir == "asc")
+                            values = values.OrderBy(d => d.Product.CategoryId);
+                        else if (productDetailParam.dir == "desc")
+                            values = values.OrderByDescending(d => d.Product.CategoryId);
+                        break;
+                }
+            }
+            return values;
+        }
+
+        public async Task<PagedList<ProductDetail>> GetProductDetailWithPrice(ProductDetailParameter productDetailParam, PagingParameter paging)
+        {
+            var values = await _productDetailRepository.GetProductDetailWithPrice();
             foreach (var item in values)
             {
                 item.Package.ProductDetails = null;
@@ -140,6 +341,11 @@ namespace LOSMST.Business.Service
             if (!string.IsNullOrWhiteSpace(productDetailParam.Id))
             {
                 values = values.Where(x => x.Id == productDetailParam.Id);
+            }
+
+            if (productDetailParam.CategoryId != null)
+            {
+                values = values.Where(x => x.Product.CategoryId == productDetailParam.CategoryId);
             }
             if (productDetailParam.ProductId != null)
             {

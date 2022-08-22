@@ -37,7 +37,7 @@ namespace LOSMST.Business.Service
             }
             if (!string.IsNullOrWhiteSpace(accountParam.Fullname))
             {
-                values = values.Where(x => x.Fullname.Contains(accountParam.Fullname, StringComparison.InvariantCultureIgnoreCase));
+                values = values.Where(x => x.Fullname != null && x.Fullname.Contains(accountParam.Fullname, StringComparison.InvariantCultureIgnoreCase));
             }
             if (accountParam.StoreId != null)
             {

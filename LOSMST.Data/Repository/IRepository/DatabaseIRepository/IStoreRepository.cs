@@ -1,4 +1,5 @@
 ﻿using LOSMST.Models.Database;
+using LOSMST.Models.Helper.SearchingModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
         public bool CheckStoreManager(string storeCode, string roleId);
         public Store GetCurrentStoreByStoreCode(string storeCode);
         public bool CheckCurrentStoreByStoreEmail(string storeEmail);
+        public IEnumerable<Store> GetStoreSort();
+        public IEnumerable<ListStoreCode> GetActiveStoreCodeWithSorting();
     }
 }

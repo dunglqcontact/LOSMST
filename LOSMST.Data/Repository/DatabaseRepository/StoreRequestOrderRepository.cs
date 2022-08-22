@@ -23,7 +23,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
         // Generate Store Request Order Id template
         static string StoreRequestOrderIdTempGen(StoreRequestOrderInsertModel storeRequestOrderInsert)
         {
-            DateTime orderDateTime = DateTime.Now;
+            DateTime orderDateTime = DateTime.Now.AddHours(7);
             var dateString = orderDateTime.ToString("yyMMdd");
 
             string storeRequestId = "000.##";
@@ -70,7 +70,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
         public void InsertStoreRequestOrder(StoreRequestOrderInsertModel storeRequestOrderInsert)
         {
-            DateTime orderDateTime = DateTime.Now;
+            DateTime orderDateTime = DateTime.Now.AddHours(7);
             var dateString = orderDateTime.ToString("yyMMdd");
 
             string storeRequestId = "00.##";
@@ -113,7 +113,8 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
                         var cartList = CreateCartList(storeRequestOrderInsert, storeRequestOrderId);*/
 
-            StoreRequestOrder storeRequestOrder = new StoreRequestOrder(storeRequestOrderId,
+            StoreRequestOrder storeRequestOrder = new StoreRequestOrder(orderDateTime,
+                                                            storeRequestOrderId,
                                                             storeRequestOrderInsert.StoreRequestId,
                                                             storeRequestOrderInsert.StoreSupplyCode,
                                                             cartList
@@ -127,6 +128,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             var data = _dbContext.StoreRequestOrders.FirstOrDefault(x => x.Id == id);
             data.StatusId = "2.5";
             data.Reason = reason;
+            data.ReceiveDate = DateTime.Now.AddHours(7);
             _dbContext.StoreRequestOrders.Update(data);
         }
 
@@ -151,6 +153,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                     _dbContext.StoreProductDetails.Update(storeInventory);
                 }
             }
+            storeRequestOrder.ReceiveDate = DateTime.Now.AddHours(7);
             _dbContext.StoreRequestOrders.Update(storeRequestOrder);
         }
 
@@ -173,7 +176,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             {
                 if(storeRequestOrderInput.ProductStoreRequestDetails != null)
                 {
-                    var storeRequestOrder = _dbContext.StoreRequestOrders.FirstOrDefault(x => x.Id == storeRequestOrderInput.Id);
+                    var storeRequestOrder = _dbContext.StoreRequestOrders.Include(x => x.StoreRequest).FirstOrDefault(x => x.Id == storeRequestOrderInput.Id);
                     var storeSupply = _dbContext.Stores.FirstOrDefault(x => x.Code == storeRequestOrder.StoreSupplyCode && x.StatusId == "1.1");
                     storeRequestOrder.EstimatedReceiveDate = storeRequestOrderInput.EstimatedReceiveDate;
                     storeRequestOrder.StatusId = "2.2";
@@ -222,7 +225,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                             }
                         }
 
-                        DateTime orderDateTime = DateTime.Now;
+                        DateTime orderDateTime = DateTime.Now.AddHours(7);
                         var dateString = orderDateTime.ToString("yyMMdd");
 
                         string storeIdFormat = "00.##";
@@ -252,7 +255,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
                         List<ExportInventoryDetail> exportInventoryDetails = new List<ExportInventoryDetail>();
 
-                        foreach (var item in storeRequestOrder.ProductStoreRequestDetails)
+                        foreach (var item in updatelist)
                         {
                             ExportInventoryDetail exportInventoryDetail = new ExportInventoryDetail();
 
@@ -267,6 +270,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                         exportInventory.ExportDate = orderDateTime;
                         exportInventory.ExportInventoryDetails = exportInventoryDetails;
                         exportInventory.StoreId = storeSupplyOrder.Id;
+                        exportInventory.StoreImportCode = storeRequestOrder.StoreRequest.Code;
 
                         _dbContext.ExportInventories.Add(exportInventory);
                     }
@@ -276,7 +280,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
         public bool FinishStoreRequestOrder(string storeRequestOrderId)
         {
-            DateTime orderDateTime = DateTime.Now;
+            DateTime orderDateTime = DateTime.Now.AddHours(7);
             var dateString = orderDateTime.ToString("yyMMdd");
             var storeRequestOrder = _dbContext.StoreRequestOrders.Include(x => x.ProductStoreRequestDetails).FirstOrDefault(x => x.Id == storeRequestOrderId);
             if (storeRequestOrder != null)
@@ -346,6 +350,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                     importInventory.ImportDate = orderDateTime;
                     importInventory.ImportInventoryDetails = importInventoryDetails;
                     importInventory.StoreId = storeRequestOrder.StoreRequestId;
+                    importInventory.ExportStoreCode = storeRequestOrder.StoreSupplyCode;
                     _dbContext.ImportInventories.Add(importInventory);
 
                     return true;

@@ -8,6 +8,7 @@ using LOSMST.Models.Helper.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
@@ -46,7 +47,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 // Add CORS service
-builder.Services.AddCors();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Policy1", builder =>
+    {
+        builder.WithOrigins("https://localhost:7248")
+        .WithMethods("POST", "GET", "PUT", "DELETE")
+        .WithHeaders(HeaderNames.ContentType);
+    });
+});
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
@@ -106,6 +115,9 @@ builder.Services.AddTransient<InventoryStatisticalService, InventoryStatisticalS
 
 builder.Services.AddTransient<IProductStoreRequestDetailRepository, ProductStoreRequestDetailRepository>();
 builder.Services.AddTransient<ProductStoreRequestDetailService, ProductStoreRequestDetailService>();
+
+builder.Services.AddTransient<IPriceRepository, PriceRepository>();
+builder.Services.AddTransient<PriceService, PriceService>();
 
 //builder.Services.AddScoped<IInventoryStatisticalRepository, InventoryStatisticalRepository>();
 

@@ -19,8 +19,35 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             _dbContext = dbContext;
         }
 
-        public IEnumerable<InventoryStatisticalViewModel> GetInventoryStatisical(DateTime fromDate, DateTime toDate, int storeId)
+        public IEnumerable<InventoryStatisticalViewModel> GetInventoryStatisical(DateTime fromDateRaw, DateTime toDateRaw, int storeId)
         {
+            string fromDateStr = "0" + fromDateRaw.ToString();
+            fromDateStr = fromDateStr.Substring(0, 10);
+            if (fromDateStr.Substring(9) == " ")
+            {
+                fromDateStr = fromDateStr.Substring(0, 3) + "0" + fromDateStr.Substring(3) + "00:00:00";
+            }
+            else
+            {
+                fromDateStr += " 00:00:00";
+            }
+
+            string toDateStr = "0" + toDateRaw.ToString();
+            toDateStr = toDateStr.Substring(0, 10);
+            if (toDateStr.Substring(9) == " ")
+            {
+                toDateStr = toDateStr.Substring(0, 3) + "0" + toDateStr.Substring(3) + "23:59:59";
+            }
+            else
+            {
+                toDateStr += " 23:59:59";
+            }
+
+
+            DateTime fromDate = DateTime.ParseExact(fromDateStr, "MM/dd/yyyy HH:mm:ss",
+                                       System.Globalization.CultureInfo.InvariantCulture);
+            DateTime toDate = DateTime.ParseExact(toDateStr, "MM/dd/yyyy HH:mm:ss",
+                                       System.Globalization.CultureInfo.InvariantCulture);
             string importInclude = "ImportInventoryDetails.ProductDetail.Product";
             string exportInclude = "ExportInventoryDetails.ProductDetail.Product";
             var importListBefore = _dbContext.ImportInventories.Where(x => x.ImportDate < fromDate && x.StoreId == storeId)

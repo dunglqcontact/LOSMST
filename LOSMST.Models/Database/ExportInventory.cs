@@ -13,6 +13,7 @@ namespace LOSMST.Models.Database
         public string Id { get; set; } = null!;
         public DateTime ExportDate { get; set; }
         public int StoreId { get; set; }
+        public string? StoreImportCode { get; set; }
 
         public virtual Store Store { get; set; } = null!;
         public virtual ICollection<ExportInventoryDetail> ExportInventoryDetails { get; set; }

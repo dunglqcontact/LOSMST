@@ -37,9 +37,9 @@ namespace LOSMST.API.Controllers
         }
 
         [HttpGet("product-detail-price")]
-        public IActionResult GetProductDetailWithPrice([FromQuery] ProductDetailParameter productDetailParam, [FromQuery] PagingParameter paging)
+        public async Task<IActionResult> GetProductDetailWithPrice([FromQuery] ProductDetailParameter productDetailParam, [FromQuery] PagingParameter paging)
         {
-            var data = _productDetailService.GetProductDetailWithPrice(productDetailParam, paging);
+            var data = await _productDetailService.GetProductDetailWithPrice(productDetailParam, paging);
             var metadata = new
             {
                 data,
@@ -51,6 +51,31 @@ namespace LOSMST.API.Controllers
                 data.HasPrevious
             };
             return Ok(metadata);
+        }
+
+        [HttpGet("all-product-detail-price")]
+        public IActionResult GetAllProductDetailWithPrice([FromQuery] ProductDetailParameter productDetailParam, [FromQuery] PagingParameter paging, bool isPaging = true)
+        {
+            if (isPaging == true)
+            {
+                var data = _productDetailService.GetAllProductDetailWithPrice(productDetailParam, paging);
+                var metadata = new
+                {
+                    data,
+                    data.TotalCount,
+                    data.PageSize,
+                    data.CurrentPage,
+                    data.TotalPages,
+                    data.HasNext,
+                    data.HasPrevious
+                };
+                return Ok(metadata);
+            }
+            else
+            {
+                var data = _productDetailService.GetAllProductDetailWithPriceNonPaging(productDetailParam, paging);
+                return Ok(data);
+            }
         }
 
         [HttpPost("cart")]

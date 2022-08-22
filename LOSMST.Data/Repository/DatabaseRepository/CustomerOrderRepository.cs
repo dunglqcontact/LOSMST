@@ -23,7 +23,7 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
 
         public CustomerOrder InsertOrder(CustomerOrderInsertModel customerOrderInsert)
         {
-            DateTime orderDateTime = DateTime.Now;
+            DateTime orderDateTime = DateTime.Now.AddHours(7);
             DateTime estimateDeliveryDate = orderDateTime.AddDays(1);
             var dateString = orderDateTime.ToString("yyMMdd");
 
@@ -60,7 +60,8 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                                                             customerOrderInsert.TotalPrice,
                                                             customerOrderInsert.StoreId,
                                                             customerOrderInsert.CustomerId,
-                                                            cartList
+                                                            cartList,
+                                                            orderDateTime
                                                             );
             _dbContext.Set<CustomerOrder>().Add(customerOrder);
             return customerOrder;
@@ -71,13 +72,23 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             var data = _dbContext.CustomerOrders.FirstOrDefault(x => x.Id == id);
             data.StatusId = "2.5";
             data.Reason = reason;
+            data.ReceiveDate = DateTime.Now.AddHours(7);
             _dbContext.CustomerOrders.Update(data);
         }
-        public void ApproveCustomerOrder(string id, DateTime? estimatedReceiveDateStr)
+
+        public IEnumerable<Account> GetCustomerAccountByName(string fullname)
+        {
+            var values = _dbContext.Accounts.Where(x => x.Fullname.Contains(fullname, StringComparison.InvariantCultureIgnoreCase));
+            return values;
+        }
+
+        public void ApproveCustomerOrder(string customerOrderId, DateTime? estimatedReceiveDateStr, int? managerAccountId)
         {
            /* DateTime myDate = DateTime.ParseExact(estimatedReceiveDateStr, "yyyy-MM-dd hh:mm tt",
                                        System.Globalization.CultureInfo.InvariantCulture);*/
-            var customerOrder = _dbContext.CustomerOrders.Include(x => x.CustomerOrderDetails).FirstOrDefault(x => x.Id == id);
+            var customerOrder = _dbContext.CustomerOrders
+                .Include(x => x.CustomerOrderDetails)
+                .FirstOrDefault(x => x.Id == customerOrderId);
             
             foreach (var item in customerOrder.CustomerOrderDetails)
             {
@@ -95,30 +106,16 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             }
             customerOrder.StatusId = "2.2";
             customerOrder.EstimatedReceiveDate = estimatedReceiveDateStr;
+            customerOrder.ManagerAccountId = managerAccountId;
             _dbContext.CustomerOrders.Update(customerOrder);
-        }
 
-        public void DenyCustomerOrder(string id, string reason)
-        {
-            var data = _dbContext.CustomerOrders.FirstOrDefault(x => x.Id == id);
-            data.StatusId = "2.4";
-            data.Reason = reason;
-            _dbContext.CustomerOrders.Update(data);
-        }
-
-        public void FinishCustomerOrder(string customerOrderId, int staffAccountId)
-        {
-            DateTime receiveDate = DateTime.Now;
+            DateTime receiveDate = DateTime.Now.AddHours(7);
             var dateString = receiveDate.ToString("yyMMdd");
-            var customerOrder = _dbContext.CustomerOrders.Include(x => x.CustomerOrderDetails).FirstOrDefault(x => x.Id == customerOrderId);
-            customerOrder.StatusId = "2.3";
-            customerOrder.ReceiveDate =  receiveDate;
-            customerOrder.StaffAccountId = staffAccountId;
-            _dbContext.CustomerOrders.Update(customerOrder);
 
             string storeIdFormat = "00.##";
             string countOrderEachDateFormat = "00.##";
-            
+
+
             string exportId = dateString + "" + customerOrder.StoreId?.ToString(storeIdFormat);
 
 
@@ -153,8 +150,28 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             exportInventory.Id = exportId;
             exportInventory.ExportDate = receiveDate;
             exportInventory.ExportInventoryDetails = exportInventoryDetails;
-            exportInventory.StoreId = (int)customerOrder.StoreId;
+            exportInventory.StoreId = (int) customerOrder.StoreId;
             _dbContext.ExportInventories.Add(exportInventory);
+        }
+
+        public void DenyCustomerOrder(string id, string reason)
+        {
+            var data = _dbContext.CustomerOrders.FirstOrDefault(x => x.Id == id);
+            data.StatusId = "2.4";
+            data.Reason = reason;
+            data.ReceiveDate = DateTime.Now.AddHours(7);
+            _dbContext.CustomerOrders.Update(data);
+        }
+
+        public void FinishCustomerOrder(string customerOrderId, int staffAccountId)
+        {
+            DateTime receiveDate = DateTime.Now.AddHours(7);
+            var dateString = receiveDate.ToString("yyMMdd");
+            var customerOrder = _dbContext.CustomerOrders.Include(x => x.CustomerOrderDetails).FirstOrDefault(x => x.Id == customerOrderId);
+            customerOrder.StatusId = "2.3";
+            customerOrder.ReceiveDate =  receiveDate;
+            customerOrder.StaffAccountId = staffAccountId;
+            _dbContext.CustomerOrders.Update(customerOrder);
         }
     }
 }
