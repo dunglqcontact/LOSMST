@@ -1,6 +1,7 @@
 ﻿using LOSMST.DataAccess.Data;
 using LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository;
 using LOSMST.Models.Database;
+using LOSMST.Models.Helper.SearchingModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,13 +58,19 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             return data;
         }
 
-        public IEnumerable<string> GetActiveStoreCodeWithSorting()
+        public IEnumerable<ListStoreCode> GetActiveStoreCodeWithSorting()
         {
             var storeList = _dbContext.Stores.Where(x => x.StatusId == "1.1").OrderBy(x => x.Code);
-            List<string> storeCodes = new List<string>();
+            List<ListStoreCode> storeCodes = new List<ListStoreCode>();
             foreach (var store in storeList)
             {
-                storeCodes.Add(store.Code);
+                storeCodes.Add(new ListStoreCode
+                {
+                    storeCode = store.Code,
+                    storeId = store.Id,
+                }
+                );
+                
             }
             return storeCodes;
         }

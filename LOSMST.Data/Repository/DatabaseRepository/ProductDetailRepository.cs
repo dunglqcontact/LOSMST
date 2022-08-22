@@ -47,9 +47,9 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
             return null;
         }
 
-        public IEnumerable<ProductDetail> GetProductDetailWithPrice(string includeProperties = null)
+        public async Task<IEnumerable<ProductDetail>> GetProductDetailWithPrice(string includeProperties = null)
         {
-            var price = _dbContext.Prices.FirstOrDefault(x => x.StatusId == "1.1");
+            var price = await _dbContext.Prices.FirstOrDefaultAsync(x => x.StatusId == "1.1");
             var productDetails = _dbContext.ProductDetails.Where(x => x.PriceDetails.Count != 0).Include("Package")
                                 .Include(x => x.PriceDetails.Where(x => x.PriceId == price.Id)).Include(x => x.Product);
             return productDetails;

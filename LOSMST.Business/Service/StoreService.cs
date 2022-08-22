@@ -2,6 +2,7 @@
 using LOSMST.Models.Database;
 using LOSMST.Models.Helper;
 using LOSMST.Models.Helper.DBOHelper;
+using LOSMST.Models.Helper.SearchingModel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -202,7 +203,7 @@ namespace LOSMST.Business.Service
             var values = _storeRepository.GetCurrentStoreByStoreCode(storeCode);
             return values;
         }
-        public IEnumerable<string> GetActiveStoreCodeWithSorting()
+        public IEnumerable<ListStoreCode> GetActiveStoreCodeWithSorting()
         {
             var values = _storeRepository.GetActiveStoreCodeWithSorting();
             return values;

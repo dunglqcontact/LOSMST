@@ -37,9 +37,9 @@ namespace LOSMST.API.Controllers
         }
 
         [HttpGet("product-detail-price")]
-        public IActionResult GetProductDetailWithPrice([FromQuery] ProductDetailParameter productDetailParam, [FromQuery] PagingParameter paging)
+        public async Task<IActionResult> GetProductDetailWithPrice([FromQuery] ProductDetailParameter productDetailParam, [FromQuery] PagingParameter paging)
         {
-            var data = _productDetailService.GetProductDetailWithPrice(productDetailParam, paging);
+            var data = await _productDetailService.GetProductDetailWithPrice(productDetailParam, paging);
             var metadata = new
             {
                 data,
