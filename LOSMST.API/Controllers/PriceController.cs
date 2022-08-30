@@ -96,6 +96,11 @@ namespace LOSMST.API.Controllers
             int rowCount = worksheetSample.Dimension.End.Row;
             for (int row = 2; row <= rowCount; row++)
             {
+                using (var range = worksheetSample.Cells[row, 1, row, 7])
+                {
+                    range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    range.Style.Fill.BackgroundColor.SetColor(Color.White);
+                }
                 PriceDetail priceDetail = new PriceDetail();
                 for (int col = 1; col <= colCount; col++)
                 {
