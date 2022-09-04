@@ -11,5 +11,6 @@ namespace LOSMST.DataAccess.Repository.IRepository.DatabaseIRepository
     public interface IPriceRepository : GeneralIRepository<Price>
     {
         public bool ImportPriceToExcel(string fileUrl, string fileName);
+        public IEnumerable<ProductDetail> GetAllProductDetail();
     }
 }

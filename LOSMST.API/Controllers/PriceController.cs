@@ -12,6 +12,7 @@ using OfficeOpenXml;
 using LOSMST.Models.Helper.Utils;
 using System.Drawing;
 using OfficeOpenXml.Style;
+using System.Text.RegularExpressions;
 
 namespace LOSMST.API.Controllers
 {
@@ -95,12 +96,18 @@ namespace LOSMST.API.Controllers
             int rowCount = worksheetSample.Dimension.End.Row;
             for (int row = 2; row <= rowCount; row++)
             {
+                using (var range = worksheetSample.Cells[row, 1, row, 7])
+                {
+                    range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    range.Style.Fill.BackgroundColor.SetColor(Color.White);
+                }
                 PriceDetail priceDetail = new PriceDetail();
                 for (int col = 1; col <= colCount; col++)
                 {
                     if (col == 1)
                     {
-                        if (worksheetSample.Cells[row, col].Value == null)
+                        var value = worksheetSample.Cells[row, col].Value;
+                        if (value == null)
                         {
                             var checkErrorExisted = errorRowList.FirstOrDefault(x => x == row);
                             if (checkErrorExisted == 0)
@@ -109,10 +116,25 @@ namespace LOSMST.API.Controllers
                             }
                             break;
                         }
+                        else
+                        {
+                            if(_priceService.GetProductDetails().FirstOrDefault(x => x.Id == value.ToString()) == null)
+                            {
+                                var checkErrorExisted = errorRowList.FirstOrDefault(x => x == row);
+                                if (checkErrorExisted == 0)
+                                {
+                                    errorRowList.Add(row);
+                                }
+                                break;
+                            }
+                        }
+
                     }
                     if (col == 6)
                     {
-                        if (worksheetSample.Cells[row, col].Value == null)
+                        var value = worksheetSample.Cells[row, col].Value;
+
+                        if (value == null)
                         {
                             var checkErrorExisted = errorRowList.FirstOrDefault(x => x == row);
                             if (checkErrorExisted == 0)
@@ -120,11 +142,27 @@ namespace LOSMST.API.Controllers
                                 errorRowList.Add(row);
                             }
                             break;
+                        }
+                        else
+                        {
+                            bool checkValid = Regex.IsMatch(value.ToString(), "([a-zA-Z!@#$%^&*()_=+<>/?`~-])");
+
+                            if (checkValid)
+                            {
+                                var checkErrorExisted = errorRowList.FirstOrDefault(x => x == row);
+                                if (checkErrorExisted == 0)
+                                {
+                                    errorRowList.Add(row);
+                                }
+                                break;
+                            }
                         }
                     }
                     if (col == 7)
                     {
-                        if (worksheetSample.Cells[row, col].Value == null)
+                        var value = worksheetSample.Cells[row, col].Value;
+
+                        if (value == null)
                         {
                             var checkErrorExisted = errorRowList.FirstOrDefault(x => x == row);
                             if (checkErrorExisted == 0)
@@ -132,6 +170,20 @@ namespace LOSMST.API.Controllers
                                 errorRowList.Add(row);
                             }
                             break;
+                        }
+                        else
+                        {
+                            bool checkValid = Regex.IsMatch(value.ToString(), "([a-zA-Z!@#$%^&*()_=+<>/?`~-])");
+
+                            if (checkValid)
+                            {
+                                var checkErrorExisted = errorRowList.FirstOrDefault(x => x == row);
+                                if (checkErrorExisted == 0)
+                                {
+                                    errorRowList.Add(row);
+                                }
+                                break;
+                            }
                         }
                     }
                 }
