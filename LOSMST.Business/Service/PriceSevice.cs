@@ -36,5 +36,9 @@ namespace LOSMST.Business.Service
                 return false;
             }
         }
+        public IEnumerable<ProductDetail> GetProductDetails()
+        {
+            return _priceRepository.GetAllProductDetail();
+        }
     }
 }

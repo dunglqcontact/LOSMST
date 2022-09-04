@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using System.Text.RegularExpressions;
 
 namespace LOSMST.DataAccess.Repository.DatabaseRepository
 {
@@ -22,6 +23,10 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
         public PriceRepository(LOSMSTv01Context dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
+        }
+        public IEnumerable<ProductDetail> GetAllProductDetail()
+        {
+            return _dbContext.ProductDetails;
         }
 
         public bool ImportPriceToExcel(string fileUrl, string fileName)
@@ -80,25 +85,49 @@ namespace LOSMST.DataAccess.Repository.DatabaseRepository
                         }
                         if(col == 6)
                         {
-                            if (worksheet.Cells[row, col].Value == null)
+                            var value = worksheet.Cells[row, col].Value;
+
+                            if (value == null)
                             {
                                 flag = false;
                                 break;
                             }
-                            var text = worksheet.Cells[row, col].Value.ToString();
-                            string numeric = new String(text.Where(Char.IsDigit).ToArray());
-                            priceDetail.RetailPrice = double.Parse(numeric);
+                            else
+                            {
+                                bool checkValid = Regex.IsMatch(value.ToString(), "([a-zA-Z!@#$%^&*()_=+<>/?`~-])");
+
+                                if (checkValid)
+                                {
+                                    flag = false;
+                                    break;
+                                }
+
+                                var text = worksheet.Cells[row, col].Value.ToString();
+                                string numeric = new String(text.Where(Char.IsDigit).ToArray());
+                                priceDetail.RetailPrice = double.Parse(numeric);
+                            }
                         }
                         if (col == 7)
                         {
-                            if (worksheet.Cells[row, col].Value == null)
+                            var value = worksheet.Cells[row, col].Value;
+                            if (value == null)
                             {
                                 flag = false;
                                 break;
                             }
-                            var text = worksheet.Cells[row, col].Value.ToString();
-                            string numeric = new String(text.Where(Char.IsDigit).ToArray());
-                            priceDetail.WholesalePrice = double.Parse(numeric);
+                            else
+                            {
+                                bool checkValid = Regex.IsMatch(value.ToString(), "([a-zA-Z!@#$%^&*()_=+<>/?`~-])");
+
+                                if (checkValid)
+                                {
+                                    flag = false;
+                                    break;
+                                }
+                                var text = worksheet.Cells[row, col].Value.ToString();
+                                string numeric = new String(text.Where(Char.IsDigit).ToArray());
+                                priceDetail.WholesalePrice = double.Parse(numeric);
+                            }
                         }
                         if (priceDetail.ProductDetailId != null
                             && priceDetail.RetailPrice != 0
